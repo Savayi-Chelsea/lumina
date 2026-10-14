@@ -70,6 +70,10 @@ def read_profile(conn, profile_id):
         return cur.fetchone()
 
 
+class EmbeddingInputTooLong(ValueError):
+    """Input would be silently truncated by the embedding model."""
+
+
 class BGEEncoder:
     def __init__(self):
         from sentence_transformers import SentenceTransformer
@@ -84,7 +88,7 @@ class BGEEncoder:
         # Fail explicitly rather than silently discard source content through truncation.
         tokens = self.model.tokenizer(text, truncation=False)["input_ids"]
         if len(tokens) > self.model.max_seq_length:
-            raise ValueError("Profile text exceeds the model token limit")
+            raise EmbeddingInputTooLong("Input text exceeds the model token limit")
         return self.model.encode(text, normalize_embeddings=True, show_progress_bar=False).tolist()
 
 

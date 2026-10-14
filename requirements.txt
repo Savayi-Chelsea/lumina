@@ -19,3 +19,4 @@ sentence-transformers==6.1.0
 python-dotenv==1.2.4
 torch==2.14.1
 transformers==5.19.0
+httpx==0.28.1

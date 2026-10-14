@@ -20,7 +20,7 @@ Current functionality includes:
 - Automated database schema creation
 - Synthetic former-staff data generation
 - Automated database seeding
-- FastAPI matching service scaffold
+- FastAPI matching service with semantic mentor search
 - Pre-trained BGE profile embedding ingestion
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
@@ -45,7 +45,7 @@ Current functionality includes:
 ### AI Components
 
 - Pre-trained BGE embedding model — implemented for profile indexing
-- Semantic similarity search using pgvector — next Sprint II step
+- Semantic similarity search using pgvector — implemented
 - Pre-trained language model for grounded match explanations — planned
 
 No AI model is trained or fine-tuned by this project.
@@ -147,11 +147,11 @@ Availability does not determine whether an embedding exists.
 
 A former staff member may remain indexed while temporarily unavailable for mentorship.
 
-Availability will instead be checked during live mentor search.
+Availability is checked during live mentor search.
 
 If consent is withdrawn, or mentorship preferences no longer exist, the profile's stored embedding is removed during the next indexing run.
 
-Future mentor search must also enforce current consent and availability.
+Mentor search enforces current consent and availability directly in SQL.
 
 ### Indexing Output
 
@@ -210,7 +210,8 @@ $env:LUMINA_TEST_DATABASE = "1"
 .venv/Scripts/python.exe -m unittest discover -s services/matching/tests -v
 ```
 
-The database tests run inside a transaction and roll back their changes.
+Indexing database tests roll back their changes. Search database tests use
+session-local temporary tables and leave the synthetic dataset unchanged.
 
 Current tests cover:
 
@@ -221,6 +222,9 @@ Current tests cover:
 - consent withdrawal
 - availability independence
 - invalid-vector handling
+- natural-language query validation and sanitization
+- live consent and availability filtering
+- cosine ranking, tie ordering, thresholds, top-k, and no eligible results
 
 ## DevOps / Cloud
 
@@ -270,11 +274,15 @@ lumina/
 │   └── matching/
 │       ├── app/
 │       │   ├── main.py
-│       │   └── indexing.py
+│       │   ├── indexing.py
+│       │   ├── config.py
+│       │   └── search.py
 │       │
 │       └── tests/
 │           ├── test_indexing.py
-│           └── test_indexing_database.py
+│           ├── test_indexing_database.py
+│           ├── test_search.py
+│           └── test_search_database.py
 │
 ├── src/
 ├── .github/
@@ -419,9 +427,9 @@ Development and evaluation therefore use synthetic former-staff profiles generat
 
 These synthetic records do not represent real Kenya Airways employees.
 
-## Next Sprint II Milestone
+## Sprint II Semantic Mentor Search
 
-The next core workflow is:
+The implemented retrieval workflow is:
 
 ```text
 Natural-language mentorship query
@@ -437,6 +445,61 @@ Current mentorship availability filtering
 Top-k ranked former-staff mentor matches
 ```
 
-The next implementation step is semantic mentor search.
+Start the service from the repository root using the virtual environment:
+
+```powershell
+.venv/Scripts/python.exe -m uvicorn services.matching.app.main:app --port 8000
+```
+
+Send `POST /mentors/search` with a JSON body:
+
+```json
+{
+  "query": "I need mentorship in AWS, Docker and DevOps careers",
+  "top_k": 5,
+  "similarity_threshold": 0.5
+}
+```
+
+Only `query` is required. Optional request overrides take precedence over
+`MATCHING_TOP_K` (default 5, range 1–50) and `MATCHING_SIMILARITY_THRESHOLD`
+(default 0.5, range -1–1) in the root `.env` or process environment.
+Environment changes require a service restart because settings are cached.
+
+Queries must contain non-whitespace text and be at most 500 characters,
+both before and after sanitization. Input is normalized to Unicode NFC and
+whitespace is collapsed. Unsupported control and invisible characters, wrong
+types, unknown fields, and invalid numeric settings return HTTP 422. The model's
+token limit is also enforced, including the retrieval instruction; text is never
+silently truncated. Database or model failures return HTTP 503 without exposing
+queries, credentials, or exception details. `/health` remains a liveness check.
+
+Search reuses the indexer's pretrained BGE model and pinned revision. Following
+the model's retrieval guidance, only query text receives the prefix
+`Represent this sentence for searching relevant passages: `. Profile text
+remains unprefixed. Query vectors are normalized and validated as 768 finite
+values. One model is loaded lazily per service process and reused; CPU inference
+is serialized to bound concurrent model work. The first search can take longer.
+
+The response contains `results`, the effective `top_k`, and effective
+`similarity_threshold`. Each result contains `profile_id`, `headline`,
+`former_kq_role`, `former_kq_department`, `current_job_title`,
+`current_organization`, `relevant_skills`, and `similarity_score`.
+`relevant_skills` contains the matched profile's actual stored skills in sorted
+order; skills are not individually scored or inferred. Scores are raw cosine
+similarities, not confidence probabilities. No eligible results returns HTTP
+200 with an empty list.
+
+SQL computes `1 - (embedding <=> query_vector)` and filters by model name,
+current consent and availability before the threshold and top-k limit. All
+values are bound parameters. Results sort by descending similarity, with
+`profile_id` as a deterministic tie-break. Exact search is sufficient for this
+small corpus; there is no approximate vector index or schema change.
+
+The default threshold is provisional and needs labeled relevance evaluation.
+Profile embeddings must be refreshed after edits; search does not recompute
+source hashes. Eligibility reflects the database snapshot of the search
+statement. Capacity, authentication and mentorship assignments remain future
+work. No frontend UI or LLM explanations are included in this milestone.
 
 LLM-generated explanations, broader engagement features, and additional cloud infrastructure will be added after the retrieval workflow is stable and tested.
