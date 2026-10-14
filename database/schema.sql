@@ -11,7 +11,11 @@ CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT,
+
+    -- Google account control is separate from independently verified alumni status.
+    google_subject TEXT UNIQUE,
+    alumni_verified BOOLEAN NOT NULL DEFAULT FALSE,
 
     role VARCHAR(30) NOT NULL DEFAULT 'alumni'
         CHECK (role IN ('alumni', 'admin')),

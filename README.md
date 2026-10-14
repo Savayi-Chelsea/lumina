@@ -419,6 +419,143 @@ Health endpoint:
 http://127.0.0.1:8000/health
 ```
 
+## Google Sign-In
+
+Lumina uses Auth.js (`next-auth` v5, currently pinned to `5.0.0-beta.32`) with
+the Google provider in the existing Next.js App Router. The home page offers
+Google sign-in, `/sign-in` starts authentication, and `/account` is a protected
+page that redirects unauthenticated visitors to `/sign-in`. Signed-in visitors
+see their Google name, email and optional image and can sign out.
+
+Auth.js validates the OAuth/OIDC exchange and manages encrypted JWT sessions
+in HttpOnly cookies with its default cookie, CSRF, PKCE and redirect protections.
+Sessions expire after 24 hours and are verified on the server using `auth()`.
+The Lumina account is re-read from PostgreSQL whenever a session is accessed;
+suspended or deleted accounts and database failures deny access. This uses
+Auth.js JWT sessions, not a new database session table. Sign-out removes the
+browser session; individual stolen JWTs cannot be centrally revoked by this
+implementation, though account suspension denies access on the next check.
+OAuth access, refresh and ID tokens are not added to the public session.
+
+### Versioned local database migration
+
+Migration `database/migrations/001_google_identity.sql` adds a stable Google
+identity and a separate alumni-verification flag to the existing `users` table.
+It was approved and applied to the local development database on 2026-10-15.
+The base `database/schema.sql` includes the same fields for new databases.
+
+```sql
+BEGIN;
+ALTER TABLE users ADD COLUMN google_subject TEXT UNIQUE;
+ALTER TABLE users ADD COLUMN alumni_verified BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
+COMMIT;
+```
+
+For an existing local development database, preview or apply using:
+
+```powershell
+.venv/Scripts/python.exe scripts/migrate_google_auth.py
+.venv/Scripts/python.exe scripts/migrate_google_auth.py --apply
+```
+
+The runner accepts only a loopback-hosted database named `lumina`, applies the
+versioned SQL transactionally, verifies nullability, defaults and uniqueness,
+and compares counts and hashes of all existing table contents before committing.
+Any preservation failure rolls back the migration. Re-running recognizes the
+already-applied schema without repeating DDL. It does not recreate or reseed data.
+The `migrations` subdirectory is not run automatically by Docker's initialization
+scripts; existing database volumes must use the explicit runner.
+
+The migration preserves existing records, password hashes, roles and account
+statuses. Existing users start with `alumni_verified = false`; neither an
+existing `alumni` role nor `email_verified` proves alumni eligibility. An
+independent Lumina verification process must set alumni verification; this task
+does not implement that process.
+
+Google's stable `sub` links directly to `users.google_subject`, and the existing
+Lumina UUID is used in the session. A new Google-only account gets no password,
+the existing `alumni` role, `account_status = 'pending'`, and
+`alumni_verified = false`. The role is an existing account classification, not
+verification. Pending accounts can view this basic account page; it grants no
+verified-alumni privileges. No professional profile, skills or mentorship
+preferences are created or overwritten. Existing subject-linked users keep
+their role, status, verification and stored email even if Google's email changes.
+
+A matching email alone never attaches Google to an existing account. Such
+sign-ins are refused until an independently authorized linking process associates
+the stable Google subject with that Lumina user. This avoids silently taking over
+synthetic accounts or admin accounts. An account-linking UI is outside this task.
+Missing migration columns fail closed: no authenticated Lumina session is issued.
+
+### Local configuration
+
+Keep secrets in the ignored `.env` or `.env.local`, using `.env.example` only
+as a reference. Do not overwrite your existing database configuration.
+
+Configure these server-only variables (never use `NEXT_PUBLIC_` prefixes):
+
+- `AUTH_SECRET`: generate a random secret with `npx auth secret` (at least 32 characters).
+- `AUTH_GOOGLE_ID`: Google OAuth client ID.
+- `AUTH_GOOGLE_SECRET`: Google OAuth client secret.
+- `AUTH_URL`: `http://localhost:3000` for local development; the canonical HTTPS origin in production.
+- `DATABASE_URL`, or the existing `POSTGRES_USER`, `POSTGRES_PASSWORD`,
+  `POSTGRES_DB`, optional `POSTGRES_HOST` and `POSTGRES_PORT`.
+
+Restart Next.js after changing environment variables. The OAuth configuration
+must be complete before sign-in is enabled. There is no email-domain restriction:
+personal Gmail accounts are allowed. Google's `email_verified` confirms Google
+email control only and never sets `alumni_verified`.
+
+### Google Cloud Console setup
+
+1. Choose or create a Google Cloud project and open Google Auth Platform.
+2. Configure Branding (app name, support email and developer contact).
+3. Choose an **External** audience to allow personal Gmail accounts. While the
+   app is in testing, add the Google accounts you will use as test users.
+4. Create an OAuth client of type **Web application**.
+5. Add `http://localhost:3000` as an authorized JavaScript origin and
+   `http://localhost:3000/api/auth/callback/google` as an authorized redirect URI.
+   Use the same hostname consistently; `127.0.0.1` needs its own registered URI.
+6. Copy the client ID and secret into your ignored environment file. Request only
+   the provider's basic `openid`, `email`, and `profile` scopes.
+7. For a future hosted environment, register its exact HTTPS origin and
+   `/api/auth/callback/google` URI and update `AUTH_URL`. No deployment is included here.
+
+Google's configuration requirements are documented in the
+[Google OpenID Connect guide](https://developers.google.com/identity/openid-connect/openid-connect)
+and [Auth.js Google provider guide](https://authjs.dev/getting-started/providers/google).
+Real OAuth sign-in needs your Google Cloud credentials; the local migration is applied.
+
+### Authentication verification
+
+```powershell
+npm run test:auth
+npm run typecheck
+npm run lint
+npm run build
+# Opt-in PostgreSQL tests (temporary tables; existing data remains unchanged):
+$env:LUMINA_TEST_DATABASE = "1"
+npm run test:auth
+# After npm run build: production HTTP session/sign-out checks on local PostgreSQL
+npm run test:auth:http
+```
+
+Authentication tests cover Gmail acceptance, Google subject linkage, email
+collision rejection, concurrent creation, suspension, safe failures, server
+session guards, session-dependent UI, and separate alumni verification without
+real Google credentials. Live authentication SQL tests copy the migrated users
+schema into session-local temporary tables and verify pending/unverified defaults,
+stable identity linkage, email collision rejection, uniqueness and suspension.
+The HTTP smoke test starts a temporary production server with an ephemeral test
+secret, inserts one uniquely identified test user, and removes that user in a
+`finally` block. It checks signed-out redirects, an encrypted test-signed session,
+account UI, server-side permissions, real Auth.js sign-out and suspension. It
+verifies that existing users are unchanged afterward. It does not simulate or
+bypass Google's OAuth exchange in application code.
+After configuring Google,
+manually verify sign-in, `/account`, and sign-out in a browser.
+
 ## Data Ethics
 
 Kenya Airways did not provide a project dataset.
