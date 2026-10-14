@@ -474,6 +474,23 @@ token limit is also enforced, including the retrieval instruction; text is never
 silently truncated. Database or model failures return HTTP 503 without exposing
 queries, credentials, or exception details. `/health` remains a liveness check.
 
+`GET /ready` returns HTTP 200 with `{"status":"ready","service":"matching"}`
+when configuration, PostgreSQL search dependencies and the embedding model are
+available; otherwise it returns HTTP 503 with status `not_ready`. It plans the
+existing search SQL without executing retrieval, checking required tables,
+columns, privileges and the pgvector cosine operator. Database planning has a
+three-second statement timeout; connection establishment has a ten-second timeout.
+The first readiness check can load the model; later checks reuse it and never
+perform embedding inference. A model inference failure marks the process unready
+until a subsequent successful search confirms recovery. Invalid or oversized
+queries do not change model readiness. Readiness does not verify corpus freshness
+or guarantee the next inference will succeed.
+
+Public validation errors omit input values and redact unknown field names.
+Unexpected failures, including response validation failures, return a generic
+HTTP 503. Internal logs record the failing operation and exception class without
+logging raw exception messages, query text or profile source content.
+
 Search reuses the indexer's pretrained BGE model and pinned revision. Following
 the model's retrieval guidance, only query text receives the prefix
 `Represent this sentence for searching relevant passages: `. Profile text

@@ -8,7 +8,7 @@ from uuid import UUID
 import psycopg
 
 from services.matching.app.config import SearchSettings, database_dsn
-from services.matching.app.indexing import MODEL_NAME
+from services.matching.app.indexing import BGEEncoder, MODEL_NAME
 from services.matching.app.search import SearchRequest, search_mentors
 
 
@@ -84,3 +84,20 @@ class SearchDatabaseTests(unittest.TestCase):
 
     def test_model_filtering(self):
         self.assertNotIn(UUID(int=6), [r.profile_id for r in self.search().results])
+
+    def test_real_bge_semantic_ranking(self):
+        encoder = BGEEncoder()
+        self.conn.execute("DELETE FROM profile_embeddings")
+        for number, text in (
+            (1, "Cloud engineer mentoring AWS infrastructure, Docker containers and DevOps careers."),
+            (2, "Chef mentoring airline catering, food safety and kitchen menu preparation."),
+        ):
+            vector = encoder.encode(text)
+            self.conn.execute("""INSERT INTO profile_embeddings
+                (profile_id,embedding,model_name,source_hash) VALUES (%s,%s::vector,%s,'fixture')""",
+                (UUID(int=number), "[" + ",".join(map(str, vector)) + "]", MODEL_NAME))
+        results = search_mentors(self.conn, encoder,
+            SearchRequest(query="I need mentorship in AWS, Docker and DevOps careers", similarity_threshold=-1),
+            SearchSettings()).results
+        self.assertEqual([r.profile_id.int for r in results], [1, 2])
+        self.assertGreater(results[0].similarity_score, results[1].similarity_score)

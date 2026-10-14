@@ -1,16 +1,21 @@
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
 from services.matching.app.config import SearchSettings
 from services.matching.app.indexing import EmbeddingInputTooLong
+from services.matching.app import main
+from services.matching.app.search import EmbeddingUnavailable
 from services.matching.app.main import app, search_settings
 from services.matching.app.search import MAX_QUERY_LENGTH, QUERY_INSTRUCTION, SearchRequest, SearchResponse, search_mentors
 
 
 class APITests(unittest.TestCase):
     def setUp(self):
+        self.health_patch = patch.object(main, "_model_healthy", True)
+        self.health_patch.start()
         app.dependency_overrides[search_settings] = lambda: SearchSettings()
         self.client = TestClient(app)
         self.encoder_patch = patch("services.matching.app.main.query_encoder")
@@ -22,6 +27,7 @@ class APITests(unittest.TestCase):
         self.search = self.search_patch.start()
 
     def tearDown(self):
+        self.health_patch.stop()
         self.search_patch.stop()
         self.db_patch.stop()
         self.encoder_patch.stop()
@@ -89,8 +95,94 @@ class APITests(unittest.TestCase):
     def test_health_preserved(self):
         self.assertEqual(self.client.get("/health").json(), {"status": "ok", "service": "matching"})
 
+    def test_ready_checks_database_without_inference(self):
+        response = self.client.get("/ready")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"status": "ready", "service": "matching"})
+        self.encoder.return_value.encode.assert_not_called()
+        self.search.assert_not_called()
+        conn = self.db.return_value.__enter__.return_value
+        sql = conn.cursor.return_value.__enter__.return_value.execute.call_args.args[0]
+        self.assertTrue(sql.startswith("EXPLAIN "))
+
+    def test_ready_database_unavailable(self):
+        self.db.side_effect = RuntimeError("password SELECT profile source text")
+        response = self.client.get("/ready")
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"status": "not_ready", "service": "matching"})
+        self.encoder.assert_not_called()
+        self.assertEqual(self.client.get("/health").status_code, 200)
+
+    def test_ready_schema_unavailable(self):
+        conn = self.db.return_value.__enter__.return_value
+        conn.cursor.return_value.__enter__.return_value.execute.side_effect = RuntimeError("SQL secret")
+        self.assertEqual(self.client.get("/ready").status_code, 503)
+
+    def test_ready_configuration_unavailable(self):
+        with patch.object(main, "get_settings", side_effect=ValueError("credentials")):
+            response = self.client.get("/ready")
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn("credentials", response.text)
+
+    def test_model_load_failure_is_safe(self):
+        with patch.object(main, "_encoder", None), patch.object(main, "BGEEncoder", side_effect=RuntimeError("password source SQL")):
+            self.encoder.side_effect = lambda: original_query_encoder()
+            response = self.client.post("/mentors/search", json={"query": "AWS"})
+            self.assertEqual(response.status_code, 503)
+            self.assertEqual(response.json(), {"detail": "Embedding model unavailable"})
+            self.assertEqual(self.client.get("/ready").status_code, 503)
+
+    def test_inference_failure_and_recovery_readiness(self):
+        self.search.side_effect = EmbeddingUnavailable("secret source text")
+        response = self.client.post("/mentors/search", json={"query": "AWS"})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"detail": "Embedding model unavailable"})
+        self.assertEqual(self.client.get("/ready").status_code, 503)
+        self.search.side_effect = None
+        self.assertEqual(self.client.post("/mentors/search", json={"query": "AWS"}).status_code, 200)
+        self.assertEqual(self.client.get("/ready").status_code, 200)
+
+    def test_validation_does_not_echo_unknown_field_or_input(self):
+        response = self.client.post("/mentors/search", json={"query": "AWS", "private source password": "secret"})
+        self.assertEqual(response.status_code, 422)
+        self.assertNotIn("private", response.text)
+        self.assertNotIn("secret", response.text)
+
+    def test_unexpected_response_failure_is_safe(self):
+        self.search.return_value = {"results": [{"biography": "private source password"}]}
+        with TestClient(app, raise_server_exceptions=False) as client:
+            response = client.post("/mentors/search", json={"query": "AWS"})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"detail": "Mentor search temporarily unavailable"})
+
+    def test_model_reused_across_search_and_readiness(self):
+        with patch.object(main, "_encoder", None), patch.object(main, "BGEEncoder") as factory:
+            self.encoder.side_effect = lambda: original_query_encoder()
+            for _ in range(3):
+                self.assertEqual(self.client.post("/mentors/search", json={"query": "AWS"}).status_code, 200)
+                self.assertEqual(self.client.get("/ready").status_code, 200)
+            factory.assert_called_once_with()
+            for call in self.search.call_args_list:
+                self.assertIs(call.args[1], factory.return_value)
+
+    def test_concurrent_model_initialization_is_singleton(self):
+        with patch.object(main, "_encoder", None), patch.object(main, "BGEEncoder") as factory:
+            with ThreadPoolExecutor(max_workers=4) as workers:
+                encoders = list(workers.map(lambda _: original_query_encoder(), range(8)))
+            factory.assert_called_once_with()
+            self.assertTrue(all(encoder is factory.return_value for encoder in encoders))
+
+
+original_query_encoder = main.query_encoder
+
 
 class VectorTests(unittest.TestCase):
+    def test_inference_exception_is_classified(self):
+        encoder = MagicMock()
+        encoder.encode.side_effect = RuntimeError("raw model failure")
+        with self.assertRaises(EmbeddingUnavailable):
+            search_mentors(MagicMock(), encoder, SearchRequest(query="AWS"), SearchSettings())
+
     def test_query_instruction_and_parameterization(self):
         encoder = MagicMock()
         encoder.encode.return_value = [1.0] + [0.0] * 767

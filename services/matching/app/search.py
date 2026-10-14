@@ -8,10 +8,14 @@ from psycopg.rows import dict_row
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
 
 from .config import SearchSettings
-from .indexing import DIMENSIONS, MODEL_NAME
+from .indexing import DIMENSIONS, MODEL_NAME, EmbeddingInputTooLong
 
 MAX_QUERY_LENGTH = 500
 QUERY_INSTRUCTION = "Represent this sentence for searching relevant passages: "
+
+
+class EmbeddingUnavailable(RuntimeError):
+    """Model inference or embedding validation failed."""
 
 
 class SearchRequest(BaseModel):
@@ -84,11 +88,16 @@ def search_mentors(conn, encoder, request: SearchRequest, settings: SearchSettin
     threshold = (request.similarity_threshold if request.similarity_threshold is not None
                  else settings.similarity_threshold)
     # Profiles remain unprefixed. BGE recommends the instruction only for queries.
-    vector = [float(v) for v in encoder.encode(QUERY_INSTRUCTION + request.query)]
-    if len(vector) != DIMENSIONS or not all(math.isfinite(v) for v in vector):
-        raise RuntimeError("Query embedding must contain 768 finite values")
-    if not math.isclose(sum(v * v for v in vector), 1.0, abs_tol=1e-4):
-        raise RuntimeError("Query embedding must be normalized and nonzero")
+    try:
+        vector = [float(v) for v in encoder.encode(QUERY_INSTRUCTION + request.query)]
+        if len(vector) != DIMENSIONS or not all(math.isfinite(v) for v in vector):
+            raise EmbeddingUnavailable("Query embedding must contain 768 finite values")
+        if not math.isclose(sum(v * v for v in vector), 1.0, abs_tol=1e-4):
+            raise EmbeddingUnavailable("Query embedding must be normalized and nonzero")
+    except EmbeddingInputTooLong:
+        raise
+    except Exception as exc:
+        raise EmbeddingUnavailable() from exc
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(SEARCH_SQL, {
             "embedding": "[" + ",".join(map(str, vector)) + "]",
@@ -96,3 +105,12 @@ def search_mentors(conn, encoder, request: SearchRequest, settings: SearchSettin
         })
         results = [MentorResult(**row) for row in cur.fetchall()]
     return SearchResponse(results=results, top_k=top_k, similarity_threshold=threshold)
+
+
+def check_search_database(conn):
+    """Plan the existing query to check schema, permissions and pgvector without retrieval."""
+    with conn.cursor() as cur:
+        cur.execute("EXPLAIN " + SEARCH_SQL, {
+            "embedding": "[1," + ",".join(["0"] * (DIMENSIONS - 1)) + "]",
+            "model_name": MODEL_NAME, "threshold": 0.5, "top_k": 1,
+        })
