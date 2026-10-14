@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lumina
 
-## Getting Started
+Lumina is a cloud-focused alumni engagement and mentorship platform developed
+for the Kenya Airways alumni project.
 
-First, run the development server:
+The platform is designed primarily for former Kenya Airways staff and supports
+professional networking, mentorship discovery, communication and alumni
+engagement.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Current Development Status
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sprint I establishes the development environment, database, synthetic data
+pipeline and automation required for implementation.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Current functionality includes:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js development environment
+- Git and GitHub version control
+- Docker and Docker Compose
+- PostgreSQL 17
+- pgvector
+- Automated database schema creation
+- Synthetic former-staff data generation
+- Automated database seeding
 
-## Learn More
+## Technology Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend and Data
+- PostgreSQL
+- pgvector
+- Python
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Planned AI Components
+- Pre-trained BGE embedding model
+- Semantic similarity search using pgvector
+- Pre-trained language model for grounded match explanations
 
-## Deploy on Vercel
+No AI model is trained or fine-tuned by this project.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### DevOps / Cloud
+- Git and GitHub
+- Docker
+- Docker Compose
+- GitHub Actions
+- AWS planned for deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```text
+lumina/
+├── data/
+│   └── synthetic_alumni.csv
+├── database/
+│   ├── init.sql
+│   └── schema.sql
+├── public/
+├── scripts/
+│   ├── generate_synthetic_data.py
+│   ├── seed_database.py
+│   └── setup.ps1
+├── src/
+├── .env.example
+├── docker-compose.yml
+├── package.json
+├── requirements.txt
+└── README.md
