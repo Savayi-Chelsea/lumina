@@ -8,7 +8,7 @@ import { isGoogleAuthConfigured } from "@/lib/auth-environment";
 export async function googleSignIn() {
   if (!isGoogleAuthConfigured()) redirect("/sign-in?error=unavailable");
   try {
-    await signIn("google", { redirectTo: "/account" });
+    await signIn("google", { redirectTo: "/onboarding" });
   } catch (error) {
     if (error instanceof AuthError) redirect("/sign-in?error=signin");
     // Next.js uses a thrown redirect to start the OAuth flow.

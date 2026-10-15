@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test:auth": "vitest run",
-    "test:auth:http": "node tests/auth/http-smoke.mjs"
+    "test:auth:http": "node tests/auth/http-smoke.mjs",
+    "test:frontend:browser": "node tests/frontend/browser-smoke.mjs",
+    "test:mentorship:live": "node tests/frontend/mentorship-live.mjs"
   },
   "dependencies": {
     "next": "16.3.7",
@@ -20,6 +22,7 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "8.23.1",

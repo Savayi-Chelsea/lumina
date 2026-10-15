@@ -13,3 +13,9 @@ export async function requireSession() {
   if (!session?.user) redirect("/sign-in");
   return session;
 }
+
+export async function requireAdmin() {
+  const session = await requireSession();
+  if (session.user.role !== "admin") redirect("/account?access=denied");
+  return session;
+}

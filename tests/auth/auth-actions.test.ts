@@ -11,10 +11,10 @@ vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
 afterEach(() => vi.resetAllMocks());
 
 describe("authentication server actions", () => {
-  it("starts only Google sign in and returns to the protected account page", async () => {
+  it("starts only Google sign in and returns to protected onboarding", async () => {
     mocks.configured.mockReturnValue(true);
     await googleSignIn();
-    expect(mocks.signIn).toHaveBeenCalledWith("google", { redirectTo: "/account" });
+    expect(mocks.signIn).toHaveBeenCalledWith("google", { redirectTo: "/onboarding" });
   });
 
   it("uses a safe sign-in failure message", async () => {

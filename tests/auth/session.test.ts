@@ -37,3 +37,17 @@ describe("server session guard", () => {
     expect(await currentSession()).toBeNull();
   });
 });
+
+describe("admin guard", () => {
+ it("denies authenticated nonadmins", async () => {
+  mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue({ user: { role: "alumni" } });
+  mocks.redirect.mockImplementation(() => { throw new Error("denied"); });
+  const { requireAdmin } = await import("@/lib/session");
+  await expect(requireAdmin()).rejects.toThrow("denied");
+  expect(mocks.redirect).toHaveBeenCalledWith("/account?access=denied");
+ });
+ it("allows administrators", async () => {
+  const session = { user: { role: "admin" } }; mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue(session);
+  const { requireAdmin } = await import("@/lib/session"); expect(await requireAdmin()).toBe(session);
+ });
+});
