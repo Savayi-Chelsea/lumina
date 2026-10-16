@@ -50,7 +50,7 @@ try {
   const secret = randomBytes(32).toString("base64");
   server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", String(port)], {
     windowsHide: true, stdio: "ignore",
-    env: { ...process.env, AUTH_SECRET: secret, AUTH_URL: base, AUTH_GOOGLE_ID: "browser-fixture", AUTH_GOOGLE_SECRET: "browser-fixture" },
+    env: { ...process.env, AUTH_SECRET: secret, AUTH_URL: base, APP_ORIGIN: base, AUTH_GOOGLE_ID: "browser-fixture", AUTH_GOOGLE_SECRET: "browser-fixture" },
   });
   let ready = false;
   for (let i = 0; i < 100; i++) {

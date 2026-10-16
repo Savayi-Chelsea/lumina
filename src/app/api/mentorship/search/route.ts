@@ -1,4 +1,5 @@
 import { currentSession } from "@/lib/session";
+import { applicationOrigin, matchesApplicationOrigin } from "@/lib/application-origin";
 import { canDiscoverMentors, MentorQueryError, validateMentorQuery } from "@/lib/mentorship-contract";
 import { limitedJson, MatchingQueryRejected, searchMentors } from "@/lib/mentor-search";
 
@@ -15,15 +16,9 @@ export async function POST(request: Request) {
     const session = await currentSession();
     if (!session?.user) return failure("SIGN_IN_REQUIRED", "Please sign in to discover mentors.", 401);
     if (!canDiscoverMentors(session.user)) return failure("VERIFICATION_REQUIRED", "Complete alumni verification to discover mentors.", 403);
-    // JSON-only, same-origin browser requests; no cross-origin credentialed proxy.
-    const origin = request.headers.get("origin");
-    // Next.js can construct request.url with its internal listening hostname.
-    // Compare the browser Origin to the actual incoming Host, not that internal URL.
-    const host = request.headers.get("host") || new URL(request.url).host;
-    if (origin) {
-      let validOrigin = false;
-      try { const parsed = new URL(origin); validOrigin = ["http:", "https:"].includes(parsed.protocol) && parsed.host === host; } catch {}
-      if (!validOrigin) return failure("INVALID_REQUEST", "Please refresh and try again.", 403);
+    const configuredOrigin = applicationOrigin();
+    if (!matchesApplicationOrigin(request.headers.get("origin"), configuredOrigin)) {
+      return failure("INVALID_REQUEST", "Please refresh and try again.", 403);
     }
     if (!request.headers.get("content-type")?.includes("application/json")) return failure("INVALID_QUERY", "Send a mentorship request in the search form.", 400);
     let query;

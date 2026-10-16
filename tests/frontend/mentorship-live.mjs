@@ -55,7 +55,7 @@ try {
   const port = probe.address().port; await new Promise(resolve => probe.close(resolve));
   const base = `http://127.0.0.1:${port}`;
   const secret = randomBytes(32).toString("base64");
-  nextServer = spawn(process.execPath,["node_modules/next/dist/bin/next","start","--hostname","127.0.0.1","--port",String(port)], { windowsHide: true, stdio: ["ignore","pipe","pipe"], env: { ...process.env, AUTH_SECRET: secret, AUTH_URL: base, AUTH_GOOGLE_ID: "local-demo", AUTH_GOOGLE_SECRET: "local-demo", MATCHING_SERVICE_URL: matching.href } });
+  nextServer = spawn(process.execPath,["node_modules/next/dist/bin/next","start","--hostname","127.0.0.1","--port",String(port)], { windowsHide: true, stdio: ["ignore","pipe","pipe"], env: { ...process.env, AUTH_SECRET: secret, AUTH_URL: base, APP_ORIGIN: base, AUTH_GOOGLE_ID: "local-demo", AUTH_GOOGLE_SECRET: "local-demo", MATCHING_SERVICE_URL: matching.href } });
   let startupLog = "";
   nextServer.stdout.on("data",chunk => { startupLog = (startupLog + chunk.toString()).slice(-2000); });
   nextServer.stderr.on("data",chunk => { startupLog = (startupLog + chunk.toString()).slice(-2000); });
@@ -96,6 +96,9 @@ try {
   await page.getByRole("button",{ name: "Save profile",exact: true }).click(); await expect(page.getByText(/^Profile saved\./)).toBeVisible();
   await page.getByRole("link",{ name: "Home",exact: true }).click(); await expect(page.getByText("Verified by Lumina",{ exact: true })).toBeVisible();
   console.log("PASS Google-linked session → registry verification → saved profile → Lumina home");
+  for (const headers of [{}, { Origin: "https://external.example" }, { Origin: "null" }, { Origin: "not-an-origin" }]) {
+    assert.equal((await context.request.post(`${base}/api/mentorship/search`, { data: { query }, headers })).status(), 403, "Invalid or missing Origin must be denied for verified accounts");
+  }
   const directProxy = await context.request.post(`${base}/api/mentorship/search`,{ data: { query },headers: { Origin: base } });
   if (directProxy.status() !== 200) console.log("Direct proxy failure classification:",(await directProxy.json()).error?.code);
   assert.equal(directProxy.status(),200,"Verified account must be authorized by the Next.js proxy");

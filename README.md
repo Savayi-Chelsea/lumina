@@ -657,3 +657,27 @@ statement. Capacity, authentication and mentorship assignments remain future
 work. No frontend UI or LLM explanations are included in this milestone.
 
 LLM-generated explanations, broader engagement features, and additional cloud infrastructure will be added after the retrieval workflow is stable and tested.
+
+### Mentorship proxy public origin
+
+Set server-only `APP_ORIGIN=http://localhost:3000` locally. In production, set it
+at runtime to the canonical public HTTPS origin (for example,
+`https://alumni.example.com`), consistent with the browser URL and `AUTH_URL`.
+Never use a `NEXT_PUBLIC_*` variable. The value must be an HTTP(S) origin with
+an optional trailing slash, without credentials, paths, queries, or fragments.
+
+The mentorship POST requires an authenticated, authorized account and an Origin
+header matching APP_ORIGIN after URL normalization of scheme, hostname, and
+default ports. Missing, opaque, malformed, and external origins are rejected
+with 403. There is no server-call or Fetch Metadata exception: intentional server
+callers must supply the configured Origin and still authenticate. Origin is a
+browser CSRF check, not a substitute for authentication.
+
+The check ignores request.url, Host, X-Forwarded-Host, and X-Forwarded-Proto.
+Reverse proxies and AWS load balancers may use internal listening names; they
+must preserve the browser Origin header. Configure the public HTTPS origin even
+when TLS terminates at the load balancer. Alternate public aliases must redirect
+to the canonical origin before use. Missing or invalid APP_ORIGIN causes an
+otherwise authorized request to return a generic 503 without calling matching;
+server logs contain only a fixed configuration diagnostic, never the value.
+Configuration is validated per authorized request rather than during build.
