@@ -13,14 +13,14 @@ describe("account UI", () => {
     }} />);
     expect(html).toContain("Google User");
     expect(html).toContain("personal@gmail.com");
-    expect(html).toContain("Google profile photo");
+    expect(html).toContain("Profile photo");
     expect(html).toContain("Not verified");
     expect(html).toContain("handled separately by Lumina");
   });
 
   it("handles missing optional name and image", () => {
     const html = renderToStaticMarkup(<AccountCard user={{ alumniVerified: false }} />);
-    expect(html).toContain("Your Google account");
+    expect(html).toContain("Your Lumina account");
     expect(html).not.toContain("<img");
   });
 

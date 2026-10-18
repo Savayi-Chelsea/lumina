@@ -1,6 +1,6 @@
 import { Brand } from "./brand";
 import { LuminaLogo } from "./lumina-logo";
-import { GoogleSignInButton } from "./auth-controls";
+import Link from "next/link";
 import { HorizonArt } from "./horizon-art";
 import { Icon, type IconName } from "./icon";
 
@@ -10,7 +10,7 @@ const values: { id: string; number: string; icon: IconName; title: string; descr
   { id: "possibilities", number: "03", icon: "briefcase", title: "Your next chapter has company.", description: "Explore new directions, exchange professional insight and stay close to a community that understands where you have been." },
 ];
 
-export function LandingPage({ signIn = false, configured = true, error }: { signIn?: boolean; configured?: boolean; error?: string | string[] }) {
+export function LandingPage() {
   return <div className="landing">
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="public-header"><Brand /><nav aria-label="Explore Lumina"><a href="#reconnect">The community</a><a href="#mentors">Mentorship</a><a href="#our-story">Our story</a></nav><span className="header-note">Your journey continues.</span></header>
@@ -19,8 +19,7 @@ export function LandingPage({ signIn = false, configured = true, error }: { sign
         <div className="landing-hero-copy"><p className="eyebrow"><span className="eyebrow-line" />ONE JOURNEY. A LIFETIME OF CONNECTIONS.</p>
           <h1>Reconnect with the people who shaped <em>your journey.</em></h1>
           <p className="hero-description">A new home for the Kenya Airways alumni community. For the friendships, the experience, and everything still ahead.</p>
-          <div className="landing-cta"><GoogleSignInButton disabled={!configured} /></div>
-          {(!configured || error === "unavailable") ? <p className="signin-feedback" role="alert">Google sign-in is temporarily unavailable. Please try again later.</p> : signIn && error ? <p className="signin-feedback" role="alert">We could not sign you in. Try again or contact Lumina support if the problem continues.</p> : null}
+          <div className="landing-cta"><Link className="button" href="/sign-up">Join Lumina<Icon name="arrow" /></Link><Link className="button secondary" href="/sign-in">Sign in</Link></div>
           <p className="hero-footnote">Built around our shared experience. Open to your next chapter.</p>
           <a className="scroll-cue" href="#reconnect"><span aria-hidden="true">↓</span>Discover what brings us together</a>
         </div><HorizonArt />

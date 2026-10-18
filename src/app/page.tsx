@@ -5,13 +5,12 @@ import { currentSession } from "@/lib/session";
 import { homeAlumni, type AlumniSummary } from "@/lib/alumni-directory";
 import { canDiscoverMentors } from "@/lib/mentorship-contract";
 import { getProfile } from "@/lib/profiles";
-import { isGoogleAuthConfigured } from "@/lib/auth-environment";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const session = await currentSession();
-  if (!session?.user) return <LandingPage configured={isGoogleAuthConfigured()} />;
+  if (!session?.user) return <LandingPage />;
   const profile = await getProfile(session.user.id);
   let people: AlumniSummary[] = [];
   let discoveryUnavailable = false;

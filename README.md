@@ -21,6 +21,7 @@ Current functionality includes:
 - Synthetic former-staff data generation
 - Automated database seeding
 - FastAPI matching service with semantic mentor search
+- Email/password and Google sign-in sharing one Lumina session model
 - Pre-trained BGE profile embedding ingestion
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
@@ -486,6 +487,8 @@ A matching email alone never attaches Google to an existing account. Such
 sign-ins are refused until an independently authorized linking process associates
 the stable Google subject with that Lumina user. This avoids silently taking over
 synthetic accounts or admin accounts. An account-linking UI is outside this task.
+When the email already belongs to a Lumina account, Google sign-in returns to
+`/sign-in?error=account-exists`, which asks the person to use their email and password.
 Missing migration columns fail closed: no authenticated Lumina session is issued.
 
 ### Local configuration
@@ -555,6 +558,88 @@ verifies that existing users are unchanged afterward. It does not simulate or
 bypass Google's OAuth exchange in application code.
 After configuring Google,
 manually verify sign-in, `/account`, and sign-out in a browser.
+
+## Email and password sign-in
+
+Lumina offers conventional email/password accounts alongside Google. Both use
+the same Auth.js JWT session, and every request re-reads role, account status and
+alumni verification from PostgreSQL, so suspension and verification changes take
+effect immediately for either sign-in method.
+
+| Route | Purpose |
+| --- | --- |
+| `/sign-in` | Email and password first, then "or continue with" Google, then a link to create an account |
+| `/sign-up` | Full name, email, password and confirmation; Google below |
+| `/forgot-password` | States plainly that password reset is not available yet; no email is sent |
+
+The public landing page links to **Join Lumina** (`/sign-up`) and **Sign in** (`/sign-in`).
+
+**Registration** trims and lowercases the email, rejects duplicates
+case-insensitively (including emails already used by Google accounts), hashes the
+password, and creates an `alumni` account with `account_status = 'pending'`,
+`alumni_verified = false` and `email_verified = false`. A name-only draft profile
+(`profile_completed = false`) stores the full name. It is invisible to Network until
+verification and is not indexed for mentorship unless the member later consents.
+The person is signed in and continues through the existing flow:
+account → alumni verification → profile completion → Lumina. Registration never
+verifies former Kenya Airways employment.
+
+**Password storage** uses Argon2id from Node.js's built-in `crypto.argon2`
+(Node.js 24.7 or later; no extra npm dependency) with OWASP baseline parameters:
+19 MiB memory, 2 passes, 1 lane, a 16-byte random salt and a 32-byte tag, stored as
+a PHC string in `users.password_hash`. Verification is constant-time. Missing or
+unrecognised hashes, including Google-only accounts (`NULL`) and the synthetic
+fixtures' `synthetic_not_for_login` marker, never verify. An unknown email still
+performs one Argon2 derivation, so timing does not reveal whether an account exists.
+
+**Password policy:** 10–128 characters, with no composition rules, so passphrases
+work well.
+
+**Sign-in failures** always show "Email or password is incorrect." This covers
+wrong passwords, unknown emails, Google-only accounts and suspended accounts.
+Passwords are never logged and hashes never leave the server's authorize step.
+
+**Google coexistence:** accounts are never linked by email. Google-only users keep
+a `NULL` password and are never asked to create one.
+
+**No schema change** was required for this milestone.
+
+### Abuse protection and production gaps
+
+- Failed sign-ins are limited to 5 per email per 15 minutes by an in-memory,
+  per-process limiter. It resets on restart and is not shared across instances.
+  Production needs a shared store (database table or cache) and per-IP limits at
+  the load balancer or WAF. Per-email lockout also lets someone temporarily block a
+  known email; a shared limiter should combine email and client signals.
+- Registration is not rate limited beyond the cost of hashing; add edge limits
+  before public deployment.
+- Email ownership is not verified for password accounts (no email provider).
+  Alumni verification still gates every privileged feature.
+- Password reset needs an email provider. The proposed (not applied) migration is:
+
+```sql
+CREATE TABLE public.password_reset_tokens (
+    token_hash BYTEA PRIMARY KEY,               -- SHA-256 of a 32-byte random token; raw token only in the email
+    user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMPTZ NOT NULL,            -- e.g. 30 minutes
+    used_at TIMESTAMPTZ
+);
+CREATE INDEX password_reset_tokens_user_idx ON public.password_reset_tokens (user_id);
+```
+
+### Password authentication tests
+
+`npm run test:auth` covers hashing, plaintext never stored, correct/incorrect
+passwords, unknown emails, duplicate registration, malformed email, weak password,
+mismatched confirmation, Google-only and fixture accounts, suspension, rate
+limiting, Google/password email conflicts, and role/verification refresh.
+With `LUMINA_TEST_DATABASE=1`, `tests/auth/password-auth.database.test.ts` runs
+the same flows against temporary copies of `users` and `profiles`.
+`npm run test:frontend:browser` registers a disposable password account through
+the real UI, checks duplicate, wrong-password, unknown-email, rate-limit and
+correct sign-in behavior, and removes the account afterwards. It also checks the
+auth pages for overflow and touch-sized inputs at 320, 375, 768, 1024 and 1440 px.
 
 ## Data Ethics
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isGoogleAuthConfigured } from "@/lib/auth-environment";
+import { isAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth-environment";
 
 vi.mock("server-only", () => ({}));
 afterEach(() => vi.unstubAllEnvs());
@@ -15,5 +15,15 @@ describe("Google auth configuration", () => {
     expect(isGoogleAuthConfigured()).toBe(false);
     vi.stubEnv("AUTH_SECRET", "test-session-secret");
     expect(isGoogleAuthConfigured()).toBe(true);
+  });
+
+  it("allows password sessions with only the Auth.js secret", () => {
+    vi.stubEnv("AUTH_SECRET", "");
+    vi.stubEnv("AUTH_GOOGLE_ID", "");
+    vi.stubEnv("AUTH_GOOGLE_SECRET", "");
+    expect(isAuthConfigured()).toBe(false);
+    vi.stubEnv("AUTH_SECRET", "test-session-secret");
+    expect(isAuthConfigured()).toBe(true);
+    expect(isGoogleAuthConfigured()).toBe(false);
   });
 });

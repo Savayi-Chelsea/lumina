@@ -23,6 +23,7 @@ const pool = new Pool(url ? { connectionString: process.env.DATABASE_URL, max: 1
 const output = "artifacts/frontend";
 const subject = `browser-${randomUUID()}`;
 let server, browser, fixtureId, originalData;
+const passwordEmail = `${subject}@password.example.test`;
 const failures = [];
 const screenshots = [];
 const networkUsers = [];
@@ -76,14 +77,79 @@ try {
   const page = await context.newPage();
   page.on("pageerror", error => failures.push(error.message));
   await page.goto(base); await expect(page.getByRole("heading", { level: 1 })).toContainText("Reconnect with the people");
-  await expect(page.getByRole("button",{ name: "Continue with Google" })).toHaveCount(1);
+  await expect(page.getByRole("link",{ name: "Join Lumina" })).toHaveAttribute("href","/sign-up");
+  await expect(page.getByRole("main").getByRole("link",{ name: "Sign in", exact: true })).toHaveAttribute("href","/sign-in");
   for (const copy of ["Personal Gmail", "Google authentication succeeded", "Alumni verification is handled separately"]) await expect(page.locator("body")).not.toContainText(copy);
   await noOverflow(page,"desktop landing"); await screenshot(page,"landing-desktop");
   await page.getByRole("link",{ name: "The community", exact: true }).click();
   await expect(page).toHaveURL(/#reconnect$/);
   await page.setViewportSize({ width: 375, height: 812 }); await page.goto(base); await noOverflow(page,"mobile landing"); await screenshot(page,"landing-mobile");
   await page.goto(`${base}/sign-in?error=example`); await expect(page.getByRole("main").getByRole("alert")).toContainText("could not sign you in");
-  console.log("PASS scrollable public landing, single CTA, error state and responsive layouts");
+  console.log("PASS scrollable public landing, join/sign-in CTAs, error state and responsive layouts");
+
+  {
+    // Real email/password journey through the production server and Auth.js credentials provider.
+    const authContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" });
+    const auth = await authContext.newPage();
+    auth.on("pageerror", error => failures.push(error.message));
+    const passphrase = "harbour lights at dawn";
+    await auth.goto(`${base}/sign-in`);
+    const fields = ["Email address", "Password"]; for (const label of fields) await expect(auth.getByLabel(label, { exact: true })).toBeVisible();
+    const signInBox = await auth.getByRole("button", { name: "Sign in", exact: true }).boundingBox();
+    const googleBox = await auth.getByRole("button", { name: "Continue with Google" }).boundingBox();
+    assert.ok(signInBox.y < googleBox.y, "Email/password sign-in appears above Google");
+    await screenshot(auth, "auth-sign-in-desktop");
+    await auth.getByRole("link", { name: "Create an account" }).click(); await expect(auth).toHaveURL(/\/sign-up$/);
+    await auth.getByLabel("Full name").fill("Browser Password User");
+    await auth.getByLabel("Email address").fill(passwordEmail.toUpperCase());
+    await auth.getByLabel("Password", { exact: true }).fill(passphrase);
+    await auth.getByLabel("Confirm password").fill("a different passphrase");
+    await auth.getByRole("button", { name: "Create account" }).click();
+    await expect(auth.getByRole("main").getByRole("alert")).toContainText("Passwords do not match"); await expect(auth.getByRole("button", { name: "Create account" })).toBeEnabled();
+    await expect(auth.getByLabel("Email address")).toHaveValue(passwordEmail.toUpperCase());
+    await auth.getByLabel("Password", { exact: true }).fill(passphrase); await auth.getByLabel("Confirm password").fill(passphrase);
+    await auth.getByRole("button", { name: "Create account" }).click();
+    await expect(auth).toHaveURL(/\/verify$/);
+    const created = (await pool.query("SELECT u.account_status, u.alumni_verified, u.password_hash, p.full_name, p.profile_completed FROM public.users u JOIN public.profiles p ON p.user_id=u.id WHERE u.email=$1", [passwordEmail])).rows[0];
+    assert.equal(created.account_status, "pending"); assert.equal(created.alumni_verified, false); assert.equal(created.profile_completed, false);
+    assert.match(created.password_hash, /^\$argon2id\$/); assert.ok(!created.password_hash.includes(passphrase), "Password never stored in plaintext");
+    assert.equal(created.full_name, "Browser Password User");
+    const cookie = (await authContext.cookies()).find(c => c.name === "authjs.session-token");
+    assert.ok(cookie?.httpOnly, "Password sessions use the HttpOnly Auth.js cookie");
+    await authContext.clearCookies();
+    await auth.goto(`${base}/sign-up`);
+    await auth.getByLabel("Full name").fill("Duplicate Person"); await auth.getByLabel("Email address").fill(passwordEmail);
+    await auth.getByLabel("Password", { exact: true }).fill(passphrase); await auth.getByLabel("Confirm password").fill(passphrase);
+    await auth.getByRole("button", { name: "Create account" }).click();
+    await expect(auth.getByRole("main").getByRole("alert")).toContainText("already exists");
+    await auth.goto(`${base}/sign-in`);
+    await auth.getByLabel("Email address").fill(passwordEmail); await auth.getByLabel("Password", { exact: true }).fill("not the right passphrase");
+    await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(auth.getByRole("main").getByRole("alert")).toHaveText("Email or password is incorrect."); await expect(auth.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+    await auth.getByLabel("Password", { exact: true }).fill("not the right passphrase");
+    await auth.getByLabel("Email address").fill("nobody-" + passwordEmail);
+    await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(auth.getByRole("main").getByRole("alert")).toHaveText("Email or password is incorrect."); await expect(auth.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+    await auth.getByLabel("Email address").fill(passwordEmail); await auth.getByLabel("Password", { exact: true }).fill(passphrase);
+    await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(auth).toHaveURL(/\/verify$/);
+    await authContext.clearCookies();
+    const limitedEmail = "limited-" + passwordEmail;
+    await auth.goto(`${base}/sign-in`);
+    for (let attempt = 0; attempt < 5; attempt++) {
+      await auth.getByLabel("Email address").fill(limitedEmail); await auth.getByLabel("Password", { exact: true }).fill("wrong passphrase " + attempt);
+      await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+      await expect(auth.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+    }
+    await expect(auth.getByRole("main").getByRole("alert")).toContainText("Too many sign-in attempts");
+    await auth.goto(`${base}/sign-in?error=account-exists`);
+    await expect(auth.getByRole("main").getByRole("alert")).toContainText("already has a Lumina password account");
+    await auth.goto(`${base}/forgot-password`);
+    await expect(auth.getByRole("heading", { level: 2 })).toContainText("not available yet");
+    await expect(auth.locator("body")).not.toContainText(/email (has been|was) sent|check your inbox/i);
+    await authContext.close();
+    console.log("PASS email/password registration, duplicate rejection, generic failures, rate limiting, sign-in and honest reset page");
+  }
 
   fixtureId = (await pool.query(`INSERT INTO public.users(email,google_subject,account_status)
     VALUES($1,$2,'pending') RETURNING id`,[`${subject}@example.test`,subject])).rows[0].id;
@@ -302,7 +368,11 @@ try {
     }
     await context.clearCookies();
     await page.goto(base); await noOverflow(page, `${width}px landing`); await screenshot(page, `landing-${width}`);
-    await page.goto(`${base}/sign-in`); await noOverflow(page, `${width}px sign in`);
+    for (const route of ['sign-in', 'sign-up', 'forgot-password']) {
+      await page.goto(`${base}/${route}`); await noOverflow(page, `${width}px ${route}`);
+      for (const input of await page.locator('.auth-form input:not([type=hidden])').all()) { const box = await input.boundingBox(); assert.ok(box.x >= 0 && box.x + box.width <= width + 1 && box.height >= 44, `${width}px ${route} inputs fit and are touch-sized`); }
+      await screenshot(page, `auth-${route}-${width}`);
+    }
     await context.addCookies([{ name: 'authjs.session-token', value: token, url: base, httpOnly: true, sameSite: 'Lax' }]);
   }
   console.log('PASS logo, mobile/tablet navigation, forms, cards, dialogs and layouts at all five target viewports');
@@ -341,6 +411,7 @@ try {
     for (const id of networkUsers) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject LIKE $2", [id, `${subject}-%`]);
     if (networkSkillId) await pool.query("DELETE FROM public.skills WHERE id=$1", [networkSkillId]);
     if (fixtureId) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
+    await pool.query("DELETE FROM public.users WHERE email=$1 AND google_subject IS NULL", [passwordEmail]);
     if (originalData) assert.deepEqual(await snapshot(), originalData, "All existing data must remain unchanged");
     console.log("PASS browser fixture removed; existing data preserved");
   } finally { await pool.end(); }

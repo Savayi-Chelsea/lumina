@@ -12,7 +12,7 @@ type Callbacks = NonNullable<NextAuthConfig["callbacks"]>;
 type SessionParams = Parameters<NonNullable<Callbacks["session"]>>[0];
 
 describe("Auth.js policy", () => {
-  const store = { linkGoogleUser: vi.fn(), findLuminaUser: vi.fn() };
+  const store = { linkGoogleUser: vi.fn(), findLuminaUser: vi.fn(), findPasswordAccount: vi.fn(), googleEmailConflict: vi.fn() };
   const config = createAuthConfig(store);
   const callbacks = config.callbacks!;
 
@@ -20,6 +20,7 @@ describe("Auth.js policy", () => {
     vi.clearAllMocks();
     store.linkGoogleUser.mockResolvedValue(user);
     store.findLuminaUser.mockResolvedValue(user);
+    store.googleEmailConflict.mockResolvedValue(false);
   });
 
   it("uses encrypted JWT sessions with a bounded lifetime", () => {
@@ -83,5 +84,47 @@ describe("Auth.js policy", () => {
   it("rejects arbitrary remote profile image URLs", async () => {
     const token = await callbacks.jwt!({ token: {}, user: {}, account, profile: { ...profile, picture: "https://attacker.example/photo" } });
     expect(token?.picture).toBeNull();
+  });
+
+  it("refuses to link Google to an existing account by email and explains safely", async () => {
+    store.googleEmailConflict.mockResolvedValue(true);
+    expect(await callbacks.signIn!({ user: {}, account, profile })).toBe("/sign-in?error=account-exists");
+    expect(store.googleEmailConflict).toHaveBeenCalledWith("google-subject", "person@gmail.com");
+    expect(store.linkGoogleUser).not.toHaveBeenCalled();
+  });
+
+  it("fails Google sign-in closed when the conflict check is unavailable", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      store.googleEmailConflict.mockRejectedValue(new Error("database secret"));
+      expect(await callbacks.signIn!({ user: {}, account, profile })).toBe(false);
+      expect(JSON.stringify(log.mock.calls)).not.toContain("secret");
+    } finally { log.mockRestore(); }
+  });
+
+  it("registers both Google and password providers", () => {
+    const ids = config.providers.map(provider => (typeof provider === "function" ? provider() : provider).id);
+    expect(ids).toEqual(["google", "credentials"]);
+  });
+
+  it("accepts password sign-ins only with an authorized Lumina id", async () => {
+    const credentials: Account = { provider: "credentials", type: "credentials", providerAccountId: user.id };
+    expect(await callbacks.signIn!({ user: { id: user.id }, account: credentials })).toBe(true);
+    expect(await callbacks.signIn!({ user: {}, account: credentials })).toBe(false);
+  });
+
+  it("builds password sessions from the same PostgreSQL-refreshed model", async () => {
+    const credentials: Account = { provider: "credentials", type: "credentials", providerAccountId: user.id };
+    const token = await callbacks.jwt!({ token: {}, user: { id: user.id, name: "Password User", email: "member@example.com" }, account: credentials });
+    expect(token).toMatchObject({ luminaUserId: user.id, sub: user.id, name: "Password User", email: "member@example.com", picture: null, luminaStatus: "pending", alumniVerified: false });
+    expect(store.linkGoogleUser).not.toHaveBeenCalled();
+    store.findLuminaUser.mockResolvedValue({ ...user, role: "admin", account_status: "active", alumni_verified: true });
+    expect(await callbacks.jwt!({ token: token!, user: {} })).toMatchObject({ luminaRole: "admin", luminaStatus: "active", alumniVerified: true });
+    store.findLuminaUser.mockResolvedValue({ ...user, account_status: "suspended" });
+    expect(await callbacks.jwt!({ token: token!, user: {} })).toBeNull();
+  });
+
+  it("rejects sessions from unknown providers", async () => {
+    expect(await callbacks.jwt!({ token: {}, user: { id: user.id }, account: { provider: "github", type: "oauth", providerAccountId: "x" } })).toBeNull();
   });
 });

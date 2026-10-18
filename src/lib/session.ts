@@ -1,10 +1,10 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isGoogleAuthConfigured } from "@/lib/auth-environment";
+import { isAuthConfigured } from "@/lib/auth-environment";
 
 export async function currentSession() {
-  if (!isGoogleAuthConfigured()) return null;
+  if (!isAuthConfigured()) return null;
   return auth();
 }
 

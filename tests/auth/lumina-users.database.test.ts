@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadEnvConfig } from "@next/env";
 import { Pool, type PoolClient } from "pg";
-import { findLuminaUser, IdentityLinkRequired, linkGoogleUser } from "@/lib/lumina-users";
+import { findLuminaUser, findPasswordAccount, googleEmailConflict, IdentityLinkRequired, linkGoogleUser } from "@/lib/lumina-users";
 import { createAuthConfig } from "@/lib/auth-config";
 
 vi.mock("server-only", () => ({}));
@@ -89,7 +89,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("Google identity SQL o
   });
 
   it("builds a session from real user storage and rejects it after suspension", async () => {
-    const callbacks = createAuthConfig({ findLuminaUser, linkGoogleUser }).callbacks!;
+    const callbacks = createAuthConfig({ findLuminaUser, findPasswordAccount, googleEmailConflict, linkGoogleUser }).callbacks!;
     const token = await callbacks.jwt!({
       token: {}, user: {}, account: { provider: "google", type: "oidc", providerAccountId: subject },
       profile: { sub: subject, email, email_verified: true, name: "Google Test User" },
