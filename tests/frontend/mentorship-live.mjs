@@ -25,7 +25,7 @@ const query = "I want to move from IT support into AWS cloud engineering and Dev
 const subject = `mentorship-demo-${randomUUID()}`;
 const testGoogleRedirect = process.env.LUMINA_TEST_GOOGLE_REDIRECT === "1";
 const staffNumber = `SYN-ALUM-${BigInt("0x" + randomBytes(6).toString("hex"))}`;
-let nextServer, matchingServer, browser, userId, registryId, baseline;
+let nextServer, matchingServer, browser, userId, registryId, mentorUserId, mentorProfileId, baseline;
 const snapshot = async () => {
   const state = {};
   for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_embeddings", "profile_skills", "skills", "mentorship_preferences", "work_experience"]) state[table] = JSON.stringify((await pool.query(`SELECT to_jsonb(t) AS row FROM public.${table} t ORDER BY to_jsonb(t)::text`)).rows);
@@ -102,6 +102,15 @@ try {
   const directProxy = await context.request.post(`${base}/api/mentorship/search`,{ data: { query },headers: { Origin: base } });
   if (directProxy.status() !== 200) console.log("Direct proxy failure classification:",(await directProxy.json()).error?.code);
   assert.equal(directProxy.status(),200,"Verified account must be authorized by the Next.js proxy");
+  // Create a disposable verified mentor from one real indexed record so profile
+  // navigation does not depend on the state of any pre-existing account.
+  const source = (await directProxy.json()).results[0].profileId;
+  mentorUserId = (await pool.query("INSERT INTO public.users(email,account_status,alumni_verified) VALUES($1,'active',true) RETURNING id", [`${subject}-mentor@synthetic.lumina.local`])).rows[0].id;
+  mentorProfileId = (await pool.query(`INSERT INTO public.profiles(user_id,full_name,headline,biography,former_kq_role,former_kq_department,kq_start_year,kq_end_year,current_job_title,current_organization,industry,location)
+    SELECT $1,'Live Verified Mentor',headline,biography,former_kq_role,former_kq_department,kq_start_year,kq_end_year,current_job_title,current_organization,industry,location FROM public.profiles WHERE id=$2 RETURNING id`, [mentorUserId,source])).rows[0].id;
+  await pool.query("INSERT INTO public.profile_skills(profile_id,skill_id) SELECT $1,skill_id FROM public.profile_skills WHERE profile_id=$2", [mentorProfileId,source]);
+  await pool.query("INSERT INTO public.mentorship_preferences(profile_id,available_for_mentorship,consent_to_matching,mentorship_topics) SELECT $1,available_for_mentorship,consent_to_matching,mentorship_topics FROM public.mentorship_preferences WHERE profile_id=$2", [mentorProfileId,source]);
+  await pool.query("INSERT INTO public.profile_embeddings(profile_id,embedding,model_name,source_hash) SELECT $1,embedding,model_name,source_hash FROM public.profile_embeddings WHERE profile_id=$2", [mentorProfileId,source]);
   await page.getByRole("link",{ name: "Mentorship",exact: true }).click();
   await page.getByRole("textbox",{ name: "What would you like mentorship with?" }).fill(query);
   await expect(page.getByText(`${Array.from(query).length} / 500 characters`,{ exact: true })).toBeVisible();
@@ -124,8 +133,10 @@ try {
   await page.evaluate(() => window.scrollTo(0,0));
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   await page.screenshot({ path: `${output}/03-ranked-mentors-mobile.png`,fullPage: true });
-  await page.getByRole("link",{ name: "View alumni profile",exact: true }).first().click();
-  await expect(page.getByRole("heading",{ level: 1,name: data.results[0].name,exact: true })).toBeVisible();
+  const visibleIndex = data.results.findIndex(item => item.profileId === mentorProfileId);
+  assert.ok(visibleIndex >= 0, "Verified fixture must appear in the real ranked results");
+  await page.getByRole("link",{ name: "View alumni profile",exact: true }).nth(visibleIndex).click();
+  await expect(page.getByRole("heading",{ level: 1,name: "Live Verified Mentor",exact: true })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0,0));
   await page.screenshot({ path: `${output}/04-full-mentor-profile.png`,fullPage: true });
   assert.deepEqual(runtimeErrors,[]);
@@ -135,6 +146,7 @@ try {
 } finally {
   await browser?.close(); await stop(nextServer); await stop(matchingServer);
   try {
+    if (mentorUserId) await pool.query("DELETE FROM public.users WHERE id=$1", [mentorUserId]);
     if (userId) await pool.query("DELETE FROM public.verification_assistance_requests WHERE user_id=$1",[userId]);
     if (registryId) await pool.query("DELETE FROM public.alumni_registry WHERE id=$1 AND synthetic_staff_number=$2",[registryId,staffNumber]);
     if (userId) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject=$2",[userId,subject]);

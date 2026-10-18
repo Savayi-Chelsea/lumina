@@ -1,4 +1,5 @@
 import "server-only";
+import { googleProfileImage } from "@/lib/profile-image";
 import { database } from "@/lib/db";
 
 export type LuminaUser = {
@@ -14,7 +15,7 @@ export class IdentityLinkRequired extends Error {
   constructor() { super("Existing account requires explicit identity linking"); }
 }
 
-export async function linkGoogleUser(subject: string, email: string): Promise<LuminaUser> {
+export async function linkGoogleUser(subject: string, email: string, image?: string | null): Promise<LuminaUser> {
   const conn = await database().connect();
   try {
     await conn.query("BEGIN");
@@ -37,6 +38,7 @@ export async function linkGoogleUser(subject: string, email: string): Promise<Lu
       }
     }
     if (user.account_status === "suspended") throw new Error("Account unavailable");
+    if (image !== undefined) await conn.query("UPDATE users SET google_image_url = $2 WHERE id = $1", [user.id, googleProfileImage(image)]);
     await conn.query("COMMIT");
     return user;
   } catch (error) {

@@ -5,6 +5,7 @@ import AccountPage from "@/app/account/page";
 import SignInPage from "@/app/sign-in/page";
 const mocks = vi.hoisted(() => ({ currentSession: vi.fn(), requireSession: vi.fn(), auth: vi.fn(), configured: vi.fn(), redirect: vi.fn(), getProfile: vi.fn() }));
 vi.mock("server-only", () => ({}));
+vi.mock("@/lib/alumni-directory", () => ({ homeAlumni: vi.fn().mockResolvedValue([]) }));
 vi.mock("@/lib/profiles", () => ({ getProfile: mocks.getProfile }));
 vi.mock("@/lib/session", () => ({ currentSession: mocks.currentSession, requireSession: mocks.requireSession }));
 vi.mock("@/app/auth-actions", () => ({ googleSignIn: vi.fn(), logOut: vi.fn() }));

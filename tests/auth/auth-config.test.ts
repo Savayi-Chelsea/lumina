@@ -38,7 +38,7 @@ describe("Auth.js policy", () => {
 
   it("links the stable Google subject and uses the existing Lumina UUID", async () => {
     const token = await callbacks.jwt!({ token: {}, user: {}, account, profile });
-    expect(store.linkGoogleUser).toHaveBeenCalledWith("google-subject", "person@gmail.com");
+    expect(store.linkGoogleUser).toHaveBeenCalledWith("google-subject", "person@gmail.com", profile.picture);
     expect(token?.sub).toBe(user.id);
     expect(token?.alumniVerified).toBe(false);
     expect(JSON.stringify(token)).not.toContain("private-");

@@ -99,4 +99,12 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("Google identity SQL o
     await shared.conn!.query("UPDATE pg_temp.users SET account_status='suspended' WHERE id=$1", [token!.luminaUserId]);
     expect(await callbacks.jwt!({ token: token!, user: {} })).toBeNull();
   });
+  it("persists only validated Google photos without changing authorization", async () => {
+    const user = await linkGoogleUser(subject, email, "https://lh3.googleusercontent.com/photo");
+    expect((await shared.conn!.query("SELECT google_image_url FROM pg_temp.users WHERE id=$1", [user.id])).rows[0].google_image_url).toBe("https://lh3.googleusercontent.com/photo");
+    expect(await findLuminaUser(user.id)).toEqual(user);
+    await linkGoogleUser(subject, email, "https://evil.test/photo");
+    expect((await shared.conn!.query("SELECT google_image_url FROM pg_temp.users WHERE id=$1", [user.id])).rows[0].google_image_url).toBeNull();
+  });
+
 });

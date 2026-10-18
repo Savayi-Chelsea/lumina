@@ -653,8 +653,9 @@ small corpus; there is no approximate vector index or schema change.
 The default threshold is provisional and needs labeled relevance evaluation.
 Profile embeddings must be refreshed after edits; search does not recompute
 source hashes. Eligibility reflects the database snapshot of the search
-statement. Capacity, authentication and mentorship assignments remain future
-work. No frontend UI or LLM explanations are included in this milestone.
+statement. Capacity and mentorship assignments remain future work. The Next.js
+frontend now provides an authenticated mentorship search form and ranked cards;
+LLM explanations are not implemented.
 
 LLM-generated explanations, broader engagement features, and additional cloud infrastructure will be added after the retrieval workflow is stable and tested.
 
@@ -681,3 +682,152 @@ to the canonical origin before use. Missing or invalid APP_ORIGIN causes an
 otherwise authorized request to return a generic 503 without calling matching;
 server logs contain only a fixed configuration diagnostic, never the value.
 Configuration is validated per authorized request rather than during build.
+
+
+## Alumni Network and final branding milestone
+
+`/network` is a real PostgreSQL-backed directory, available to active verified
+alumni and active administrators. It does not use the fictional community
+preview data or BGE/vector search. A GET form stores `q`, `department`,
+`industry`, `skill`, `location`, and `page` in the URL. Text search covers name,
+headline, former KQ role, current position and current organization. Filters
+match stored department, industry, skill and location values exactly; options
+come only from discoverable profiles. Text is bounded and validated server-side;
+SQL values are parameterized and LIKE wildcards are escaped as literal text.
+
+Pages contain 12 profiles, sorted by case-insensitive name and profile UUID.
+Counts, previous/next controls, clear filters and empty states are included.
+Out-of-range positive page numbers show the last available page. Applying the
+form resets pagination; links retain all active filters. A profile return link
+restores the originating Network filters and page.
+
+Directory subjects must be alumni with an active account, verified alumni
+status and a nonblank profile name. Administrators can browse but admin accounts
+are not directory subjects. A completed-profile flag is not required: optional
+professional fields have honest fallbacks. Pending, suspended, unverified and
+blank-name profiles are hidden, including from direct UUID lookup and filter
+options. Mentorship availability and matching consent are separate; opting out
+of matching does not hide an otherwise discoverable professional profile.
+
+`/alumni/[id]` is the shared professional profile view for Network, Home and
+mentorship. It includes professional details, biography, service years, all
+skills and work experience. Mentorship availability/topics are shown only when
+both matching consent and availability are enabled. Viewer authorization and
+subject visibility are checked on the server. Private identity, registry,
+account-management and embedding fields are never selected for display.
+Home's Explore alumni section prioritizes the viewer's former department, then
+recently created profiles, with UUID tie-breaking and a maximum of three.
+It excludes the viewer. This is deterministic discovery, not AI personalization.
+Home's mentorship entry opens the actual query workflow without fake matches.
+
+The supplied `public/LuminaLogo.png` (594 x 127) is rendered with `next/image`
+through `LuminaLogo` throughout the landing/sign-in pages and application/admin
+shell. All sizes use the same original full logo with its aspect ratio intact.
+There is no fabricated compact mark. Navigation switches to a keyboard-accessible
+menu at widths up to 1100px, including tablets and 1024px laptops. Escape closes
+it and returns focus; account actions remain separate and accessible. Directory
+cards use three columns on desktop, two up to 1100px, and one up to 700px.
+Filters use four columns, then two, then one up to 600px. Forms, dialogs, skill
+lists and profile layouts wrap and scroll where needed; phones use a simpler
+single-column Home hero. Content width is bounded on larger displays.
+
+### Photo migration and local demonstration
+
+Migration `003_google_profile_image.sql` adds nullable `users.google_image_url`.
+New installations include it in `database/schema.sql`. For the existing local
+development database, preview/apply with:
+
+```powershell
+.venv/Scripts/python.exe scripts/migrate_profile_image.py
+.venv/Scripts/python.exe scripts/migrate_profile_image.py --apply
+```
+
+The local-only runner checks existing rows and rolls back on unintended changes.
+Apply migration 003 before starting this version against an existing database.
+Google sign-in refreshes only a validated HTTPS googleusercontent.com photo URL
+alongside existing subject-based linkage. Other users' session tokens are never
+read. Earlier accounts gain a directory photo on their next Google sign-in;
+missing, invalid or unavailable photos display initials. External images remain
+restricted to the Google hostname allowlist and use no-referrer requests.
+
+For the lecturer demo, sign in with Google, complete the automatic registry
+verification, save a named profile, open Network, apply filters, and open a
+profile. The original 50 deterministic synthetic accounts represent established
+verified demo alumni. Fresh seeding creates them active and alumni-verified;
+normal authentication still creates pending, unverified accounts. Browser tests create 13 disposable verified database profiles to exercise
+real filtering/pagination, then remove them and compare the original data.
+The live mentorship test uses the real BGE/pgvector workflow plus a disposable
+verified mentor copied from an indexed synthetic record, leaving original
+accounts unchanged. Synthetic database records carry an explicit demo label.
+
+Events and Opportunities remain labeled fictional previews; community activity,
+connections and messaging remain unimplemented. The prototype alumni registry
+also remains synthetic, not an authorized Kenya Airways employee registry.
+
+### Milestone validation
+
+```powershell
+$env:LUMINA_TEST_DATABASE = "1"
+npm run test:auth
+npm run build
+npm run test:frontend:browser
+npm run test:mentorship:live
+npm run test:auth:http
+npm run typecheck
+npm run lint
+.venv/Scripts/python.exe -m unittest discover -s services/matching/tests -v
+git diff --check
+```
+
+The browser suite covers 320x700, 375x812, 768x1024, 1024x768 and 1440x900,
+with additional Home/Network/mentorship checks at 430, 600, 900, 1280 and
+1920px. Coverage includes the logo, navigation, Network filters/pagination/profile return,
+mentorship states, profile editor, verification, account, admin and scrolling
+dialogs. Screenshots and `browser-report.json` are saved under the ignored
+`artifacts/frontend/` directory. The live mentorship report and screenshots
+remain under `artifacts/frontend/mentorship-live/`.
+
+
+### Established synthetic alumni fixtures
+
+The original `ALUM-001` through `ALUM-050` dataset represents established alumni,
+not new signup requests. `seed_database.py` creates those exact fixture identities
+as `account_status=active`, `alumni_verified=true`. It uses the local-only database
+guard and validates that the CSV contains exactly those 50 unique identifiers.
+It refuses collisions with Google-linked accounts, normal password hashes,
+non-alumni roles, pending or suspended accounts. No authentication defaults or
+production discoverability conditions are changed.
+
+For an existing local database, use the focused repair instead of reseeding:
+
+```powershell
+.venv/Scripts/python.exe scripts/establish_synthetic_alumni.py
+.venv/Scripts/python.exe scripts/establish_synthetic_alumni.py --apply
+```
+
+The preview writes nothing. Apply runs transactionally and only verifies the exact
+50 emails `alum-001@synthetic.lumina.local` through
+`alum-050@synthetic.lumina.local`, additionally requiring the existing
+`synthetic_not_for_login` marker, no Google subject, active status, alumni role,
+and 50 existing profiles. A missing fixture or protected identity aborts the
+whole repair. It never uses a broad domain suffix update, never reactivates a
+suspended account, and reports aggregate before/after counts only. Repeat apply
+updates zero rows. The runner verifies that all other user fields, non-fixture
+users, profiles, skills, registry data, mentorship preferences and embeddings
+remain unchanged. Normal Google signups and future signup implementations do
+not call these development-only helpers.
+
+The production Network rule remains active + alumni verified + usable named
+profile (alumni subjects only). Mentorship consent/availability is independent;
+these fixtures remain visibly labeled synthetic demo profiles.
+
+```powershell
+$env:LUMINA_TEST_DATABASE = "1"
+.venv/Scripts/python.exe -m unittest discover -s tests/synthetic -v
+$env:LUMINA_TEST_SYNTHETIC_DIRECTORY = "1"
+npm run test:frontend:browser
+```
+
+The optional browser assertion traverses the real paginated directory and checks
+that all 50 exact seeded profile IDs are present. It requires the established
+local dataset; ordinary browser tests continue to work with an empty database.

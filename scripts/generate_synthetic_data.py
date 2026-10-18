@@ -2,6 +2,8 @@ import csv
 import random
 from pathlib import Path
 
+from synthetic_identity import FIXTURE_IDS
+
 random.seed(42)
 
 OUTPUT_DIR = Path("data")
@@ -113,7 +115,7 @@ industries = [
 
 rows = []
 
-for i in range(50):
+for synthetic_id in FIXTURE_IDS:
     department = random.choice(list(departments.keys()))
     department_data = departments[department]
 
@@ -138,7 +140,7 @@ for i in range(50):
     )
 
     rows.append({
-        "synthetic_id": f"ALUM-{i + 1:03}",
+        "synthetic_id": synthetic_id,
         "full_name": full_name,
         "former_kq_role": former_role,
         "former_kq_department": department,

@@ -1,10 +1,11 @@
 import csv
-import os
-from pathlib import Path
 
 import psycopg
 
-CSV_FILE = Path("data") / "synthetic_alumni.csv"
+from local_database import ROOT, local_dsn
+from synthetic_identity import fixture_email, seed_user, validate_fixture_rows
+
+CSV_FILE = ROOT / "data/synthetic_alumni.csv"
 
 
 def to_bool(value: str) -> bool:
@@ -12,43 +13,16 @@ def to_bool(value: str) -> bool:
 
 
 def main():
-    database_url = os.getenv(
-        "DATABASE_URL",
-        "postgresql://lumina:lumina_dev_password@localhost:5432/lumina",
-    )
+    database_url = local_dsn()
 
     with psycopg.connect(database_url) as conn:
         with conn.cursor() as cur:
             with CSV_FILE.open(newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
+                reader = validate_fixture_rows(list(csv.DictReader(csvfile)))
 
                 for row in reader:
-                    email = (
-                        row["synthetic_id"].lower()
-                        + "@synthetic.lumina.local"
-                    )
-
-                    cur.execute(
-                        """
-                        INSERT INTO users (
-                            email,
-                            password_hash,
-                            role,
-                            account_status,
-                            email_verified
-                        )
-                        VALUES (%s, %s, 'alumni', 'active', TRUE)
-                        ON CONFLICT (email)
-                        DO UPDATE SET email = EXCLUDED.email
-                        RETURNING id;
-                        """,
-                        (
-                            email,
-                            "synthetic_not_for_login",
-                        ),
-                    )
-
-                    user_id = cur.fetchone()[0]
+                    email = fixture_email(row["synthetic_id"])
+                    user_id = seed_user(conn, email)
 
                     cur.execute(
                         """

@@ -25,6 +25,8 @@ const subject = `browser-${randomUUID()}`;
 let server, browser, fixtureId, originalData;
 const failures = [];
 const screenshots = [];
+const networkUsers = [];
+let networkSkillId;
 const snapshot = async () => {
   const result = {};
   for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_embeddings", "profile_skills", "skills", "mentorship_preferences", "work_experience"]) {
@@ -34,6 +36,11 @@ const snapshot = async () => {
 };
 async function noOverflow(page, label) {
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `${label}: page must fit viewport`);
+  const clipped = await page.locator('.card, .alumni-card, .live-mentor-card, dialog[open]').evaluateAll(elements => elements.filter(element => {
+    const box = element.getBoundingClientRect();
+    return box.width > 0 && (box.left < -1 || box.right > innerWidth + 1 || element.scrollWidth > element.clientWidth + 1);
+  }).map(element => element.className));
+  assert.deepEqual(clipped, [], `${label}: cards and dialogs must fit without clipping`);
 }
 async function screenshot(page, name) {
   await page.evaluate(() => window.scrollTo(0,0));
@@ -88,30 +95,33 @@ try {
   await expect(page.getByText("Verified by Lumina",{ exact: true })).toHaveCount(0);
   await expect(page.getByRole("progressbar",{ name: "Profile details completed" })).toHaveAttribute("value","0");
   await noOverflow(page,"desktop home"); await screenshot(page,"home-pending-desktop");
+  for (const [width,height] of [[320,700],[375,812],[768,1024],[1024,768],[1440,900]]) {
+    await page.setViewportSize({ width,height }); await page.goto(`${base}/verify`);
+    await expect(page.getByRole('textbox', { name: 'Synthetic staff number', exact: true })).toBeVisible();
+    await noOverflow(page, `${width}px pending verification`); await screenshot(page, `verification-${width}`);
+  }
+  await page.setViewportSize({ width: 1440, height: 900 }); await page.goto(base);
   const menu = page.getByRole("button",{ name: "Open account menu" });
   await menu.focus(); await page.keyboard.press("Enter"); await expect(menu).toHaveAttribute("aria-expanded","true");
   await expect(page.getByRole("link",{ name: "Account", exact: true })).toBeVisible();
   await expect(page.getByRole("button",{ name: "Sign out", exact: true })).toBeVisible();
   await page.keyboard.press("Escape"); await expect(menu).toBeFocused();
   await menu.click(); await page.getByRole("heading",{ level: 1 }).click(); await expect(menu).toHaveAttribute("aria-expanded","false");
-  await page.getByRole("button",{ name: "Meet this mentor: Amina Kariuki", exact: true }).click();
-  await expect(page.getByRole("dialog")).toBeVisible(); await expect(page.getByRole("dialog")).toContainText("Fictional demonstration content");
-  await page.keyboard.press("Escape"); await expect(page.getByRole("dialog")).toBeHidden();
-  await expect(page.getByRole("button",{ name: "Meet this mentor: Amina Kariuki", exact: true })).toBeFocused();
-  console.log("PASS pending state, keyboard account disclosure, focus return and accessible preview dialog");
+  const preview = page.getByRole("button", { name: /^Explore event:/ }).first();
+  await preview.click();
+  await expect(page.getByRole("dialog").filter({ visible: true })).toContainText("Fictional demonstration content");
+  await page.keyboard.press("Escape"); await expect(preview).toBeFocused();
+  console.log("PASS pending state, keyboard account disclosure and accessible preview dialog");
 
   await page.getByRole("link",{ name: "Network", exact: true }).click();
-  await page.getByRole("searchbox",{ name: "Find a fictional profile" }).fill("Cabin");
-  await expect(page.getByRole("article")).toHaveCount(1); await expect(page.getByRole("heading",{ name: "Terry Mutua" })).toBeVisible();
-  await page.getByRole("searchbox").fill("no-such-profile"); await expect(page.getByRole("heading",{ name: "No previews found" })).toBeVisible();
-  await page.getByRole("button",{ name: "Clear filters", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(6);
-  await page.getByRole("button",{ name: "Finance", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(1);
+  await expect(page.getByRole("heading", { name: "Complete verification to explore alumni." })).toBeVisible();
+  await expect(page.getByRole("searchbox")).toHaveCount(0);
   await page.getByRole("link",{ name: "Mentorship", exact: true }).click();
   await expect(page.getByRole("heading",{ name: "Your alumni journey starts with verification." })).toBeVisible();
   await expect(page.getByRole("button",{ name: "Find mentors", exact: true })).toHaveCount(0);
   await page.getByRole("link",{ name: "Events", exact: true }).click(); await page.getByRole("button",{ name: "Online", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(2);
   await page.getByRole("link",{ name: "Opportunities", exact: true }).click(); await page.getByRole("button",{ name: "Volunteer", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(1);
-  console.log("PASS local directory filtering, empty/reset state, mentorship, events and opportunities previews");
+  console.log("PASS pending Network/mentorship gates, events and opportunities previews");
 
   await page.getByRole("link",{ name: "Profile", exact: true }).click();
   await expect(page.getByRole("heading",{ level: 1 })).toHaveText("Your story, in your words.");
@@ -126,6 +136,70 @@ try {
   await pool.query("UPDATE public.users SET account_status='active',alumni_verified=true WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
   await page.reload(); await expect(page.getByText("Verified by Lumina",{ exact: true })).toBeVisible();
   await screenshot(page,"home-verified-desktop");
+  if (process.env.LUMINA_TEST_SYNTHETIC_DIRECTORY === '1') {
+    const emails = Array.from({ length: 50 }, (_, index) => `alum-${String(index + 1).padStart(3,'0')}@synthetic.lumina.local`);
+    const seeded = (await pool.query("SELECT p.id FROM public.profiles p JOIN public.users u ON u.id=p.user_id WHERE u.email=ANY($1::text[]) AND u.password_hash='synthetic_not_for_login' AND u.google_subject IS NULL AND u.account_status='active' AND u.alumni_verified=true AND u.role='alumni' AND length(btrim(p.full_name))>0", [emails])).rows;
+    assert.equal(seeded.length, 50, 'All 50 established synthetic profiles must be discoverable');
+    const visible = new Set();
+    await page.goto(`${base}/network`);
+    while (true) {
+      await expect(page.locator('.network-page')).toBeVisible();
+      for (const href of await page.locator('.alumni-card a[aria-label^="View profile:"]').evaluateAll(links => links.map(link => link.getAttribute('href')))) visible.add(href.split('/alumni/')[1].split('?')[0]);
+      const next = page.getByRole('link', { name: 'Next page', exact: true });
+      if (!await next.count()) break;
+      const target = await next.getAttribute('href'); await next.click(); await expect(page).toHaveURL(`${base}${target}`);
+    }
+    for (const profile of seeded) assert.ok(visible.has(profile.id), 'Every seeded profile appears in real paginated Network');
+    await page.goto(`${base}/network`); await expect(page.locator('.network-page')).toBeVisible();
+    await screenshot(page, 'network-established-synthetic');
+    console.log('PASS all 50 exact seeded alumni appear in real paginated Network');
+  }
+  // Disposable PostgreSQL directory data. No production records or fixture previews are used.
+  networkSkillId = (await pool.query("INSERT INTO public.skills(name) VALUES($1) RETURNING id", [`BrowserSkill-${subject}`])).rows[0].id;
+  for (let i = 0; i < 13; i++) {
+    const user = (await pool.query("INSERT INTO public.users(email,google_subject,account_status,alumni_verified) VALUES($1,$2,'active',true) RETURNING id", [`${subject}-${i}@example.test`, `${subject}-${i}`])).rows[0].id;
+    networkUsers.push(user);
+    const profile = (await pool.query("INSERT INTO public.profiles(user_id,full_name,headline,former_kq_role,former_kq_department,current_job_title,current_organization,industry,location,biography) VALUES($1,$2,'Cloud careers and shared experience','Systems Engineer','Browser Demo Department','Cloud Architect','Example Studio','Browser Demo Industry','Browser Demo City',$3) RETURNING id", [user, `Browser Alumnus ${String(i).padStart(2,'0')}`, 'A professional journey. '.repeat(20)])).rows[0].id;
+    if (i === 0) {
+      await pool.query("INSERT INTO public.profile_skills(profile_id,skill_id) VALUES($1,$2)", [profile,networkSkillId]);
+      await pool.query("INSERT INTO public.work_experience(profile_id,organization,job_title,is_current) VALUES($1,'Example Studio','Cloud Architect',true)", [profile]);
+    }
+  }
+  const photoUrl = 'https://lh3.googleusercontent.com/lumina-browser-photo';
+  await context.route(photoUrl, route => route.fulfill({ contentType: 'image/png', body: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jCFkAAAAASUVORK5CYII=', 'base64') }));
+  await pool.query('UPDATE public.users SET google_image_url=$2 WHERE id=$1', [networkUsers[0],photoUrl]);
+  await page.goto(`${base}/network?department=Browser+Demo+Department`);
+  await expect(page.getByRole('article')).toHaveCount(12);
+  await expect(page.locator('.alumni-card .alumni-avatar img')).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('13 alumni found');
+  await page.getByRole('link', { name: 'Next page', exact: true }).click();
+  await expect(page).toHaveURL(/page=2/); await expect(page.getByRole('article')).toHaveCount(1);
+  await page.getByRole('link', { name: 'Previous page', exact: true }).click();
+  await page.getByRole('searchbox', { name: 'Search alumni', exact: true }).fill('Browser Alumnus 00');
+  await page.getByLabel('Current industry', { exact: true }).selectOption('Browser Demo Industry');
+  await page.getByLabel('Skill', { exact: true }).selectOption(`BrowserSkill-${subject}`);
+  await page.getByLabel('Location', { exact: true }).selectOption('Browser Demo City');
+  await page.getByRole('button', { name: 'Find alumni', exact: true }).click();
+  await expect(page.getByRole('article')).toHaveCount(1);
+  const filteredUrl = page.url();
+  await page.reload(); await expect(page.getByRole('searchbox')).toHaveValue('Browser Alumnus 00');
+  await page.getByRole('link', { name: 'View profile: Browser Alumnus 00', exact: true }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Browser Alumnus 00');
+  await expect(page.locator('.mentor-profile .alumni-avatar img')).toHaveAttribute('src', photoUrl);
+  await context.unroute(photoUrl);
+  await context.route(photoUrl, route => route.abort());
+  await page.reload(); await expect(page.locator('.mentor-profile .alumni-avatar')).toHaveText('BA');
+  await pool.query('UPDATE public.users SET google_image_url=NULL WHERE id=$1', [networkUsers[0]]);
+  await context.unroute(photoUrl);
+
+  await expect(page.getByRole('heading', { name: 'Work experience', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Back to Network', exact: true }).click();
+  await expect(page).toHaveURL(filteredUrl);
+  await page.getByRole('searchbox').fill('no-such-alumnus'); await page.getByRole('button', { name: 'Find alumni', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'No alumni found', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Clear filters', exact: true }).first().click();
+  console.log('PASS real Network search, all four filters, URL state, pagination, profile and return navigation');
+
   await page.getByRole("link",{ name: "Mentorship", exact: true }).click();
   await page.getByRole("button",{ name: "Find mentors", exact: true }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("Describe");
@@ -135,7 +209,7 @@ try {
   await page.getByRole("button",{ name: /I want to move from IT support/ }).click();
   let mode = "loading";
   let releaseSearch;
-  const release = new Promise(resolve => { releaseSearch = resolve; });
+  let release = new Promise(resolve => { releaseSearch = resolve; });
   const exampleMentor = { profileId: "11111111-1111-1111-1111-111111111111", name: "Test Cloud Mentor", headline: "Cloud engineering", formerRole: "Systems Administrator", department: "ICT / Digital", currentPosition: "Cloud Engineer", organization: "Example organization", skills: ["AWS", "Docker"], matchRelevance: .73, availableForMentorship: true, synthetic: true };
   await page.route("**/api/mentorship/search",async route => {
     if (mode === "loading") await release;
@@ -159,33 +233,113 @@ try {
   await expect(page.locator("body")).not.toContainText("secret-internal-value");
   mode = "success"; await page.getByRole("button",{ name: "Retry search", exact: true }).click();
   await expect(page.getByRole("heading",{ name: "2 mentors to discover", exact: true })).toBeVisible();
+  for (const [width,height] of [[320,700],[375,812],[768,1024],[1024,768],[1440,900]]) {
+    await page.setViewportSize({ width,height }); await noOverflow(page, `${width}px mentorship results`);
+    await expect(page.getByRole('textbox', { name: 'What would you like mentorship with?' })).toBeVisible();
+    await expect(page.getByRole('article').first()).toBeVisible();
+    await screenshot(page, `mentorship-${width}`);
+    mode = 'loading'; release = new Promise(resolve => { releaseSearch = resolve; });
+    await page.getByRole('button', { name: 'Find mentors', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Finding mentors\u2026', exact: true })).toBeDisabled();
+    await noOverflow(page, `${width}px mentorship loading`); releaseSearch();
+    await expect(page.getByRole('heading', { name: '2 mentors to discover', exact: true })).toBeVisible();
+    mode = 'empty'; await page.getByRole('button', { name: 'Find mentors', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'No mentors matched this request yet.', exact: true })).toBeVisible();
+    await noOverflow(page, `${width}px mentorship empty`);
+    mode = 'unavailable'; await page.getByRole('button', { name: 'Try again', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Mentor discovery is taking a pause.', exact: true })).toBeVisible();
+    await noOverflow(page, `${width}px mentorship unavailable`);
+    mode = 'success'; await page.getByRole('button', { name: 'Retry search', exact: true }).click();
+    await expect(page.getByRole('heading', { name: '2 mentors to discover', exact: true })).toBeVisible();
+
+  }
   await page.setViewportSize({ width: 375, height: 812 }); await noOverflow(page,"mobile live mentorship");
   await screenshot(page,"mentorship-results-mobile");
   await page.unroute("**/api/mentorship/search");
   await page.goto(base);
   console.log("PASS mentorship validation, character counter, prompts, loading, ranked cards, no-match, unavailable, malformed and retry states");
-  for (const width of [320, 375, 768, 1024]) {
-    await page.setViewportSize({ width, height: 900 }); await noOverflow(page,`${width}px home`);
-    for (const destination of ["Network","Mentorship","Events","Opportunities","Profile"]) await expect(page.getByRole("navigation",{ name: "Alumni navigation" }).getByRole("link",{ name: destination, exact: true })).toHaveCount(1);
+
+  for (const [width,height] of [[320,700],[375,812],[768,1024],[1024,768],[1440,900]]) {
+    await page.setViewportSize({ width,height });
+    for (const route of ['/', '/network?department=Browser+Demo+Department', '/profile', '/verify', '/mentorship', '/events', '/opportunities', '/account']) {
+      await page.goto(`${base}${route}`);
+      await expect(page.locator('.workspace h1').first()).toBeVisible();
+      if (route.startsWith('/network')) await expect(page.locator('.network-page')).toBeVisible();
+      await noOverflow(page, `${width}px ${route}`);
+      const logo = page.locator('.app-header img[alt="Lumina"]');
+      await expect(logo).toBeVisible();
+      assert.ok(await logo.evaluate(img => img.complete && img.naturalWidth > 0));
+      const box = await logo.boundingBox(); assert.ok(box.width >= 125 && Math.abs(box.width / box.height - 594/127) < .05);
+      if (route.startsWith('/network')) {
+        const nav = page.getByRole('navigation', { name: 'Alumni navigation' });
+        if (width <= 1100) {
+          const toggle = page.getByRole('button', { name: 'Menu', exact: true });
+          await toggle.focus(); await page.keyboard.press('Enter'); await expect(nav).toBeVisible();
+          const navBounds = await nav.boundingBox(); assert.ok(navBounds.x >= 0 && navBounds.x + navBounds.width <= width + 1, 'Navigation fits viewport');
+          await screenshot(page, `navigation-${width}`);
+          await page.keyboard.press('Escape'); await expect(toggle).toBeFocused(); await expect(nav).toBeHidden();
+          await toggle.click(); await nav.getByRole('link', { name: 'Network', exact: true }).click(); await expect(nav).toBeHidden();
+          await expect(page.locator('.network-page')).toBeVisible();
+        } else await expect(nav).toBeVisible();
+        await page.getByRole('link', { name: 'View profile: Browser Alumnus 00', exact: true }).click();
+        await expect(page.getByRole('heading', { level: 1 })).toHaveText('Browser Alumnus 00');
+        await noOverflow(page, `${width}px full alumni profile`); await screenshot(page, `alumni-profile-${width}`);
+        await page.getByRole('link', { name: 'Back to Network', exact: true }).click();
+        await expect(page.locator('.network-page')).toBeVisible();
+        await noOverflow(page, `${width}px Network loaded`);
+        const account = page.getByRole('button', { name: 'Open account menu', exact: true });
+        await account.click(); const accountBounds = await page.locator('.account-popover').boundingBox();
+        assert.ok(accountBounds.x >= 0 && accountBounds.x + accountBounds.width <= width + 1);
+        await page.keyboard.press('Escape'); await expect(account).toBeFocused();
+      }
+      if (route === '/events') {
+        const preview = page.getByRole('button', { name: /^Explore event:/ }).first(); await preview.click();
+        const dialog = page.locator('dialog[open]'); await expect(dialog).toBeVisible();
+        const bounds = await dialog.boundingBox(); assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width + 1 && bounds.height <= height);
+        await screenshot(page, `dialog-${width}`); await page.keyboard.press('Escape'); await expect(preview).toBeFocused();
+      }
+      if (route === '/' || route.startsWith('/network') || route === '/profile') await screenshot(page, `${route === '/' ? 'home' : route.split('?')[0].slice(1)}-${width}`);
+    }
+    await context.clearCookies();
+    await page.goto(base); await noOverflow(page, `${width}px landing`); await screenshot(page, `landing-${width}`);
+    await page.goto(`${base}/sign-in`); await noOverflow(page, `${width}px sign in`);
+    await context.addCookies([{ name: 'authjs.session-token', value: token, url: base, httpOnly: true, sameSite: 'Lax' }]);
   }
-  await page.setViewportSize({ width: 375, height: 812 }); await screenshot(page,"home-mobile");
-  await page.getByRole("link",{ name: "Network", exact: true }).click(); await noOverflow(page,"mobile directory");
-  await screenshot(page,"network-mobile");
-  console.log("PASS real profile save/progress, verified status and 320–1440px home layouts");
+  console.log('PASS logo, mobile/tablet navigation, forms, cards, dialogs and layouts at all five target viewports');
+  for (const width of [430,600,900,1280,1920]) {
+    await page.setViewportSize({ width,height: 1000 });
+    for (const route of ['/', '/network?department=Browser+Demo+Department', '/mentorship']) {
+      await page.goto(`${base}${route}`); await expect(page.locator('.workspace h1')).toBeVisible();
+      if (route.startsWith('/network')) await expect(page.locator('.network-page')).toBeVisible();
+      await noOverflow(page, `${width}px additional responsive boundary ${route}`);
+    }
+  }
+
 
   await pool.query("UPDATE public.users SET role='admin' WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
   await page.goto(`${base}/admin/verification`); await expect(page.getByRole("heading",{ name: "Verification assistance", exact: true })).toBeVisible();
-  await noOverflow(page,"mobile admin exceptions");
+  for (const [width,height] of [[320,700],[375,812],[768,1024],[1024,768],[1440,900]]) {
+    await page.setViewportSize({ width,height }); await noOverflow(page, `${width}px admin exceptions`);
+    const adminMenu = page.getByRole('button', { name: 'Admin menu', exact: true });
+    if (width <= 1100) { await adminMenu.click(); await expect(page.getByRole('navigation', { name: 'Administration', exact: true })).toBeVisible(); await page.keyboard.press('Escape'); await expect(adminMenu).toBeFocused(); }
+    await screenshot(page, `admin-${width}`);
+    for (const route of ['/admin','/admin/users','/admin/events','/admin/opportunities']) {
+      await page.goto(`${base}${route}`); await expect(page.locator('.workspace h1')).toBeVisible(); await noOverflow(page, `${width}px ${route}`);
+    }
+    await page.goto(`${base}/admin/verification`);
+  }
   await page.goto(`${base}/`); await page.getByRole("button",{ name: "Open account menu" }).click();
   await page.getByRole("button",{ name: "Sign out", exact: true }).click();
   await expect(page.getByRole("heading",{ level: 1 })).toContainText("Reconnect");
   assert.deepEqual(failures,[],"No browser runtime errors");
-  await writeFile(`${output}/browser-report.json`,JSON.stringify({ passed: true, screenshots, runtimeErrors: failures },null,2));
+  await writeFile(`${output}/browser-report.json`,JSON.stringify({ passed: true, establishedSyntheticProfilesChecked: process.env.LUMINA_TEST_SYNTHETIC_DIRECTORY === '1' ? 50 : 0, viewports: [[320,700],[375,812],[768,1024],[1024,768],[1440,900]], additionalWidths: [430,600,900,1280,1920], network: 'Real PostgreSQL search, department/industry/skill/location filters, 12-profile pagination, profile return state', screenshots, runtimeErrors: failures },null,2));
   console.log("PASS admin exceptions remain accessible only to admins; actual sign out returns to landing");
 } finally {
   await browser?.close();
   if (server && server.exitCode === null && server.signalCode === null) { const stopped = once(server,"exit"); server.kill(); await stopped; }
   try {
+    for (const id of networkUsers) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject LIKE $2", [id, `${subject}-%`]);
+    if (networkSkillId) await pool.query("DELETE FROM public.skills WHERE id=$1", [networkSkillId]);
     if (fixtureId) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
     if (originalData) assert.deepEqual(await snapshot(), originalData, "All existing data must remain unchanged");
     console.log("PASS browser fixture removed; existing data preserved");

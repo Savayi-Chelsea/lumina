@@ -11,6 +11,6 @@ export function MentorCard({ mentor, rank }: { mentor: MentorMatch; rank: number
     <p className="mentor-headline">{mentor.headline || "Professional profile"}</p>
     <dl className="mentor-career"><dt>Former KQ role</dt><dd>{mentor.formerRole || "Not provided"}</dd><dt>Former KQ department</dt><dd>{mentor.department || "Not provided"}</dd><dt>Current position</dt><dd>{mentor.currentPosition || "Not provided"}</dd><dt>Organization</dt><dd>{mentor.organization || "Not provided"}</dd></dl>
     <div className="mentor-skills"><h4>Relevant skills</h4>{mentor.skills.length ? <ul>{mentor.skills.map(skill => <li key={skill}>{skill}</li>)}</ul> : <p className="small muted">No skills listed yet.</p>}</div>
-    <div className="mentor-card-footer"><span className="small muted">Result {rank}</span><Link className="text-link" href={`/alumni/${mentor.profileId}`}>View alumni profile<Icon name="arrow" /></Link></div>
+    <div className="mentor-card-footer"><span className="small muted">Result {rank}</span><Link className="text-link" href={`/alumni/${mentor.profileId}?from=mentorship`}>View alumni profile<Icon name="arrow" /></Link></div>
   </article>;
 }

@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
 
     -- Google account control is separate from independently verified alumni status.
     google_subject TEXT UNIQUE,
+    google_image_url TEXT,
     alumni_verified BOOLEAN NOT NULL DEFAULT FALSE,
 
     role VARCHAR(30) NOT NULL DEFAULT 'alumni'

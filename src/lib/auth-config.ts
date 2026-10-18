@@ -1,20 +1,13 @@
 import "server-only";
 import type { NextAuthConfig } from "next-auth";
+import { googleProfileImage } from "@/lib/profile-image";
 import Google from "next-auth/providers/google";
 import type { LuminaUser } from "@/lib/lumina-users";
 
 type UserStore = {
-  linkGoogleUser(subject: string, email: string): Promise<LuminaUser>;
+  linkGoogleUser(subject: string, email: string, image?: string | null): Promise<LuminaUser>;
   findLuminaUser(id: string): Promise<LuminaUser | null>;
 };
-
-function googleImage(value: unknown) {
-  if (typeof value !== "string") return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && url.hostname.endsWith(".googleusercontent.com") ? url.href : null;
-  } catch { return null; }
-}
 
 export function createAuthConfig(store: UserStore): NextAuthConfig {
   return {
@@ -40,12 +33,12 @@ export function createAuthConfig(store: UserStore): NextAuthConfig {
             if (account.provider !== "google" || profile?.email_verified !== true
               || typeof profile.sub !== "string" || profile.sub !== account.providerAccountId
               || typeof profile.email !== "string" || !profile.email || profile.email.length > 255) return null;
-            const user = await store.linkGoogleUser(profile.sub, profile.email);
+            const user = await store.linkGoogleUser(profile.sub, profile.email, googleProfileImage(profile.picture));
             token.luminaUserId = user.id;
             token.sub = user.id;
             token.name = typeof profile.name === "string" ? profile.name : null;
             token.email = profile.email;
-            token.picture = googleImage(profile.picture);
+            token.picture = googleProfileImage(profile.picture);
           }
           if (typeof token.luminaUserId !== "string") return null;
           // Ignore client session updates. Roles, status and verification come only from PostgreSQL.
