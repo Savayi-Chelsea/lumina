@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Python environments contain third-party JavaScript, not application source.
+    ".venv*/**",
   ]),
 ]);
 
