@@ -3,8 +3,8 @@ import Link from "next/link";
 import type { Session } from "next-auth";
 import type { Profile } from "@/lib/profiles";
 import { profileProgress } from "@/lib/profile-progress";
-import { demoEvents, demoOpportunities } from "@/lib/demo-community";
-import { DemoLabel, EventCard, OpportunityCard } from "./community-cards";
+import type { CommunityEvent, Opportunity } from "@/lib/community";
+import { EventCard, OpportunityCard } from "./community-cards";
 import { HorizonArt } from "./horizon-art";
 import { Icon } from "./icon";
 import { AlumniCard } from "./alumni-card";
@@ -14,7 +14,7 @@ function SectionHeading({ id, eyebrow, title, href, link }: { id: string; eyebro
   return <div className="section-heading"><div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div><Link className="text-link" href={href}>{link}<Icon name="arrow" /></Link></div>;
 }
 
-export function AlumniHome({ user, profile, people = [], discoveryUnavailable = false }: { people?: AlumniSummary[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
+export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false }: { people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
   const name = profile?.full_name || user.name || "Lumina member";
   const firstName = name.split(/\s+/)[0];
   const progress = profileProgress(profile);
@@ -35,9 +35,9 @@ export function AlumniHome({ user, profile, people = [], discoveryUnavailable = 
 
     <section className="discovery-section" aria-labelledby="alumni-heading"><SectionHeading id="alumni-heading" eyebrow="PICK UP WHERE YOU LEFT OFF" title="Explore alumni" href="/network" link="Explore the network" /><p className="section-description">Start with alumni from your former department, followed by recently added profiles.</p>{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore the community professional profiles.</p><Link className="text-link" href="/verify">Complete verification<Icon name="arrow" /></Link></div> : discoveryUnavailable ? <div className="card"><p>Alumni discovery is temporarily unavailable. Please try the Network again shortly.</p><Link className="text-link" href="/network">Visit Network<Icon name="arrow" /></Link></div> : people.length ? <div className="alumni-grid">{people.map(person => <AlumniCard key={person.id} profile={person} />)}</div> : <div className="card"><p>Your community is taking shape. Verified alumni will appear here as they add their profiles.</p><Link className="text-link" href="/network">Explore the network<Icon name="arrow" /></Link></div>}</section>
 
-    <section className="discovery-section" aria-labelledby="events-heading"><SectionHeading id="events-heading" eyebrow="MAKE ROOM FOR A REUNION" title="Good things on the horizon." href="/events" link="Explore events" /><div className="preview-caption"><DemoLabel /><p>Upcoming events preview · Sample gatherings, with dates and venues to be confirmed. No registration is open.</p></div><div className="event-grid">{demoEvents.map((event,index) => <EventCard key={event.id} event={event} index={index} />)}</div></section>
+    <section className="discovery-section" aria-labelledby="events-heading"><SectionHeading id="events-heading" eyebrow="MAKE ROOM FOR A REUNION" title="Good things on the horizon." href="/events" link="Explore events" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to see upcoming gatherings and reserve your place.</p></div> : events.length ? <div className="event-grid">{events.map((event,index) => <EventCard key={event.id} event={event} index={index} />)}</div> : <div className="card"><p>No upcoming events yet. New gatherings are announced regularly.</p><Link className="text-link" href="/events">See all events<Icon name="arrow" /></Link></div>}</section>
 
-    <div className="home-bottom-grid"><section className="discovery-section" aria-labelledby="opportunities-heading"><SectionHeading id="opportunities-heading" eyebrow="YOUR EXPERIENCE HAS PLACES TO GO" title="What could come next?" href="/opportunities" link="Explore" /><div className="preview-caption"><DemoLabel /><p>Fictional opportunities · No live vacancies or applications.</p></div><div className="opportunity-list">{demoOpportunities.map(opportunity => <OpportunityCard key={opportunity.id} opportunity={opportunity} />)}</div></section>
+    <div className="home-bottom-grid"><section className="discovery-section" aria-labelledby="opportunities-heading"><SectionHeading id="opportunities-heading" eyebrow="YOUR EXPERIENCE HAS PLACES TO GO" title="What could come next?" href="/opportunities" link="Explore" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore opportunities shared with the community.</p></div> : opportunities.length ? <div className="opportunity-list">{opportunities.map(opportunity => <OpportunityCard key={opportunity.id} opportunity={opportunity} />)}</div> : <div className="card"><p>No open opportunities right now. Check back soon.</p></div>}</section>
       <section className="community-placeholder" aria-labelledby="community-heading"><span className="community-icon"><Icon name="people" width={30} height={30} /></span><p className="eyebrow">THE CONVERSATION CONTINUES</p><h2 id="community-heading">Stories worth<br /><em>staying close to.</em></h2><p>A space for shared milestones, fresh perspectives and familiar voices.</p><span className="badge">Community activity · Coming soon</span><p className="small muted">There is no live activity feed yet. For now, discover the people and possibilities around you.</p><Link className="text-link" href="/network">Meet the community<Icon name="arrow" /></Link></section>
     </div>
     <div className="home-signoff"><span className="eyebrow">ONCE PART OF THE JOURNEY. ALWAYS PART OF THE STORY.</span></div>

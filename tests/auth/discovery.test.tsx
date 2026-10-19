@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { LuminaLogo } from "@/components/lumina-logo";
 import { AlumniHome } from "@/components/alumni-home";
-import { CommunityExplorer } from "@/components/community-explorer";
+import type { CommunityEvent, Opportunity } from "@/lib/community";
 import { profileProgress } from "@/lib/profile-progress";
 import type { Profile } from "@/lib/profiles";
 
@@ -23,18 +23,22 @@ describe("Lumina discovery presentation", () => {
   });
   it("includes all discovery sections with explicit fixture disclosures and real progress", () => {
     const html = renderToStaticMarkup(<AlumniHome user={{ id: "id", name: "Real Name", role: "alumni", accountStatus: "active", alumniVerified: true }} profile={null} />);
-    for (const text of ["Real Name", "0 of 11", "Find a mentor", "Explore alumni", "Upcoming events preview", "Fictional opportunities", "There is no live activity feed yet"]) expect(html).toContain(text);
+    for (const text of ["Real Name", "0 of 11", "Find a mentor", "Explore alumni", "No upcoming events yet", "No open opportunities right now", "There is no live activity feed yet"]) expect(html).toContain(text);
     expect(html).not.toContain("95% match"); expect(html).not.toContain("Connect now");
   });
   it("keeps pending verification authoritative even when the verification flag is true", () => {
     const html = renderToStaticMarkup(<AlumniHome user={{ id: "id", role: "alumni", accountStatus: "pending", alumniVerified: true }} profile={null} />);
     expect(html).not.toContain("Verified by Lumina"); expect(html).toContain('href="/verify"');
   });
-  it("labels each discovery page as a preview rather than live backend functionality", () => {
-    for (const section of ["events", "opportunities"] as const) {
-      const html = renderToStaticMarkup(<CommunityExplorer section={section} />);
-      expect(html).toContain("Demo preview"); expect(html).toContain("not available");
-      expect(html).toContain('aria-pressed="true"');
-    }
+  it("shows real community listings on Home and labels fictional sample rows", () => {
+    const event = { id: "5b0e3c1e-0000-4000-8000-000000000001", title: "Engineering reunion", summary: "Old hangar stories.", description: "", category: "Reunion", format: "in_person", location: "Nairobi", starts_at: "2030-01-10T15:00:00Z", ends_at: "2030-01-10T18:00:00Z", capacity: 40, status: "published", synthetic: true, registration_count: 3, registered: false, updated_at: "" } as unknown as CommunityEvent;
+    const opportunity = { id: "5b0e3c1e-0000-4000-8000-000000000002", title: "Ops advisor", organization: "Example Org", opportunity_type: "Advisory", work_mode: "hybrid", location: "Nairobi", industry: null, summary: "Advise.", description: "", how_to_apply: "Email.", closes_on: null, status: "published", synthetic: false, created_at: "" } as unknown as Opportunity;
+    const html = renderToStaticMarkup(<AlumniHome user={{ id: "id", role: "alumni", accountStatus: "active", alumniVerified: true }} profile={null} events={[event]} opportunities={[opportunity]} />);
+    for (const text of ["Engineering reunion", "Thu, 10 Jan 2030, 18:00 – 21:00 EAT", "3 attending · 37 places left", "Ops advisor", "Open until filled", `/events/${event.id}`, `/opportunities/${opportunity.id}`]) expect(html).toContain(text);
+    expect(html.match(/Sample listing/g)).toHaveLength(1);
+  });
+  it("hides community listings from alumni awaiting verification", () => {
+    const html = renderToStaticMarkup(<AlumniHome user={{ id: "id", role: "alumni", accountStatus: "pending", alumniVerified: false }} profile={null} />);
+    expect(html).toContain("see upcoming gatherings"); expect(html).toContain("explore opportunities shared");
   });
 });
