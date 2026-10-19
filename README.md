@@ -22,6 +22,11 @@ Current functionality includes:
 - Automated database seeding
 - FastAPI matching service with semantic mentor search
 - Email/password and Google sign-in sharing one Lumina session model
+- Emailed, single-use password reset (local Mailpit inbox)
+- Events with RSVP and capacity, and an Opportunities board, both admin-managed
+- Admin user management (suspend and reinstate)
+- 200 synthetic alumni with work histories
+- Reproducible matching evaluation (P@5, R@5, F1@5, MRR) against a keyword baseline
 - Pre-trained BGE profile embedding ingestion
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
@@ -184,13 +189,14 @@ Errors do not print profile source text, database credentials, or other sensitiv
 
 The current synthetic development dataset contains:
 
-- 50 synthetic former-staff profiles
-- 42 unique skills
-- 41 profiles that consent to matching
-- 41 stored profile embeddings
+- 200 synthetic former-staff profiles (ALUM-001 to ALUM-200) across all 12 departments
+- 532 work-history entries (Kenya Airways role, optional intermediate role, current role)
+- 84 unique skills
+- 169 profiles that consent to matching, all with stored embeddings
+- 133 consenting profiles currently available as mentors
 - 768 dimensions per embedding
 
-The final unchanged indexing rerun skips all 41 existing embeddings, confirming that the source-hash mechanism prevents unnecessary regeneration.
+An unchanged indexing rerun skips every existing embedding, confirming that the source-hash mechanism prevents unnecessary regeneration.
 
 Unavailable but consenting profiles remain indexed as intended.
 
@@ -360,6 +366,14 @@ Generate the development dataset:
 ```powershell
 python scripts\generate_synthetic_data.py
 ```
+
+This writes `data/synthetic_alumni.csv` (200 profiles) and
+`data/synthetic_work_history.csv`. The original Sprint I rows ALUM-001 to
+ALUM-050 come from the unchanged seeded sequence; a test checks their SHA-256
+fingerprint, so the expansion can never alter them. ALUM-051 to ALUM-200 come
+from an independent seeded generator (`scripts/synthetic_expansion.py`) that
+rotates through all 12 departments and gives each profile a plausible career
+path, skills, location and work history.
 
 The development corpus contains fictional former Kenya Airways staff profiles.
 
@@ -570,7 +584,8 @@ effect immediately for either sign-in method.
 | --- | --- |
 | `/sign-in` | Email and password first, then "or continue with" Google, then a link to create an account |
 | `/sign-up` | Full name, email, password and confirmation; Google below |
-| `/forgot-password` | States plainly that password reset is not available yet; no email is sent |
+| `/forgot-password` | Requests an emailed reset link when email is configured; otherwise says plainly that reset is unavailable |
+| `/reset-password` | Sets a new password from a single-use emailed link |
 
 The public landing page links to **Join Lumina** (`/sign-up`) and **Sign in** (`/sign-in`).
 
@@ -615,18 +630,9 @@ a `NULL` password and are never asked to create one.
   before public deployment.
 - Email ownership is not verified for password accounts (no email provider).
   Alumni verification still gates every privileged feature.
-- Password reset needs an email provider. The proposed (not applied) migration is:
-
-```sql
-CREATE TABLE public.password_reset_tokens (
-    token_hash BYTEA PRIMARY KEY,               -- SHA-256 of a 32-byte random token; raw token only in the email
-    user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expires_at TIMESTAMPTZ NOT NULL,            -- e.g. 30 minutes
-    used_at TIMESTAMPTZ
-);
-CREATE INDEX password_reset_tokens_user_idx ON public.password_reset_tokens (user_id);
-```
+- Password reset is implemented (see "Password reset" below). JWT sessions issued
+  before a reset stay valid until they expire (24 hours); revoking them needs a
+  per-user session version, which is not implemented yet.
 
 ### Password authentication tests
 
@@ -640,6 +646,119 @@ the same flows against temporary copies of `users` and `profiles`.
 the real UI, checks duplicate, wrong-password, unknown-email, rate-limit and
 correct sign-in behavior, and removes the account afterwards. It also checks the
 auth pages for overflow and touch-sized inputs at 320, 375, 768, 1024 and 1440 px.
+
+## Sprint II: community, account recovery and evaluation
+
+### Fresh demo setup
+
+```powershell
+docker compose up -d                                   # PostgreSQL + Mailpit
+.venv/Scripts/python.exe scripts/apply_migration.py 004 --apply   # events, registrations, opportunities
+.venv/Scripts/python.exe scripts/apply_migration.py 005 --apply   # password reset tokens
+.venv/Scripts/python.exe scripts/generate_synthetic_data.py
+.venv/Scripts/python.exe scripts/seed_database.py
+.venv/Scripts/python.exe scripts/index_profile_embeddings.py
+.venv/Scripts/python.exe scripts/seed_community.py --apply
+```
+
+`apply_migration.py` fingerprints every existing table before and after and
+rolls back if any existing row changes, so migrations 004 and 005 can only add
+tables. Without `--apply` it previews. Both are idempotent and also included in
+`database/schema.sql` for brand-new databases.
+
+### Events
+
+- `/events` lists published events for active, verified alumni (and admins),
+  split into Upcoming and Past, with an In person / Online / Hybrid filter in the URL.
+- `/events/[id]` shows details and a one-click **Reserve my place** / **Cancel**.
+  Registration is serialised per event with a row lock, so capacity is never
+  exceeded, even under concurrent requests (covered by a multi-connection test).
+  Registration closes when the event starts.
+- Home shows the next three events, with "You're attending" on reserved ones.
+- Times are entered and shown in East Africa Time.
+
+### Opportunities
+
+- `/opportunities` lists published listings that have not passed their closing
+  date, with a type filter (Job, Contract, Advisory, Volunteer, Internship) and search.
+- `/opportunities/[id]` shows the description and plain-text "How to apply".
+  No external links are stored or rendered.
+
+### Administration
+
+- `/admin/events` and `/admin/opportunities`: create, edit, publish, unpublish,
+  archive and restore; event pages list attendees. Drafts and archived listings
+  are hidden from alumni. Validation errors keep everything the admin typed.
+- `/admin/users`: search by name or email, filter by status, and suspend or
+  reinstate alumni accounts. Suspension takes effect on the person's next request,
+  because sessions are re-checked against PostgreSQL. Administrators and the acting
+  admin cannot be changed here. Reinstated accounts return to active if already
+  verified, otherwise to pending verification.
+- `/admin` shows open verification exceptions, upcoming events, reserved places,
+  open opportunities and drafts.
+
+`scripts/seed_community.py --apply` adds 8 fictional sample events (6 upcoming,
+2 past) and 7 sample opportunities (1 closed), all marked `synthetic` and labelled
+"Sample listing" in the interface. Dates are relative to the day you run it, so
+rerun it before a demo to keep events upcoming. It updates sample rows in place
+and never touches admin-created listings or registrations.
+
+### Password reset
+
+Local email goes to Mailpit (started by `docker compose up -d`); read it at
+http://localhost:8025. Nothing leaves your machine. Configure in `.env`:
+
+```
+SMTP_HOST=127.0.0.1
+SMTP_PORT=1025
+MAIL_FROM="Lumina <no-reply@lumina.local>"
+```
+
+For production, point the same variables (plus `SMTP_SECURE`, `SMTP_USER`,
+`SMTP_PASSWORD`) at a real SMTP provider. Without them, `/forgot-password`
+says reset is unavailable and sends nothing.
+
+- The response is identical whether or not the email has an account. Token
+  creation and sending run after the response (`after()`), so timing does not
+  reveal it either.
+- Only password accounts that are not suspended receive links; Google-only and
+  synthetic fixture accounts never do. At most 3 requests per email per 15 minutes.
+- Tokens are 32 random bytes; only their SHA-256 digest is stored. They expire in
+  30 minutes, work once, and requesting a new one revokes the old one.
+- The link carries the token in the URL fragment (`/reset-password#token=…`),
+  which browsers never send to servers or in `Referer` headers. The page removes
+  it from the address bar immediately.
+- A successful reset clears the sign-in lockout for that email.
+
+Email is sent with `nodemailer` 8.0.11, pinned exactly. It is the release line
+Auth.js declares as its optional peer, and it was chosen to be more than two weeks old.
+
+### Matching evaluation
+
+```powershell
+.venv/Scripts/python.exe scripts/evaluate_matching.py --build-labels   # after the dataset changes
+.venv/Scripts/python.exe -m uvicorn services.matching.app.main:app --port 8000
+.venv/Scripts/python.exe scripts/evaluate_matching.py
+```
+
+22 labelled queries run through the real `POST /mentors/search` endpoint and a
+TF-IDF keyword baseline over the same profile text. Results are written to
+`evaluation/results/matching_evaluation.md` and `.json`; labels are frozen in
+`evaluation/relevance_labels.json`.
+
+| Query set | System | P@5 | R@5 | F1@5 | MRR |
+| --- | --- | --- | --- | --- | --- |
+| Domain (12) | Semantic | 1.000 | 0.475 | 0.637 | 1.000 |
+| Domain (12) | Keyword | 1.000 | 0.475 | 0.637 | 1.000 |
+| Career transition (10) | Semantic | 0.620 | 0.477 | 0.482 | 0.775 |
+| Career transition (10) | Keyword | 0.500 | 0.331 | 0.358 | 0.667 |
+
+Domain queries name the department area, so both systems reach the ceiling.
+Transition queries describe a move ("leave aviation and work in a bank") whose
+answer depends on the mentor's current industry, title or organization; there
+semantic matching outperforms keyword matching. An off-topic control query returns
+no results. These are synthetic, rule-labelled results, not a measure of
+performance on real Kenya Airways alumni.
 
 ## Data Ethics
 
@@ -878,7 +997,9 @@ remain under `artifacts/frontend/mentorship-live/`.
 The original `ALUM-001` through `ALUM-050` dataset represents established alumni,
 not new signup requests. `seed_database.py` creates those exact fixture identities
 as `account_status=active`, `alumni_verified=true`. It uses the local-only database
-guard and validates that the CSV contains exactly those 50 unique identifiers.
+guard and validates that the CSV contains exactly the 200 unique fixture
+identifiers (ALUM-001 to ALUM-200). Reseeding replaces each fixture's work history,
+so it is idempotent.
 It refuses collisions with Google-linked accounts, normal password hashes,
 non-alumni roles, pending or suspended accounts. No authentication defaults or
 production discoverability conditions are changed.
@@ -914,5 +1035,5 @@ npm run test:frontend:browser
 ```
 
 The optional browser assertion traverses the real paginated directory and checks
-that all 50 exact seeded profile IDs are present. It requires the established
+that all 200 exact seeded profile IDs are present. It requires the established
 local dataset; ordinary browser tests continue to work with an empty database.

@@ -1,0 +1,588 @@
+{
+  "generated_at": "2026-10-18T22:55:39+00:00",
+  "k": 5,
+  "corpus_size": 133,
+  "rule": "Relevant if any listed criterion matches: former KQ department, skill, current industry, current organization, or a word in the current job title.",
+  "queries": [
+    {
+      "id": "cloud",
+      "set": "domain",
+      "query": "I want to move from IT support into AWS cloud engineering and DevOps.",
+      "criteria": {
+        "departments": [
+          "ICT / Digital"
+        ],
+        "skills": [
+          "AWS",
+          "Docker",
+          "Kubernetes",
+          "Terraform",
+          "CI/CD",
+          "Linux"
+        ]
+      },
+      "relevant": [
+        "alum-014",
+        "alum-017",
+        "alum-078",
+        "alum-102",
+        "alum-126",
+        "alum-162",
+        "alum-174",
+        "alum-186",
+        "alum-198"
+      ]
+    },
+    {
+      "id": "pilot",
+      "set": "domain",
+      "query": "How do I progress from first officer to captain as an airline pilot?",
+      "criteria": {
+        "departments": [
+          "Flight Operations"
+        ],
+        "skills": [
+          "Flight Planning",
+          "Navigation",
+          "Flight Training"
+        ]
+      },
+      "relevant": [
+        "alum-032",
+        "alum-036",
+        "alum-045",
+        "alum-050",
+        "alum-051",
+        "alum-075",
+        "alum-087",
+        "alum-099",
+        "alum-123",
+        "alum-135",
+        "alum-147",
+        "alum-159",
+        "alum-171",
+        "alum-183",
+        "alum-195"
+      ]
+    },
+    {
+      "id": "finance",
+      "set": "domain",
+      "query": "I need guidance on a finance career: budgeting, forecasting and financial reporting.",
+      "criteria": {
+        "departments": [
+          "Finance"
+        ],
+        "skills": [
+          "Financial Analysis",
+          "Budgeting",
+          "Financial Reporting",
+          "Forecasting",
+          "IFRS",
+          "Audit"
+        ]
+      },
+      "relevant": [
+        "alum-005",
+        "alum-022",
+        "alum-079",
+        "alum-103",
+        "alum-127",
+        "alum-139",
+        "alum-163",
+        "alum-175",
+        "alum-187",
+        "alum-199"
+      ]
+    },
+    {
+      "id": "cabin-hospitality",
+      "set": "domain",
+      "query": "How can I use my cabin crew experience to move into hospitality and guest experience?",
+      "criteria": {
+        "departments": [
+          "Cabin Services"
+        ],
+        "skills": [
+          "Service Recovery"
+        ]
+      },
+      "relevant": [
+        "alum-002",
+        "alum-009",
+        "alum-016",
+        "alum-021",
+        "alum-047",
+        "alum-052",
+        "alum-064",
+        "alum-088",
+        "alum-100",
+        "alum-112",
+        "alum-136",
+        "alum-160",
+        "alum-172"
+      ]
+    },
+    {
+      "id": "cargo",
+      "set": "domain",
+      "query": "I want a career in cargo, freight logistics and supply chain management.",
+      "criteria": {
+        "departments": [
+          "Cargo"
+        ],
+        "skills": [
+          "Cargo Handling",
+          "Supply Chain",
+          "Freight Forwarding",
+          "Warehouse Management",
+          "Customs Compliance"
+        ]
+      },
+      "relevant": [
+        "alum-058",
+        "alum-070",
+        "alum-094",
+        "alum-106",
+        "alum-130",
+        "alum-142",
+        "alum-154",
+        "alum-166",
+        "alum-190"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "set": "domain",
+      "query": "Advice on aircraft maintenance engineering, inspections and maintenance planning.",
+      "criteria": {
+        "departments": [
+          "Engineering & Maintenance"
+        ],
+        "skills": [
+          "Aircraft Maintenance",
+          "Maintenance Planning",
+          "Technical Inspection",
+          "Reliability Engineering"
+        ]
+      },
+      "relevant": [
+        "alum-023",
+        "alum-065",
+        "alum-077",
+        "alum-101",
+        "alum-137",
+        "alum-173",
+        "alum-185"
+      ]
+    },
+    {
+      "id": "hr",
+      "set": "domain",
+      "query": "Help me grow in human resources: recruitment, talent and people management.",
+      "criteria": {
+        "departments": [
+          "Human Resources"
+        ],
+        "skills": [
+          "Recruitment",
+          "Talent Management",
+          "Employee Relations"
+        ]
+      },
+      "relevant": [
+        "alum-030",
+        "alum-044",
+        "alum-080",
+        "alum-092",
+        "alum-104",
+        "alum-116",
+        "alum-140",
+        "alum-152",
+        "alum-176",
+        "alum-188",
+        "alum-200"
+      ]
+    },
+    {
+      "id": "safety",
+      "set": "domain",
+      "query": "I am interested in aviation safety management, risk assessment and compliance audits.",
+      "criteria": {
+        "departments": [
+          "Safety & Quality"
+        ],
+        "skills": [
+          "Risk Assessment",
+          "Safety Management",
+          "Incident Investigation",
+          "Auditing"
+        ]
+      },
+      "relevant": [
+        "alum-001",
+        "alum-010",
+        "alum-024",
+        "alum-025",
+        "alum-026",
+        "alum-038",
+        "alum-061",
+        "alum-085",
+        "alum-097",
+        "alum-109",
+        "alum-121",
+        "alum-133",
+        "alum-145",
+        "alum-169",
+        "alum-181",
+        "alum-193"
+      ]
+    },
+    {
+      "id": "ground",
+      "set": "domain",
+      "query": "How do I lead airport ground handling and ramp operations teams?",
+      "criteria": {
+        "departments": [
+          "Ground Operations"
+        ],
+        "skills": [
+          "Ground Handling",
+          "Turnaround Planning"
+        ]
+      },
+      "relevant": [
+        "alum-007",
+        "alum-019",
+        "alum-069",
+        "alum-081",
+        "alum-093",
+        "alum-105",
+        "alum-117",
+        "alum-153",
+        "alum-177"
+      ]
+    },
+    {
+      "id": "commercial",
+      "set": "domain",
+      "query": "I want to work in sales, marketing and airline revenue management.",
+      "criteria": {
+        "departments": [
+          "Commercial"
+        ],
+        "skills": [
+          "Sales",
+          "Marketing",
+          "Revenue Management",
+          "Pricing Strategy",
+          "Digital Marketing"
+        ]
+      },
+      "relevant": [
+        "alum-027",
+        "alum-031",
+        "alum-046",
+        "alum-060",
+        "alum-072",
+        "alum-084",
+        "alum-108",
+        "alum-120",
+        "alum-168",
+        "alum-192"
+      ]
+    },
+    {
+      "id": "procurement",
+      "set": "domain",
+      "query": "Guidance on procurement, contract management and supplier negotiation.",
+      "criteria": {
+        "departments": [
+          "Corporate Services"
+        ],
+        "skills": [
+          "Procurement",
+          "Contract Management",
+          "Negotiation",
+          "Vendor Management"
+        ]
+      },
+      "relevant": [
+        "alum-003",
+        "alum-004",
+        "alum-008",
+        "alum-062",
+        "alum-086",
+        "alum-098",
+        "alum-110",
+        "alum-122",
+        "alum-134",
+        "alum-158",
+        "alum-170",
+        "alum-182",
+        "alum-194"
+      ]
+    },
+    {
+      "id": "service-quality",
+      "set": "domain",
+      "query": "How can I improve customer service quality and complaint handling?",
+      "criteria": {
+        "departments": [
+          "Customer Experience"
+        ],
+        "skills": [
+          "Service Quality",
+          "Complaint Handling",
+          "Service Design"
+        ]
+      },
+      "relevant": [
+        "alum-006",
+        "alum-028",
+        "alum-035",
+        "alum-039",
+        "alum-059",
+        "alum-071",
+        "alum-083",
+        "alum-107",
+        "alum-131",
+        "alum-155",
+        "alum-167"
+      ]
+    },
+    {
+      "id": "t-instructor",
+      "set": "transition",
+      "query": "I'm a pilot who wants to teach new pilots for a living.",
+      "criteria": {
+        "title_contains": [
+          "Instructor"
+        ],
+        "skills": [
+          "Flight Training"
+        ]
+      },
+      "relevant": [
+        "alum-051",
+        "alum-075",
+        "alum-087",
+        "alum-123",
+        "alum-135",
+        "alum-159",
+        "alum-171",
+        "alum-183",
+        "alum-195"
+      ]
+    },
+    {
+      "id": "t-banking",
+      "set": "transition",
+      "query": "I want to leave aviation and work in a bank.",
+      "criteria": {
+        "industries": [
+          "Finance"
+        ]
+      },
+      "relevant": [
+        "alum-003",
+        "alum-021",
+        "alum-044",
+        "alum-071",
+        "alum-080",
+        "alum-092",
+        "alum-097",
+        "alum-116",
+        "alum-133",
+        "alum-140",
+        "alum-167",
+        "alum-198",
+        "alum-200"
+      ]
+    },
+    {
+      "id": "t-hospitality",
+      "set": "transition",
+      "query": "How do I move from airline work into hotels and resorts?",
+      "criteria": {
+        "industries": [
+          "Hospitality"
+        ]
+      },
+      "relevant": [
+        "alum-064",
+        "alum-088",
+        "alum-103",
+        "alum-107",
+        "alum-108",
+        "alum-112",
+        "alum-120",
+        "alum-155"
+      ]
+    },
+    {
+      "id": "t-security",
+      "set": "transition",
+      "query": "I'm interested in protecting systems from hackers at a fintech company.",
+      "criteria": {
+        "skills": [
+          "Cybersecurity"
+        ],
+        "title_contains": [
+          "Cybersecurity"
+        ]
+      },
+      "relevant": [
+        "alum-014",
+        "alum-198"
+      ]
+    },
+    {
+      "id": "t-coaching",
+      "set": "transition",
+      "query": "I would like to train and coach people as my main job.",
+      "criteria": {
+        "title_contains": [
+          "Trainer",
+          "Instructor",
+          "Coach"
+        ],
+        "skills": [
+          "Training",
+          "Training Delivery",
+          "Coaching"
+        ]
+      },
+      "relevant": [
+        "alum-044",
+        "alum-052",
+        "alum-080",
+        "alum-092",
+        "alum-104",
+        "alum-112",
+        "alum-116",
+        "alum-135",
+        "alum-136",
+        "alum-140",
+        "alum-152",
+        "alum-160",
+        "alum-171",
+        "alum-176",
+        "alum-183",
+        "alum-188"
+      ]
+    },
+    {
+      "id": "t-consulting",
+      "set": "transition",
+      "query": "Can I become an independent consultant after my airline career?",
+      "criteria": {
+        "organizations": [
+          "Independent Consultant"
+        ],
+        "industries": [
+          "Consulting"
+        ]
+      },
+      "relevant": [
+        "alum-001",
+        "alum-002",
+        "alum-008",
+        "alum-009",
+        "alum-023",
+        "alum-024",
+        "alum-036",
+        "alum-039",
+        "alum-046",
+        "alum-050",
+        "alum-075",
+        "alum-079",
+        "alum-099",
+        "alum-101",
+        "alum-123",
+        "alum-127",
+        "alum-139",
+        "alum-152",
+        "alum-163",
+        "alum-170",
+        "alum-173",
+        "alum-176",
+        "alum-187"
+      ]
+    },
+    {
+      "id": "t-telecom",
+      "set": "transition",
+      "query": "I want to join a mobile network operator.",
+      "criteria": {
+        "industries": [
+          "Telecommunications"
+        ]
+      },
+      "relevant": [
+        "alum-004",
+        "alum-010",
+        "alum-032",
+        "alum-060",
+        "alum-131"
+      ]
+    },
+    {
+      "id": "t-data",
+      "set": "transition",
+      "query": "I want to build data pipelines and work on analytics.",
+      "criteria": {
+        "skills": [
+          "Data Engineering",
+          "SQL",
+          "Customer Analytics"
+        ],
+        "title_contains": [
+          "Data"
+        ]
+      },
+      "relevant": [
+        "alum-071",
+        "alum-102",
+        "alum-155",
+        "alum-162",
+        "alum-167",
+        "alum-186",
+        "alum-198"
+      ]
+    },
+    {
+      "id": "t-manufacturing",
+      "set": "transition",
+      "query": "What is it like to run quality and maintenance in a factory?",
+      "criteria": {
+        "industries": [
+          "Manufacturing"
+        ]
+      },
+      "relevant": [
+        "alum-061",
+        "alum-065",
+        "alum-077",
+        "alum-085"
+      ]
+    },
+    {
+      "id": "t-energy",
+      "set": "transition",
+      "query": "Careers in the energy sector, for example geothermal power.",
+      "criteria": {
+        "industries": [
+          "Energy"
+        ]
+      },
+      "relevant": [
+        "alum-062",
+        "alum-086",
+        "alum-145",
+        "alum-181",
+        "alum-194"
+      ]
+    }
+  ]
+}

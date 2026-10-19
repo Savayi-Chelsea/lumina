@@ -1,0 +1,1764 @@
+{
+  "evaluated_at": "2026-10-18T22:56:12+00:00",
+  "k": 5,
+  "corpus_size": 133,
+  "model": "BAAI/bge-base-en-v1.5",
+  "queries": [
+    {
+      "id": "cloud",
+      "set": "domain",
+      "query": "I want to move from IT support into AWS cloud engineering and DevOps.",
+      "relevant_count": 9,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-102",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-162",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-126",
+            "department": "ICT / Digital",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-162",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-126",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-014",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-102",
+            "department": "ICT / Digital",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "pilot",
+      "set": "domain",
+      "query": "How do I progress from first officer to captain as an airline pilot?",
+      "relevant_count": 15,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3333333333333333,
+        "f1_at_5": 0.5,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3333333333333333,
+        "top": [
+          {
+            "synthetic_id": "alum-147",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-171",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-045",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-032",
+            "department": "Flight Operations",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3333333333333333,
+        "f1_at_5": 0.5,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3333333333333333,
+        "top": [
+          {
+            "synthetic_id": "alum-045",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-032",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-147",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-036",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "finance",
+      "set": "domain",
+      "query": "I need guidance on a finance career: budgeting, forecasting and financial reporting.",
+      "relevant_count": 10,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-005",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-022",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-079",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-139",
+            "department": "Finance",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-199",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-005",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-022",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-127",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "cabin-hospitality",
+      "set": "domain",
+      "query": "How can I use my cabin crew experience to move into hospitality and guest experience?",
+      "relevant_count": 13,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-088",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-112",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-136",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-016",
+            "department": "Cabin Services",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-112",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-088",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-136",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-009",
+            "department": "Cabin Services",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "cargo",
+      "set": "domain",
+      "query": "I want a career in cargo, freight logistics and supply chain management.",
+      "relevant_count": 9,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-190",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-094",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-070",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-142",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-166",
+            "department": "Cargo",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-154",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-142",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-094",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-166",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-190",
+            "department": "Cargo",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "maintenance",
+      "set": "domain",
+      "query": "Advice on aircraft maintenance engineering, inspections and maintenance planning.",
+      "relevant_count": 7,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.7142857142857143,
+        "f1_at_5": 0.8333333333333333,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-137",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-023",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-185",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.7142857142857143,
+        "f1_at_5": 0.8333333333333333,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-173",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-023",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-137",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "hr",
+      "set": "domain",
+      "query": "Help me grow in human resources: recruitment, talent and people management.",
+      "relevant_count": 11,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-188",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-044",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-092",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-030",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-200",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-140",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-092",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-116",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "safety",
+      "set": "domain",
+      "query": "I am interested in aviation safety management, risk assessment and compliance audits.",
+      "relevant_count": 16,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-097",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-133",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-109",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-121",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-061",
+            "department": "Safety & Quality",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-001",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-024",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-109",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-133",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-145",
+            "department": "Safety & Quality",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ground",
+      "set": "domain",
+      "query": "How do I lead airport ground handling and ramp operations teams?",
+      "relevant_count": 9,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-117",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-105",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-007",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-093",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-069",
+            "department": "Ground Operations",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-007",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-019",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-093",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-117",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-105",
+            "department": "Ground Operations",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "commercial",
+      "set": "domain",
+      "query": "I want to work in sales, marketing and airline revenue management.",
+      "relevant_count": 10,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-120",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-192",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-060",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-168",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-108",
+            "department": "Commercial",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-046",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-108",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-027",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-192",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-031",
+            "department": "Commercial",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "procurement",
+      "set": "domain",
+      "query": "Guidance on procurement, contract management and supplier negotiation.",
+      "relevant_count": 13,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-194",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-086",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-004",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-008",
+            "department": "Corporate Services",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-004",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-122",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-008",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-110",
+            "department": "Corporate Services",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "service-quality",
+      "set": "domain",
+      "query": "How can I improve customer service quality and complaint handling?",
+      "relevant_count": 11,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-131",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-006",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-059",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-083",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-035",
+            "department": "Customer Experience",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-131",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-107",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-167",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-006",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-083",
+            "department": "Customer Experience",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-instructor",
+      "set": "transition",
+      "query": "I'm a pilot who wants to teach new pilots for a living.",
+      "relevant_count": 9,
+      "semantic": {
+        "hits": 3,
+        "returned": 5,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.3333333333333333,
+        "f1_at_5": 0.42857142857142855,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-159",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-171",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-087",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-147",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": false
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 1,
+        "returned": 5,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.1111111111111111,
+        "f1_at_5": 0.14285714285714285,
+        "reciprocal_rank": 0.3333333333333333,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-032",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-045",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-051",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-036",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-banking",
+      "set": "transition",
+      "query": "I want to leave aviation and work in a bank.",
+      "relevant_count": 13,
+      "semantic": {
+        "hits": 0,
+        "returned": 5,
+        "precision_at_5": 0.0,
+        "recall_at_5": 0.0,
+        "f1_at_5": 0.0,
+        "reciprocal_rank": 0.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-175",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-127",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-159",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-192",
+            "department": "Commercial",
+            "relevant": false
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 3,
+        "returned": 5,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.23076923076923078,
+        "f1_at_5": 0.33333333333333337,
+        "reciprocal_rank": 0.3333333333333333,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-001",
+            "department": "Safety & Quality",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-039",
+            "department": "Customer Experience",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-097",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-071",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-044",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-hospitality",
+      "set": "transition",
+      "query": "How do I move from airline work into hotels and resorts?",
+      "relevant_count": 8,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.625,
+        "f1_at_5": 0.7692307692307693,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.625,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-088",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-120",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-107",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-112",
+            "department": "Cabin Services",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.25,
+        "f1_at_5": 0.3076923076923077,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.625,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-028",
+            "department": "Customer Experience",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-027",
+            "department": "Commercial",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-016",
+            "department": "Cabin Services",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-120",
+            "department": "Commercial",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-security",
+      "set": "transition",
+      "query": "I'm interested in protecting systems from hackers at a fintech company.",
+      "relevant_count": 2,
+      "semantic": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.5714285714285715,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-198",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-014",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-186",
+            "department": "ICT / Digital",
+            "relevant": false
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 1,
+        "returned": 5,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.28571428571428575,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-014",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-126",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-coaching",
+      "set": "transition",
+      "query": "I would like to train and coach people as my main job.",
+      "relevant_count": 16,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-176",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-104",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-136",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-188",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-176",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-116",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-104",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-188",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-consulting",
+      "set": "transition",
+      "query": "Can I become an independent consultant after my airline career?",
+      "relevant_count": 23,
+      "semantic": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.21739130434782608,
+        "f1_at_5": 0.3571428571428571,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.21739130434782608,
+        "top": [
+          {
+            "synthetic_id": "alum-075",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-123",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-099",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-079",
+            "department": "Finance",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 4,
+        "returned": 5,
+        "precision_at_5": 0.8,
+        "recall_at_5": 0.17391304347826086,
+        "f1_at_5": 0.2857142857142857,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 0.21739130434782608,
+        "top": [
+          {
+            "synthetic_id": "alum-087",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-036",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-046",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-173",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-telecom",
+      "set": "transition",
+      "query": "I want to join a mobile network operator.",
+      "relevant_count": 5,
+      "semantic": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.4,
+        "f1_at_5": 0.4000000000000001,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-060",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-004",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-031",
+            "department": "Commercial",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-194",
+            "department": "Corporate Services",
+            "relevant": false
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 0,
+        "returned": 2,
+        "precision_at_5": 0.0,
+        "recall_at_5": 0.0,
+        "f1_at_5": 0.0,
+        "reciprocal_rank": 0.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-186",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-data",
+      "set": "transition",
+      "query": "I want to build data pipelines and work on analytics.",
+      "relevant_count": 7,
+      "semantic": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.2857142857142857,
+        "f1_at_5": 0.3333333333333333,
+        "reciprocal_rank": 0.25,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-186",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-198",
+            "department": "ICT / Digital",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 3,
+        "returned": 5,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.42857142857142855,
+        "f1_at_5": 0.5,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-155",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-014",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-071",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-167",
+            "department": "Customer Experience",
+            "relevant": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-manufacturing",
+      "set": "transition",
+      "query": "What is it like to run quality and maintenance in a factory?",
+      "relevant_count": 4,
+      "semantic": {
+        "hits": 4,
+        "returned": 5,
+        "precision_at_5": 0.8,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.888888888888889,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-085",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-065",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-169",
+            "department": "Safety & Quality",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-061",
+            "department": "Safety & Quality",
+            "relevant": true
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.4444444444444445,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-065",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-023",
+            "department": "Engineering & Maintenance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-173",
+            "department": "Engineering & Maintenance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "t-energy",
+      "set": "transition",
+      "query": "Careers in the energy sector, for example geothermal power.",
+      "relevant_count": 5,
+      "semantic": {
+        "hits": 3,
+        "returned": 5,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.6,
+        "f1_at_5": 0.6,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-086",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-145",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-181",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-027",
+            "department": "Commercial",
+            "relevant": false
+          }
+        ]
+      },
+      "keyword_baseline": {
+        "hits": 4,
+        "returned": 5,
+        "precision_at_5": 0.8,
+        "recall_at_5": 0.8,
+        "f1_at_5": 0.8000000000000002,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-086",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-145",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-181",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-194",
+            "department": "Corporate Services",
+            "relevant": true
+          }
+        ]
+      }
+    }
+  ],
+  "negative_control": {
+    "query": "Astrophysics research on black holes and galaxy formation.",
+    "semantic_results": 0,
+    "keyword_results": 0
+  },
+  "macro": {
+    "domain": {
+      "semantic": {
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.4754,
+        "f1_at_5": 0.6372,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.4754
+      },
+      "keyword_baseline": {
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.4754,
+        "f1_at_5": 0.6372,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.4754
+      }
+    },
+    "transition": {
+      "semantic": {
+        "precision_at_5": 0.62,
+        "recall_at_5": 0.4774,
+        "f1_at_5": 0.4825,
+        "reciprocal_rank": 0.775,
+        "recall_ceiling": 0.6809
+      },
+      "keyword_baseline": {
+        "precision_at_5": 0.5,
+        "recall_at_5": 0.3307,
+        "f1_at_5": 0.3576,
+        "reciprocal_rank": 0.6667,
+        "recall_ceiling": 0.6809
+      }
+    },
+    "all": {
+      "semantic": {
+        "precision_at_5": 0.8273,
+        "recall_at_5": 0.4763,
+        "f1_at_5": 0.5669,
+        "reciprocal_rank": 0.8977,
+        "recall_ceiling": 0.5688
+      },
+      "keyword_baseline": {
+        "precision_at_5": 0.7727,
+        "recall_at_5": 0.4096,
+        "f1_at_5": 0.5101,
+        "reciprocal_rank": 0.8485,
+        "recall_ceiling": 0.5688
+      }
+    }
+  }
+}
