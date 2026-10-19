@@ -1,5 +1,12 @@
-"""Identity allowlist for the original 50 established, non-login demo alumni."""
-FIXTURE_IDS = tuple(f"ALUM-{number:03}" for number in range(1, 51))
+"""Identity allowlist for the deterministic, non-login synthetic demo alumni.
+
+ALUM-001..ALUM-050 are the original Sprint I fixtures; ALUM-051..ALUM-200 extend
+the dataset (Issue #5). All are fictional and can never sign in.
+"""
+FIXTURE_COUNT = 200
+ORIGINAL_FIXTURE_COUNT = 50
+FIXTURE_IDS = tuple(f"ALUM-{number:03}" for number in range(1, FIXTURE_COUNT + 1))
+ORIGINAL_FIXTURE_IDS = FIXTURE_IDS[:ORIGINAL_FIXTURE_COUNT]
 FIXTURE_PASSWORD = "synthetic_not_for_login"
 
 
@@ -10,12 +17,13 @@ def fixture_email(synthetic_id):
 
 
 FIXTURE_EMAILS = tuple(fixture_email(identity) for identity in FIXTURE_IDS)
+ORIGINAL_FIXTURE_EMAILS = FIXTURE_EMAILS[:ORIGINAL_FIXTURE_COUNT]
 
 
 def validate_fixture_rows(rows):
     identities = [row["synthetic_id"] for row in rows]
     if len(identities) != len(FIXTURE_IDS) or set(identities) != set(FIXTURE_IDS):
-        raise ValueError("Expected exactly the original 50 deterministic fixture identities")
+        raise ValueError(f"Expected exactly the {FIXTURE_COUNT} deterministic fixture identities")
     return rows
 
 

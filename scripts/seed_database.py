@@ -1,4 +1,5 @@
 import csv
+from collections import defaultdict
 
 import psycopg
 
@@ -6,14 +7,25 @@ from local_database import ROOT, local_dsn
 from synthetic_identity import fixture_email, seed_user, validate_fixture_rows
 
 CSV_FILE = ROOT / "data/synthetic_alumni.csv"
+WORK_HISTORY_FILE = ROOT / "data/synthetic_work_history.csv"
 
 
 def to_bool(value: str) -> bool:
     return value.strip().lower() == "true"
 
 
+def load_work_history():
+    history = defaultdict(list)
+    if WORK_HISTORY_FILE.exists():
+        with WORK_HISTORY_FILE.open(newline="", encoding="utf-8") as csvfile:
+            for row in csv.DictReader(csvfile):
+                history[row["synthetic_id"]].append(row)
+    return history
+
+
 def main():
     database_url = local_dsn()
+    work_history = load_work_history()
 
     with psycopg.connect(database_url) as conn:
         with conn.cursor() as cur:
@@ -139,6 +151,18 @@ def main():
                             row["mentorship_topics"],
                         ),
                     )
+
+                    # Replace this fixture's work history wholesale so reseeding is idempotent.
+                    cur.execute("DELETE FROM work_experience WHERE profile_id = %s", (profile_id,))
+                    for entry in work_history[row["synthetic_id"]]:
+                        cur.execute(
+                            """
+                            INSERT INTO work_experience (profile_id, organization, job_title, start_date, end_date, is_current, description)
+                            VALUES (%s, %s, %s, make_date(%s, 1, 1), CASE WHEN %s = '' THEN NULL ELSE make_date(%s::int, 12, 31) END, %s, %s)
+                            """,
+                            (profile_id, entry["organization"], entry["job_title"], int(entry["start_year"]),
+                             entry["end_year"], entry["end_year"] or None, to_bool(entry["is_current"]), entry["description"]),
+                        )
 
         conn.commit()
 

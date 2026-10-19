@@ -2,7 +2,8 @@ import csv
 import random
 from pathlib import Path
 
-from synthetic_identity import FIXTURE_IDS
+from synthetic_identity import FIXTURE_IDS, ORIGINAL_FIXTURE_IDS
+from synthetic_expansion import expansion_rows, work_history_rows
 
 random.seed(42)
 
@@ -10,6 +11,7 @@ OUTPUT_DIR = Path("data")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 OUTPUT_FILE = OUTPUT_DIR / "synthetic_alumni.csv"
+WORK_HISTORY_FILE = OUTPUT_DIR / "synthetic_work_history.csv"
 
 departments = {
     "Flight Operations": {
@@ -115,7 +117,8 @@ industries = [
 
 rows = []
 
-for synthetic_id in FIXTURE_IDS:
+# The original 50 rows consume the seeded sequence exactly as in Sprint I.
+for synthetic_id in ORIGINAL_FIXTURE_IDS:
     department = random.choice(list(departments.keys()))
     department_data = departments[department]
 
@@ -158,6 +161,11 @@ for synthetic_id in FIXTURE_IDS:
         "consent_to_matching": random.choice([True, True, True, False]),
     })
 
+# Issue #5: 150 further profiles from an independent seeded generator, so the
+# original rows above stay byte-for-byte identical.
+rows.extend(expansion_rows(FIXTURE_IDS[len(ORIGINAL_FIXTURE_IDS):], departments, {row["full_name"] for row in rows}))
+assert [row["synthetic_id"] for row in rows] == list(FIXTURE_IDS)
+
 fieldnames = rows[0].keys()
 
 with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as csvfile:
@@ -165,5 +173,11 @@ with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as csvfile:
     writer.writeheader()
     writer.writerows(rows)
 
-print(f"Generated {len(rows)} synthetic alumni profiles.")
-print(f"Saved to: {OUTPUT_FILE}")
+history = work_history_rows(rows)
+with WORK_HISTORY_FILE.open("w", newline="", encoding="utf-8") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=history[0].keys())
+    writer.writeheader()
+    writer.writerows(history)
+
+print(f"Generated {len(rows)} synthetic alumni profiles and {len(history)} work-history entries.")
+print(f"Saved to: {OUTPUT_FILE} and {WORK_HISTORY_FILE}")

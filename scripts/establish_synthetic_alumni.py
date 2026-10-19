@@ -5,7 +5,7 @@ import sys
 
 import psycopg
 from local_database import local_dsn, snapshot, tables_and_locks
-from synthetic_identity import FIXTURE_EMAILS, FIXTURE_PASSWORD
+from synthetic_identity import FIXTURE_PASSWORD, ORIGINAL_FIXTURE_EMAILS as FIXTURE_EMAILS
 
 
 def counts(conn):
