@@ -5,12 +5,14 @@ import AccountPage from "@/app/account/page";
 import SignInPage from "@/app/sign-in/page";
 import SignUpPage from "@/app/sign-up/page";
 import ForgotPasswordPage from "@/app/forgot-password/page";
-const mocks = vi.hoisted(() => ({ currentSession: vi.fn(), requireSession: vi.fn(), auth: vi.fn(), configured: vi.fn(), redirect: vi.fn(), getProfile: vi.fn() }));
+const mocks = vi.hoisted(() => ({ emailConfigured: vi.fn(), currentSession: vi.fn(), requireSession: vi.fn(), auth: vi.fn(), configured: vi.fn(), redirect: vi.fn(), getProfile: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/alumni-directory", () => ({ homeAlumni: vi.fn().mockResolvedValue([]) }));
 vi.mock("@/lib/profiles", () => ({ getProfile: mocks.getProfile }));
 vi.mock("@/lib/session", () => ({ currentSession: mocks.currentSession, requireSession: mocks.requireSession }));
 vi.mock("@/app/auth-actions", () => ({ googleSignIn: vi.fn(), logOut: vi.fn(), passwordSignIn: vi.fn(), registerAccount: vi.fn() }));
+vi.mock("@/app/password-actions", () => ({ requestPasswordReset: vi.fn(), completePasswordReset: vi.fn() }));
+vi.mock("@/lib/mailer", () => ({ isEmailConfigured: mocks.emailConfigured }));
 vi.mock("@/auth", () => ({ auth: mocks.auth }));
 vi.mock("@/lib/auth-environment", () => ({ isGoogleAuthConfigured: mocks.configured, isAuthConfigured: mocks.configured }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect, usePathname: () => "/" }));
@@ -44,6 +46,7 @@ describe("session-dependent pages", () => {
   for (const text of ["Personal Gmail", "Alumni verification is handled separately", "verified after"]) expect(html).not.toContain(text);
  });
  it("explains a Google/password email conflict without linking accounts", async () => { mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue(null); const html = renderToStaticMarkup(await SignInPage({ searchParams: Promise.resolve({ error: "account-exists" }) })); expect(html).toContain("already has a Lumina password account"); });
+ it("confirms a completed password reset", async () => { mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue(null); expect(renderToStaticMarkup(await SignInPage({ searchParams: Promise.resolve({ reset: "1" }) }))).toContain("password has been updated"); });
  it("confirms a newly created account", async () => { mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue(null); expect(renderToStaticMarkup(await SignInPage({ searchParams: Promise.resolve({ registered: "1" }) }))).toContain("Your account is ready"); });
  it("disables Google but keeps password sign-in when Google is unconfigured", async () => { mocks.configured.mockReturnValue(false); const html = renderToStaticMarkup(await SignInPage({ searchParams: Promise.resolve({}) })); expect(html).toMatch(/<button[^>]*disabled=""[^>]*class="button google-button"|<button[^>]*class="button google-button"[^>]*disabled=""/); expect(html).toContain('name="password"'); });
  it("renders a separate create-account page", async () => {
@@ -54,7 +57,13 @@ describe("session-dependent pages", () => {
   expect(html).toContain('autoComplete="new-password"');
  });
  it("redirects authenticated users away from create account", async () => { mocks.configured.mockReturnValue(true); mocks.auth.mockResolvedValue(session); mocks.redirect.mockImplementation(() => { throw new Error("redirect"); }); await expect(SignUpPage()).rejects.toThrow("redirect"); expect(mocks.redirect).toHaveBeenCalledWith("/onboarding"); });
+ it("offers a reset form only when email delivery is configured", () => {
+  mocks.emailConfigured.mockReturnValue(true);
+  const html = renderToStaticMarkup(<ForgotPasswordPage />);
+  expect(html).toContain('name="email"'); expect(html).toContain("Send reset link");
+ });
  it("does not pretend to send password reset emails", () => {
+  mocks.emailConfigured.mockReturnValue(false);
   const html = renderToStaticMarkup(<ForgotPasswordPage />);
   expect(html).toContain("not available yet"); expect(html).not.toMatch(/email (has been|was) sent|check your inbox/i); expect(html).not.toContain("<form");
  });

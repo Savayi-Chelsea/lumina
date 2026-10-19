@@ -9,11 +9,11 @@ const MAX_TRACKED = 10_000;
  * Prototype-grade: resets on restart and is not shared between instances.
  * Production needs a shared store (database or cache) and per-IP limits at the edge.
  */
-export function createSignInThrottle(now = () => Date.now()) {
+export function createSignInThrottle(now = () => Date.now(), max = MAX_FAILURES, windowMs = WINDOW_MS) {
   const failures = new Map<string, number[]>();
-  const recent = (key: string) => (failures.get(key) || []).filter(time => now() - time < WINDOW_MS);
+  const recent = (key: string) => (failures.get(key) || []).filter(time => now() - time < windowMs);
   return {
-    isLimited(key: string) { return recent(key).length >= MAX_FAILURES; },
+    isLimited(key: string) { return recent(key).length >= max; },
     recordFailure(key: string) {
       if (!failures.has(key) && failures.size >= MAX_TRACKED) {
         for (const [entry] of failures) { if (!recent(entry).length) failures.delete(entry); }
@@ -28,8 +28,15 @@ export function createSignInThrottle(now = () => Date.now()) {
 export type SignInThrottle = ReturnType<typeof createSignInThrottle>;
 
 // Server actions and the Auth.js route handler can load separate module copies.
-const throttleGlobal = globalThis as typeof globalThis & { luminaSignInThrottle?: SignInThrottle };
+const throttleGlobal = globalThis as typeof globalThis & { luminaSignInThrottle?: SignInThrottle; luminaResetThrottle?: SignInThrottle };
 export function signInThrottle() {
   throttleGlobal.luminaSignInThrottle ??= createSignInThrottle();
   return throttleGlobal.luminaSignInThrottle;
+}
+
+/** Password reset requests: at most 3 emails per address per 15 minutes. */
+export const MAX_RESET_REQUESTS = 3;
+export function resetRequestThrottle() {
+  throttleGlobal.luminaResetThrottle ??= createSignInThrottle(undefined, MAX_RESET_REQUESTS);
+  return throttleGlobal.luminaResetThrottle;
 }
