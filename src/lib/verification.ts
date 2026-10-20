@@ -5,7 +5,7 @@ import { requireAdmin, requireSession } from "@/lib/session";
 import { normalizedText, staffNumber, type VerificationDetails } from "@/lib/verification-input";
 import type { LuminaUser } from "@/lib/lumina-users";
 
-type Account = LuminaUser & { google_subject: string | null };
+type Account = LuminaUser & { google_subject: string | null; has_password: boolean };
 type RegistryRecord = {
   id: string;
   surname: string;
@@ -43,12 +43,15 @@ async function transaction<T>(work: (conn: PoolClient) => Promise<T>) {
 
 async function lockedUser(conn: PoolClient, id: string) {
   return (await conn.query<Account>(
-    "SELECT id, role, account_status, alumni_verified, google_subject FROM users WHERE id = $1 FOR UPDATE", [id],
+    `SELECT id, role, account_status, alumni_verified, google_subject,
+       (password_hash LIKE '$argon2id$%') AS has_password FROM users WHERE id = $1 FOR UPDATE`, [id],
   )).rows[0];
 }
 
 function eligible(user: Account | undefined) {
-  return user?.role === "alumni" && user.account_status !== "suspended" && Boolean(user.google_subject);
+  // A real sign-in identity (Google or an Argon2id password) is required; seeded
+  // non-login fixtures have neither and can never claim registry records.
+  return user?.role === "alumni" && user.account_status !== "suspended" && (Boolean(user.google_subject) || user.has_password === true);
 }
 
 async function lockedRecord(conn: PoolClient, number: string) {
