@@ -11,10 +11,10 @@ export function normalizedText(value: string) {
 }
 
 export function staffNumber(value: unknown): string {
-  if (typeof value !== "string") throw new Error("Enter your synthetic staff number.");
+  if (typeof value !== "string") throw new Error("Enter your staff number.");
   const number = value.trim().toUpperCase();
   if (number.length > 40 || !/^SYN-ALUM-[0-9]{3,}$/.test(number)) {
-    throw new Error("Use a synthetic staff number such as SYN-ALUM-001.");
+    throw new Error("Check your staff number. It looks like SYN-ALUM-001.");
   }
   return number;
 }

@@ -5,11 +5,6 @@ import { Icon, type IconName } from "./icon";
 
 const categoryIcon: Record<string, IconName> = { Reunion: "people", "Career conversation": "compass", "Mentorship circle": "spark", Workshop: "briefcase", Networking: "globe", "Community service": "people" };
 
-/** Fictional demonstration rows are always labelled; admin-created listings are not. */
-export function SampleLabel({ synthetic }: { synthetic: boolean }) {
-  return synthetic ? <span className="demo-label" title="Fictional listing created for demonstration">Sample listing</span> : null;
-}
-
 export function placesLeft(event: Pick<CommunityEvent, "capacity" | "registration_count">) {
   return event.capacity === null ? null : Math.max(0, event.capacity - event.registration_count);
 }
@@ -29,7 +24,6 @@ export function EventCard({ event, index = 0 }: { event: CommunityEvent; index?:
         {event.registered ? <span className="availability"><Icon name="check" width={12} height={12} />You&apos;re attending</span>
           : left === 0 ? <span className="badge">Fully booked</span>
           : <span className="small muted">{event.registration_count} attending{left !== null ? ` · ${left} places left` : ""}</span>}
-        <SampleLabel synthetic={event.synthetic} />
       </div>
       <Link className="text-link" href={`/events/${event.id}`} aria-label={`View event: ${event.title}`}>View event<Icon name="arrow" /></Link>
     </div>
@@ -47,7 +41,6 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
       <p className="opportunity-summary">{opportunity.summary}</p>
       <div className="event-card-footer">
         <span className="small muted">{opportunity.closes_on ? `Closes ${formatDate(opportunity.closes_on)}` : "Open until filled"}</span>
-        <SampleLabel synthetic={opportunity.synthetic} />
       </div>
       <Link className="text-link" href={`/opportunities/${opportunity.id}`} aria-label={`View opportunity: ${opportunity.title}`}>View details<Icon name="arrow" /></Link>
     </div>

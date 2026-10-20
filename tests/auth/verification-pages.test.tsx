@@ -16,9 +16,10 @@ beforeEach(() => {
   mocks.redirect.mockImplementation(path => { throw new Error(`redirect:${path}`); });
 });
 describe("registry frontend", () => {
-  it("requires a session and labels all verification fields and fictional data", async () => {
+  it("requires a session and labels all verification fields like a real registry check", async () => {
     const html = renderToStaticMarkup(await VerifyPage());
-    for (const label of ["Synthetic staff number", "Surname", "Former KQ department", "KQ start year", "KQ end year", "Fictional prototype registry", "Request assistance"]) expect(html).toContain(label);
+    for (const label of ["Staff number", "Surname", "Former KQ department", "KQ start year", "KQ end year", "Why we verify", "Request assistance"]) expect(html).toContain(label);
+    for (const text of ["Synthetic", "Fictional", "prototype", "fixture"]) expect(html).not.toContain(text);
     expect(html).not.toContain("Wafula");
     mocks.requireSession.mockRejectedValue(new Error("signin")); await expect(VerifyPage()).rejects.toThrow("signin");
   });

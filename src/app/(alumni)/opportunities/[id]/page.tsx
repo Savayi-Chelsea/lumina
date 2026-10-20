@@ -4,7 +4,6 @@ import { requireSession } from "@/lib/session";
 import { canDiscoverMentors } from "@/lib/mentorship-contract";
 import { getOpportunity } from "@/lib/community";
 import { WORK_MODES, formatDate } from "@/lib/community-input";
-import { SampleLabel } from "@/components/community-cards";
 import { DiscoveryGate } from "@/components/discovery-gate";
 import { Icon } from "@/components/icon";
 
@@ -21,7 +20,7 @@ export default async function OpportunityPage({ params }: { params: Promise<{ id
     {opportunity.status !== "published" && <p className="card notice" role="status">Admin preview · This listing is {opportunity.status} and not visible to alumni.</p>}
     <header className="community-detail-hero">
       <span className="opportunity-icon large"><Icon name="briefcase" width={32} height={32} /></span>
-      <div><p className="eyebrow">{opportunity.opportunity_type} · {WORK_MODES[opportunity.work_mode]}</p><h1>{opportunity.title}</h1><p className="detail-summary">{opportunity.organization} · {opportunity.location}</p><SampleLabel synthetic={opportunity.synthetic} /></div>
+      <div><p className="eyebrow">{opportunity.opportunity_type} · {WORK_MODES[opportunity.work_mode]}</p><h1>{opportunity.title}</h1><p className="detail-summary">{opportunity.organization} · {opportunity.location}</p></div>
     </header>
     <div className="community-detail-grid">
       <section className="card"><h2>About the opportunity</h2><p className="detail-summary">{opportunity.summary}</p><p className="detail-description">{opportunity.description}</p></section>

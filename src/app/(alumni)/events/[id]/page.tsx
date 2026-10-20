@@ -4,7 +4,7 @@ import { requireSession } from "@/lib/session";
 import { canDiscoverMentors } from "@/lib/mentorship-contract";
 import { getEvent } from "@/lib/community";
 import { EVENT_FORMATS, eventDay, eventWhen } from "@/lib/community-input";
-import { placesLeft, SampleLabel } from "@/components/community-cards";
+import { placesLeft } from "@/components/community-cards";
 import { DiscoveryGate } from "@/components/discovery-gate";
 import { Icon } from "@/components/icon";
 import { changeRegistration } from "../actions";
@@ -36,7 +36,7 @@ export default async function EventPage({ params, searchParams }: { params: Prom
     {event.status !== "published" && <p className="card notice" role="status">Admin preview · This event is {event.status} and not visible to alumni.</p>}
     <header className="community-detail-hero">
       <span className="event-date-badge large"><strong>{day}</strong>{month}</span>
-      <div><p className="eyebrow">{event.category} · {EVENT_FORMATS[event.format]}</p><h1>{event.title}</h1><p className="detail-summary">{event.summary}</p><SampleLabel synthetic={event.synthetic} /></div>
+      <div><p className="eyebrow">{event.category} · {EVENT_FORMATS[event.format]}</p><h1>{event.title}</h1><p className="detail-summary">{event.summary}</p></div>
     </header>
     <div className="community-detail-grid">
       <section className="card"><h2>About this event</h2><p className="detail-description">{event.description}</p></section>

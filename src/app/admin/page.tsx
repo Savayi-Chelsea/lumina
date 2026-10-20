@@ -10,7 +10,7 @@ export default async function AdminPage() {
     <p className="eyebrow">Lumina administration</p><h1>Community stewardship</h1>
     <div className="admin-stats">
       <section className="card"><h2>{requests.length} open verification exceptions</h2>
-        <p>Alumni verification runs automatically against the prototype registry. Administrators assist only when a user requests help.</p>
+        <p>Alumni verification runs automatically against the alumni registry. Administrators assist only when a user requests help.</p>
         <Link className="button" href="/admin/verification">Review assistance requests</Link>
       </section>
       <section className="card"><h2>{counts.upcoming_events} upcoming events</h2>

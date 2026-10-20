@@ -25,7 +25,7 @@ describe("verification input and authorization", () => {
   expect(parseVerification(data)).toEqual({ staffNumber: "SYN-ALUM-001", surname: "wafula", department: "safety & quality", startYear: 2008, endYear: 2016 });
   data.set("end_year","2007"); expect(() => parseVerification(data)).toThrow("on or after");
   data.set("end_year","9999"); expect(() => parseVerification(data)).toThrow("Service years");
-  data.set("staff_number","KQ123"); expect(() => parseVerification(data)).toThrow("synthetic staff");
+  data.set("staff_number","KQ123"); expect(() => parseVerification(data)).toThrow("Check your staff number");
  });
  it("does not accept files, blank surnames or missing fields", () => {
   const data = new FormData(); expect(() => parseVerification(data)).toThrow();

@@ -41,9 +41,9 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
         <span className={`badge status-${user.account_status === "active" ? "published" : user.account_status === "suspended" ? "archived" : "draft"}`}>{user.account_status === "pending" ? "Awaiting verification" : user.account_status === "active" ? "Active" : "Suspended"}</span>
         {user.role === "admin" && <span className="badge">Administrator</span>}
         {user.alumni_verified && <span className="availability">Verified alumni</span>}
-        {user.sign_in === "Sample" && <span className="demo-label">Sample profile</span>}
+        {user.sign_in === "Sample" && <span className="badge">Seeded</span>}
       </div></div>
-      <p className="muted">{user.email} · {user.sign_in === "Sample" ? "Fictional seeded profile (cannot sign in)" : `${user.sign_in} sign-in`} · Joined {formatDate(user.created_at)}</p>
+      <p className="muted">{user.email} · {user.sign_in === "Sample" ? "Seeded profile (no sign-in)" : `${user.sign_in} sign-in`} · Joined {formatDate(user.created_at)}</p>
       {user.role === "alumni" && user.id !== session.user.id && <form action={changeAccountStatus} className="actions">
         <input type="hidden" name="user_id" value={user.id} /><input type="hidden" name="return_to" value={href(page)} />
         {user.account_status === "suspended"
