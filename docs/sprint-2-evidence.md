@@ -17,6 +17,9 @@ All alumni, events and opportunities are fictional synthetic data.
 | Events | Admin creates/publishes event → alumni browse and reserve a place → capacity-safe registration → attendee list for admin |
 | Opportunities | Admin publishes listing → alumni filter/search open listings → detail with application instructions |
 | Administration | Dashboard counts, verification exceptions, event/opportunity management, user suspension and reinstatement |
+| Professional networking | Connect → accept → message; LinkedIn-style profiles with experience, skills, photo and mentorship settings |
+| Mentorship relationships | Request with goal and message → mentor accepts → conversation opens; notifications at each step |
+| Event-driven matching | Profile edit → outbox row (same transaction) → Kafka topic → indexer re-embeds only that profile |
 
 ## 2. Test and build results
 
@@ -79,5 +82,5 @@ These suggestions were evaluated, accepted or rejected during Sprint II:
 - Sign-in and reset rate limits are in memory per server process; production needs a shared store and edge rate limiting.
 - Sessions issued before a password reset stay valid until they expire (24 hours).
 - Email addresses of password accounts are not verified; alumni verification still gates every privileged feature.
-- Kafka, LLM-generated match explanations and AWS deployment are designed in the report but **not implemented**.
+- Kafka runs locally (single-node KRaft) and drives automatic re-indexing through a transactional outbox. Match explanations are grounded and rule-based; no LLM is used. AWS deployment is **not implemented**.
 - Before deployment: production `APP_ORIGIN`, rotated Google OAuth secret, real SMTP provider, managed PostgreSQL with pgvector, model-weight caching for the matching service, HTTPS cookies, and a decision on keeping synthetic data out of production.

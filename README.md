@@ -27,6 +27,10 @@ Current functionality includes:
 - Admin user management (suspend and reinstate)
 - 200 synthetic alumni with work histories
 - Reproducible matching evaluation (P@5, R@5, F1@5, MRR) against a keyword baseline
+- LinkedIn-style profiles: banner, photo upload, About, Experience timeline, Kenya Airways chapter, Skills and Mentorship
+- Connections, 1:1 messaging, mentorship requests and in-app notifications
+- Grounded "Why this match" explanations on mentor results
+- Kafka event streaming: profile edits trigger automatic re-embedding through a transactional outbox
 - Pre-trained BGE profile embedding ingestion
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
@@ -655,6 +659,7 @@ auth pages for overflow and touch-sized inputs at 320, 375, 768, 1024 and 1440 p
 docker compose up -d                                   # PostgreSQL + Mailpit
 .venv/Scripts/python.exe scripts/apply_migration.py 004 --apply   # events, registrations, opportunities
 .venv/Scripts/python.exe scripts/apply_migration.py 005 --apply   # password reset tokens
+.venv/Scripts/python.exe scripts/apply_migration.py 006 --apply   # profiles, connections, messaging, notifications, outbox
 .venv/Scripts/python.exe scripts/generate_synthetic_data.py
 .venv/Scripts/python.exe scripts/seed_database.py
 .venv/Scripts/python.exe scripts/index_profile_embeddings.py
@@ -759,6 +764,89 @@ answer depends on the mentor's current industry, title or organization; there
 semantic matching outperforms keyword matching. An off-topic control query returns
 no results. These are synthetic, rule-labelled results, not a measure of
 performance on real Kenya Airways alumni.
+
+## Social network and event-driven matching
+
+### Profiles
+
+`/profile` is your own LinkedIn-style profile: a banner (five themes), photo,
+headline, current role, location, connection count and "Open to mentoring" /
+"Open to opportunities" badges, then About, Experience (timeline with durations),
+Kenya Airways chapter, Skills and Mentorship. Pencil and plus icons open the
+editors under `/profile/edit`:
+
+| Editor | What it changes |
+| --- | --- |
+| `/profile/edit` | Name, headline, current role, location, About, Kenya Airways chapter, banner, open-to-opportunities |
+| `/profile/edit/experience` | Add, edit and delete roles (month precision, "I currently work here") |
+| `/profile/edit/skills` | Add (up to 30, reusing existing skill names case-insensitively) and remove skills |
+| `/profile/edit/mentorship` | Matching consent, availability and up to 10 topics |
+| `/profile/edit/photo` | Upload a photo (cropped and resized to 400 × 400 JPEG in the browser), or remove it |
+
+Photos are checked by file signature (JPEG, PNG or WebP only, at most 512 KB) and stored in
+`profile_photos`. They are served by `/api/profile-photo/[id]` only to signed-in members who may
+see that profile, with `private` caching, `nosniff` and a `default-src 'none'` CSP.
+
+`/alumni/[id]` shows the same layout for other members, with **Connect**, **Message**
+(once connected or in a mentorship) and **Request mentorship** (when they offer it), plus
+"People also viewed". Internal user ids are resolved on the server and never rendered.
+
+### Connections, messages, mentorship requests and notifications
+
+- **My network** (`/network/connections`): accept or ignore invitations, message or remove
+  connections, withdraw sent invitations, and "People you may know" (same former
+  department, then shared skills, then shared industry). A crossing request is accepted
+  rather than duplicated; a declined request can be sent again later.
+- **Messages** (`/messages`): 1:1 conversations between connections or mentorship pairs,
+  unread counts, read receipts on open, 2,000-character limit. Removing a connection
+  stops further messages.
+- **Mentorship requests**: from a mentor's profile or a search result, send a goal and
+  message (one pending request per mentor). `/mentorship/requests` lists received and sent
+  requests; accepting opens a conversation that starts with the original request.
+- **Notifications** (`/notifications`): invitations, acceptances, messages (one unread
+  notification per sender) and mentorship replies. The header shows unread counts for
+  messages and notifications (inside the account menu on narrow phones).
+
+### Grounded match explanations
+
+Each mentor result shows "Why this match", built only from overlaps between the
+member's own words and the mentor's stored skills, mentorship topics, current role
+or former KQ role (`src/lib/match-explanation.ts`). When the ranking reflects meaning
+rather than shared words, it states the mentor's role facts instead of inventing an
+overlap. No language model is involved, so explanations cannot hallucinate.
+
+### Kafka re-indexing
+
+Profile, skills, experience and mentorship-settings changes insert a row into
+`profile_change_outbox` in the same database transaction. A worker then:
+
+1. **Relays** pending rows to the Kafka topic `lumina.profile-changes` (3 partitions,
+   keyed by profile id so each profile's events stay ordered), marking them published
+   only after Kafka acknowledges them (`acks=all`).
+2. **Consumes** the topic in the `lumina-matching-indexer` group, re-embeds only the
+   changed profiles with the existing BGE indexer, and commits offsets after the
+   database work succeeds.
+
+A crash replays events rather than losing them, and source hashes make replays harmless.
+If Kafka or PostgreSQL restarts, the worker reconnects on its own.
+
+```powershell
+docker compose up -d kafka
+.venv/Scripts/python.exe scripts/run_profile_events.py
+# Optional live broker test:
+$env:LUMINA_TEST_KAFKA = "1"; .venv/Scripts/python.exe -m unittest services.matching.tests.test_profile_events
+```
+
+Kafka runs as a single KRaft node (`apache/kafka:4.1.0`, no ZooKeeper) published on
+`127.0.0.1:9092`; the Python client is `kafka-python==3.0.11`. The full re-index script
+(`scripts/index_profile_embeddings.py`) still works for bulk rebuilds.
+
+### Presentation of seeded data
+
+The site presents all members, events and opportunities as a normal community: no
+"synthetic", "sample" or "fictional" labels appear to members. All seeded data remains
+fictional, and that is documented here, in the evidence pack and in the report. Only
+the admin Users page marks seeded accounts ("Seeded", no sign-in), because they cannot log in.
 
 ## Data Ethics
 
