@@ -34,6 +34,7 @@ export type MentorMatch = {
   matchRelevance: number;
   availableForMentorship: true;
   synthetic: boolean;
+  reasons?: string[];
 };
 
 export function isMentorMatch(value: unknown): value is MentorMatch {
@@ -44,5 +45,6 @@ export function isMentorMatch(value: unknown): value is MentorMatch {
     && ["headline", "formerRole", "department", "currentPosition", "organization"].every(key => item[key] === null || (typeof item[key] === "string" && item[key].length <= 200))
     && Array.isArray(item.skills) && item.skills.length <= 100 && item.skills.every(skill => typeof skill === "string" && skill.length <= 100)
     && typeof item.matchRelevance === "number" && Number.isFinite(item.matchRelevance) && item.matchRelevance >= -1 && item.matchRelevance <= 1
-    && item.availableForMentorship === true && typeof item.synthetic === "boolean";
+    && item.availableForMentorship === true && typeof item.synthetic === "boolean"
+    && (item.reasons === undefined || (Array.isArray(item.reasons) && item.reasons.length <= 5 && item.reasons.every(reason => typeof reason === "string" && reason.length <= 300)));
 }

@@ -1,6 +1,7 @@
 import "server-only";
 import { discoverableMentors } from "@/lib/mentor-profiles";
 import { profileIdPattern, validateMentorQuery, type MentorMatch } from "@/lib/mentorship-contract";
+import { explainMatch } from "@/lib/match-explanation";
 
 type ServiceMatch = {
   profile_id: string; headline: string | null; former_kq_role: string | null;
@@ -88,6 +89,7 @@ export async function searchMentors(rawQuery: unknown): Promise<MentorMatch[]> {
         currentPosition: match.current_job_title, organization: match.current_organization,
         skills: match.relevant_skills, matchRelevance: match.similarity_score,
         availableForMentorship: true as const, synthetic: profile.synthetic,
+        reasons: explainMatch(query, profile),
       }];
     });
   } catch (error) {
