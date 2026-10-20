@@ -46,7 +46,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("registry verification
     await control.query(`CREATE SCHEMA ${schema}`);
     shared.pool = new Pool({ ...config, options: `-c search_path=${schema}`, max: 4 });
     shared.context = new AsyncLocalStorage<string>();
-    for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests"]) {
+    for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_change_outbox"]) {
       await shared.pool.query(`CREATE TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
     }
     // LIKE copies checks and unique indexes, but PostgreSQL does not copy foreign keys.

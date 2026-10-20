@@ -14,7 +14,9 @@ function SectionHeading({ id, eyebrow, title, href, link }: { id: string; eyebro
   return <div className="section-heading"><div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div><Link className="text-link" href={href}>{link}<Icon name="arrow" /></Link></div>;
 }
 
-export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false }: { people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
+export type NetworkSummary = { connections: number; invitations: number; messages: number; mentorshipWaiting: number } | null;
+
+export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false, summary = null }: { summary?: NetworkSummary; people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
   const name = profile?.full_name || user.name || "Lumina member";
   const firstName = name.split(/\s+/)[0];
   const progress = profileProgress(profile);
@@ -38,7 +40,14 @@ export function AlumniHome({ user, profile, people = [], events = [], opportunit
     <section className="discovery-section" aria-labelledby="events-heading"><SectionHeading id="events-heading" eyebrow="MAKE ROOM FOR A REUNION" title="Good things on the horizon." href="/events" link="Explore events" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to see upcoming gatherings and reserve your place.</p></div> : events.length ? <div className="event-grid">{events.map((event,index) => <EventCard key={event.id} event={event} index={index} />)}</div> : <div className="card"><p>No upcoming events yet. New gatherings are announced regularly.</p><Link className="text-link" href="/events">See all events<Icon name="arrow" /></Link></div>}</section>
 
     <div className="home-bottom-grid"><section className="discovery-section" aria-labelledby="opportunities-heading"><SectionHeading id="opportunities-heading" eyebrow="YOUR EXPERIENCE HAS PLACES TO GO" title="What could come next?" href="/opportunities" link="Explore" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore opportunities shared with the community.</p></div> : opportunities.length ? <div className="opportunity-list">{opportunities.map(opportunity => <OpportunityCard key={opportunity.id} opportunity={opportunity} />)}</div> : <div className="card"><p>No open opportunities right now. Check back soon.</p></div>}</section>
-      <section className="community-placeholder" aria-labelledby="community-heading"><span className="community-icon"><Icon name="people" width={30} height={30} /></span><p className="eyebrow">THE CONVERSATION CONTINUES</p><h2 id="community-heading">Stories worth<br /><em>staying close to.</em></h2><p>A space for shared milestones, fresh perspectives and familiar voices.</p><span className="badge">Community activity · Coming soon</span><p className="small muted">There is no live activity feed yet. For now, discover the people and possibilities around you.</p><Link className="text-link" href="/network">Meet the community<Icon name="arrow" /></Link></section>
+      <section className="community-placeholder" aria-labelledby="community-heading"><span className="community-icon"><Icon name="people" width={30} height={30} /></span><p className="eyebrow">YOUR NETWORK</p><h2 id="community-heading">Stay close to<br /><em>your people.</em></h2>
+        {summary ? <ul className="network-summary-list">
+          <li><Link href="/network/connections"><strong>{summary.connections}</strong> {summary.connections === 1 ? "connection" : "connections"}</Link></li>
+          <li><Link href="/network/connections"><strong>{summary.invitations}</strong> {summary.invitations === 1 ? "invitation" : "invitations"} waiting</Link></li>
+          <li><Link href="/messages"><strong>{summary.messages}</strong> unread {summary.messages === 1 ? "message" : "messages"}</Link></li>
+          <li><Link href="/mentorship/requests"><strong>{summary.mentorshipWaiting}</strong> mentorship {summary.mentorshipWaiting === 1 ? "request" : "requests"} to answer</Link></li>
+        </ul> : <p>Verify your alumni details to connect, message and find mentors.</p>}
+        <Link className="text-link" href="/network/connections">Grow your network<Icon name="arrow" /></Link></section>
     </div>
     <div className="home-signoff"><span className="eyebrow">ONCE PART OF THE JOURNEY. ALWAYS PART OF THE STORY.</span></div>
   </div>;

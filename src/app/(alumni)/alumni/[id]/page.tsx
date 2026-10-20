@@ -2,11 +2,23 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireSession } from "@/lib/session";
 import { canDiscoverMentors, profileIdPattern } from "@/lib/mentorship-contract";
-import { alumniProfile } from "@/lib/alumni-directory";
+import { alumniProfile, relatedAlumni } from "@/lib/alumni-directory";
 import { networkReturn, type SearchParameters } from "@/lib/network-query";
-import { AlumniAvatar } from "@/components/alumni-avatar";
+import { connectionCount, connectionState, memberByProfile } from "@/lib/social";
+import { canMessage } from "@/lib/messages";
+import { mentorshipWith } from "@/lib/mentorship-requests";
+import { database } from "@/lib/db";
 import { DiscoveryGate } from "@/components/discovery-gate";
 import { Icon } from "@/components/icon";
+import { PeopleList, ProfileView } from "@/components/profile-view";
+import { answerConnection, connect, startConversation } from "../../social-actions";
+
+export const dynamic = "force-dynamic";
+
+const connectMessages: Record<string, string> = {
+  sent: "Invitation sent.", accepted: "You're now connected.", already: "You're already connected or have a pending invitation.",
+  unavailable: "This member can't be invited right now.", failed: "Something went wrong. Please try again.",
+};
 
 export default async function AlumniProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<SearchParameters> }) {
   const session = await requireSession();
@@ -15,12 +27,34 @@ export default async function AlumniProfilePage({ params, searchParams }: { para
   if (!profileIdPattern.test(id)) notFound();
   const profile = await alumniProfile(id);
   if (!profile) notFound();
-  const from = (await searchParams)?.from;
-  const back = from === "mentorship" ? "/mentorship" : networkReturn(from);
-  return <div className="mentor-profile"><Link className="text-link" href={back}>{from === "mentorship" ? "Back to mentorship" : "Back to Network"}<Icon name="arrow" /></Link><section className="mentor-profile-hero"><AlumniAvatar name={profile.full_name} image={profile.image} large /><div>{profile.synthetic && <span className="demo-label">Synthetic demo profile</span>}<p className="eyebrow">{profile.former_kq_department || "Alumni experience"}</p><h1>{profile.full_name}</h1><p>{profile.headline || "Professional profile"}</p>{profile.mentorship_available && <span className="availability"><Icon name="check" width={14} height={14} />Available for mentorship</span>}</div></section>
-    <div className="mentor-profile-grid"><section className="card"><h2>A little about my journey</h2><p className="profile-biography">{profile.biography || "This alumnus has not added a biography yet."}</p>{profile.mentorship_available && <><h3>Mentorship interests</h3><p>{profile.mentorship_topics || "Mentorship topics have not been added yet."}</p></>}<h3>Skills and experience</h3>{profile.skills.length ? <ul className="profile-skills">{profile.skills.map(skill => <li key={skill}>{skill}</li>)}</ul> : <p className="muted">No skills listed yet.</p>}</section>
-      <section className="card"><h2>Professional story</h2><dl className="mentor-career"><dt>Former KQ role</dt><dd>{profile.former_kq_role || "Not provided"}</dd><dt>Former KQ department</dt><dd>{profile.former_kq_department || "Not provided"}</dd><dt>KQ service years</dt><dd>{profile.kq_start_year ?? "Not provided"} – {profile.kq_end_year ?? "Not provided"}</dd><dt>Current position</dt><dd>{profile.current_job_title || "Not provided"}</dd><dt>Current organization</dt><dd>{profile.current_organization || "Not provided"}</dd><dt>Industry</dt><dd>{profile.industry || "Not provided"}</dd><dt>Location</dt><dd>{profile.location || "Not provided"}</dd></dl><p className="small muted">Professional profiles are shared within the verified Lumina community. Mentorship availability is separate from directory visibility. Messaging and connection requests are not available yet.</p></section></div>
-    <section className="card work-history"><h2>Work experience</h2>{profile.experience.length ? <ol>{profile.experience.map((work,index) => <li key={index}><h3>{work.job_title}</h3><p>{work.organization}</p><p className="small muted">{work.start_date?.slice(0,7) || "Start date not added"} &ndash; {work.is_current ? "Present" : work.end_date?.slice(0,7) || "End date not added"}</p>{work.description && <p className="profile-biography">{work.description}</p>}</li>)}</ol> : <p className="muted">Work experience has not been added yet.</p>}</section>
-    {profile.synthetic && <p className="preview-notice">This is a fictional profile from Lumina’s synthetic alumni dataset, used to demonstrate real mentor search. It is not a real Kenya Airways employee record.</p>}
-  </div>;
+  const query = (await searchParams) || {};
+  const from = typeof query.from === "string" ? query.from : undefined;
+  const backHref = from === "mentorship" ? "/mentorship" : from === "connections" ? "/network/connections" : networkReturn(from);
+  // The owner's internal id is resolved on the server and never rendered.
+  const owner = await memberByProfile(profile.id);
+  if (!owner) notFound();
+  const self = owner.user_id === session.user.id;
+  const [relation, connections, messaging, mentorship, related] = await Promise.all([
+    connectionState(session.user.id, owner.user_id), connectionCount(owner.user_id),
+    canMessage(database(), session.user.id, owner.user_id), mentorshipWith(session.user.id, owner.user_id),
+    relatedAlumni(profile.id, profile.former_kq_department),
+  ]);
+  const returnTo = `/alumni/${profile.id}`;
+  const connectNotice = typeof query.connect === "string" ? connectMessages[query.connect] : undefined;
+  const actions = self ? <Link className="button secondary" href="/profile">View your profile</Link> : <>
+    {relation.state === "none" && <form action={connect}><input type="hidden" name="profile_id" value={profile.id} /><input type="hidden" name="return_to" value={returnTo} /><button><Icon name="plus" width={16} height={16} />Connect</button></form>}
+    {relation.state === "outgoing" && <button className="secondary" disabled>Invitation sent</button>}
+    {relation.state === "incoming" && relation.id && <form action={answerConnection}><input type="hidden" name="connection_id" value={relation.id} /><input type="hidden" name="return_to" value={returnTo} /><button name="decision" value="accept">Accept invitation</button></form>}
+    {relation.state === "connected" && <span className="badge"><Icon name="check" width={14} height={14} />Connected</span>}
+    {messaging && <form action={startConversation}><input type="hidden" name="profile_id" value={profile.id} /><input type="hidden" name="return_to" value={returnTo} /><button className="secondary"><Icon name="message" width={16} height={16} />Message</button></form>}
+    {profile.mentorship_available && (mentorship
+      ? <span className="badge">{mentorship.status === "pending" ? "Mentorship requested" : "Your mentor"}</span>
+      : <Link className="button secondary" href={`/mentorship/request/${profile.id}`}>Request mentorship</Link>)}
+  </>;
+  return <>
+    <Link className="text-link back-link" href={backHref}><Icon name="arrow" className="flip" />{from === "mentorship" ? "Back to mentorship" : from === "connections" ? "Back to My network" : "Back to Network"}</Link>
+    <ProfileView profile={profile} connections={connections} actions={actions}
+      notice={connectNotice ? <p className="card notice" role="status">{connectNotice}</p> : undefined}
+      sidebar={<PeopleList title="People also viewed" people={related} />} />
+  </>;
 }

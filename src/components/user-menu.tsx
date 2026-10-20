@@ -32,6 +32,9 @@ export function UserMenu({ user }: { user: Session["user"] }) {
       {user.email && <p className="menu-email">{user.email}</p>}
       <Link href="/account" onClick={() => setOpen(false)}>Account</Link>
       <Link href="/profile" onClick={() => setOpen(false)}>Your profile</Link>
+      <Link href="/messages" onClick={() => setOpen(false)}>Messages</Link>
+      <Link href="/notifications" onClick={() => setOpen(false)}>Notifications</Link>
+      <Link href="/network/connections" onClick={() => setOpen(false)}>My network</Link>
       {user.role === "admin" && <Link href="/admin" onClick={() => setOpen(false)}>Administration</Link>}
       <SignOutButton />
     </div>}

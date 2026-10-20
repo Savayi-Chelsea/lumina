@@ -6,6 +6,9 @@ import { homeAlumni, type AlumniSummary } from "@/lib/alumni-directory";
 import { listEvents, listOpportunities, type CommunityEvent, type Opportunity } from "@/lib/community";
 import { canDiscoverMentors } from "@/lib/mentorship-contract";
 import { getProfile } from "@/lib/profiles";
+import { headerCounts } from "@/lib/activity";
+import { myNetwork } from "@/lib/social";
+import { mentorshipRequests } from "@/lib/mentorship-requests";
 
 export const dynamic = "force-dynamic";
 
@@ -26,5 +29,9 @@ export default async function Home() {
       listOpportunities({ type: null, q: "" }, 3).catch(() => []),
     ]);
   }
-  return <AppShell user={session.user}><AlumniHome user={session.user} profile={profile} people={people} events={events} opportunities={opportunities} discoveryUnavailable={discoveryUnavailable} /></AppShell>;
+  const counts = await headerCounts(session.user);
+  const summary = counts ? await Promise.all([myNetwork(session.user.id), mentorshipRequests(session.user.id)])
+    .then(([network, requests]) => ({ connections: network.connections.length, invitations: network.incoming.length, mentorshipWaiting: requests.incoming.filter(r => r.status === "pending").length, messages: counts.messages }))
+    .catch(() => null) : null;
+  return <AppShell user={session.user} counts={counts}><AlumniHome summary={summary} user={session.user} profile={profile} people={people} events={events} opportunities={opportunities} discoveryUnavailable={discoveryUnavailable} /></AppShell>;
 }
