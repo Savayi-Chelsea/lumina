@@ -1,4 +1,5 @@
 import "server-only";
+import { recordAudit } from "@/lib/audit";
 import type { PoolClient } from "pg";
 import { database } from "@/lib/db";
 import { requireAdmin, requireSession } from "@/lib/session";
@@ -163,6 +164,8 @@ export async function resolveAssistance(userId: string, outcome: string, number?
     }
     // Closing unresolved changes only the request, never the account.
     await resolveRequest(conn, userId, session.user.id, outcome);
+    await recordAudit(conn, session.user.id, outcome === "verified" ? "verification.verified" : "verification.closed_unresolved", "user", userId,
+      { registry_record_linked: outcome === "verified" });
     return true;
   });
 }

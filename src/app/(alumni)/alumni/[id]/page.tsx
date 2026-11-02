@@ -11,6 +11,8 @@ import { database } from "@/lib/db";
 import { DiscoveryGate } from "@/components/discovery-gate";
 import { Icon } from "@/components/icon";
 import { PeopleList, ProfileView } from "@/components/profile-view";
+import { RecapSection } from "@/components/recap-card";
+import { recapsForProfile } from "@/lib/session-recaps";
 import { answerConnection, connect, startConversation } from "../../social-actions";
 
 export const dynamic = "force-dynamic";
@@ -34,12 +36,13 @@ export default async function AlumniProfilePage({ params, searchParams }: { para
   const owner = await memberByProfile(profile.id);
   if (!owner) notFound();
   const self = owner.user_id === session.user.id;
-  const [relation, connections, messaging, mentorship, related] = await Promise.all([
+  const [relation, connections, messaging, mentorship, related, recaps] = await Promise.all([
     connectionState(session.user.id, owner.user_id), connectionCount(owner.user_id),
     canMessage(database(), session.user.id, owner.user_id), mentorshipWith(session.user.id, owner.user_id),
-    relatedAlumni(profile.id, profile.former_kq_department),
+    relatedAlumni(profile.id, profile.former_kq_department), recapsForProfile(session.user.id, profile.id),
   ]);
   const returnTo = `/alumni/${profile.id}`;
+  const limited = profile.profile_visibility === "connections" && !self && relation.state !== "connected" && session.user.role !== "admin";
   const connectNotice = typeof query.connect === "string" ? connectMessages[query.connect] : undefined;
   const actions = self ? <Link className="button secondary" href="/profile">View your profile</Link> : <>
     {relation.state === "none" && <form action={connect}><input type="hidden" name="profile_id" value={profile.id} /><input type="hidden" name="return_to" value={returnTo} /><button><Icon name="plus" width={16} height={16} />Connect</button></form>}
@@ -50,11 +53,13 @@ export default async function AlumniProfilePage({ params, searchParams }: { para
     {profile.mentorship_available && (mentorship
       ? <span className="badge">{mentorship.status === "pending" ? "Mentorship requested" : "Your mentor"}</span>
       : <Link className="button secondary" href={`/mentorship/request/${profile.id}`}>Request mentorship</Link>)}
+    {mentorship?.status === "accepted" && <Link className="button secondary" href={`/recaps/new?mentorship=${mentorship.id}`}>Share a session recap</Link>}
   </>;
   return <>
     <Link className="text-link back-link" href={backHref}><Icon name="arrow" className="flip" />{from === "mentorship" ? "Back to mentorship" : from === "connections" ? "Back to My network" : "Back to Network"}</Link>
-    <ProfileView profile={profile} connections={connections} actions={actions}
+    <ProfileView profile={profile} connections={connections} actions={actions} limited={limited}
       notice={connectNotice ? <p className="card notice" role="status">{connectNotice}</p> : undefined}
+      recaps={<RecapSection recaps={recaps} returnTo={returnTo} />}
       sidebar={<PeopleList title="People also viewed" people={related} />} />
   </>;
 }

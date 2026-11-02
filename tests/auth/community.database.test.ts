@@ -41,7 +41,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     });
     shared.conn = await pool.connect();
     before = await snapshot();
-    for (const table of ["users", "profiles", "events", "event_registrations", "opportunities"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
+    for (const table of ["users", "profiles", "events", "event_registrations", "opportunities", "audit_log"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
   });
 
   beforeEach(async () => {
@@ -91,7 +91,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     expect(await registerForEvent(draft, alumni[0])).toBe("closed");
     expect(await registerForEvent(started, alumni[0])).toBe("closed");
     expect(await registerForEvent("00000000-0000-4000-8000-000000000000", alumni[0])).toBe("closed");
-    expect(await setStatus("events", draft, "archived")).toBe(true);
+    expect(await setStatus("events", draft, "archived", admin)).toBe(true);
     expect(await registerForEvent(draft, alumni[0])).toBe("closed");
   });
 
@@ -136,9 +136,9 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     const id = (await saveEvent(eventInput(), "draft", admin))!;
     expect(await saveEvent(eventInput({ title: "Renamed" }), "published", admin, id)).toBe(id);
     expect((await getEvent(id, alumni[0]))?.title).toBe("Renamed");
-    expect(await setStatus("events", id, "archived")).toBe(true);
+    expect(await setStatus("events", id, "archived", admin)).toBe(true);
     expect(await getEvent(id, alumni[0])).toBeNull();
     expect(await saveEvent(eventInput(), "draft", admin, "00000000-0000-4000-8000-000000000000")).toBeNull();
-    expect(await setStatus("opportunities", "nope", "published")).toBe(false);
+    expect(await setStatus("opportunities", "nope", "published", admin)).toBe(false);
   });
 });

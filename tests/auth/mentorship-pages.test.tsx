@@ -10,7 +10,8 @@ vi.mock("@/lib/social", () => ({ memberByProfile: mocks.member, connectionState:
 vi.mock("@/lib/messages", () => ({ canMessage: async () => false }));
 vi.mock("@/lib/mentorship-requests", () => ({ mentorshipWith: async () => null }));
 vi.mock("@/lib/db", () => ({ database: () => ({}) }));
-vi.mock("@/app/(alumni)/social-actions", () => ({ connect: vi.fn(), answerConnection: vi.fn(), startConversation: vi.fn() }));
+vi.mock("@/app/(alumni)/social-actions", () => ({ connect: vi.fn(), answerConnection: vi.fn(), startConversation: vi.fn(), reactToRecap: vi.fn() }));
+vi.mock("@/lib/session-recaps", () => ({ recapsForProfile: async () => [] }));
 vi.mock("next/navigation", () => ({ notFound: mocks.notFound }));
 const user = { role: "alumni", accountStatus: "active", alumniVerified: true };
 beforeEach(() => {

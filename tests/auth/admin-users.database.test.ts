@@ -36,7 +36,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("admin user management
     });
     shared.conn = await pool.connect();
     before = await snapshot();
-    for (const table of ["users", "profiles"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
+    for (const table of ["users", "profiles", "audit_log"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
   });
 
   beforeEach(async () => {

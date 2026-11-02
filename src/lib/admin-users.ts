@@ -1,4 +1,5 @@
 import "server-only";
+import { AUDIT_INSERT } from "@/lib/audit";
 import { database } from "@/lib/db";
 import { uuidPattern } from "@/lib/community-input";
 
@@ -56,7 +57,9 @@ export async function setAccountStatus(adminId: string, userId: string, action: 
   if (!uuidPattern.test(userId) || userId === adminId) return false;
   const status = action === "suspend" ? "'suspended'" : "CASE WHEN alumni_verified THEN 'active' ELSE 'pending' END";
   const guard = action === "suspend" ? "account_status <> 'suspended'" : "account_status = 'suspended'";
-  const result = await database().query(`UPDATE users SET account_status = ${status}, updated_at = CURRENT_TIMESTAMP
-    WHERE id = $1 AND role = 'alumni' AND ${guard}`, [userId]);
+  // The change and its audit entry are one statement, so neither can happen without the other.
+  const result = await database().query(`WITH changed AS (UPDATE users SET account_status = ${status}, updated_at = CURRENT_TIMESTAMP
+    WHERE id = $1 AND role = 'alumni' AND ${guard} RETURNING id, account_status)
+    ${AUDIT_INSERT} SELECT $2, $3, 'user', id::text, jsonb_build_object('status', account_status) FROM changed`, [userId, adminId, `user.${action}`]);
   return Boolean(result.rowCount);
 }

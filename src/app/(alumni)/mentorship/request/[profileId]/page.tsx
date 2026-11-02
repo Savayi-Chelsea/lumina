@@ -12,10 +12,10 @@ import { MentorshipRequestForm } from "@/components/mentorship-request-form";
 
 export const dynamic = "force-dynamic";
 
-export default async function RequestMentorshipPage({ params }: { params: Promise<{ profileId: string }> }) {
+export default async function RequestMentorshipPage({ params, searchParams }: { params: Promise<{ profileId: string }>; searchParams: Promise<{ search?: string; rank?: string }> }) {
   const session = await requireSession();
   if (!canDiscoverMentors(session.user)) return <DiscoveryGate title="Complete verification to use mentorship." area="Mentorship is" />;
-  const { profileId } = await params;
+  const [{ profileId }, origin] = await Promise.all([params, searchParams]);
   const mentor = await alumniProfile(profileId);
   const owner = mentor ? await memberByProfile(mentor.id) : null;
   if (!mentor || !owner || !mentor.mentorship_available || owner.user_id === session.user.id) notFound();
@@ -27,6 +27,6 @@ export default async function RequestMentorshipPage({ params }: { params: Promis
     <section className="card member-summary"><AlumniAvatar name={mentor.full_name} image={mentor.image} /><div><h2>{mentor.full_name}</h2><p className="muted">{mentor.headline}</p>
       {topics.length > 0 && <p className="small">Mentors on: {topics.join(" · ")}</p>}</div></section>
     {existing ? <p className="card notice" role="status">{existing.status === "pending" ? "You already have a request waiting for a reply." : "This member is already your mentor."} <Link className="text-link" href="/mentorship/requests">View your requests</Link></p>
-      : <MentorshipRequestForm mentorProfileId={mentor.id} />}
+      : <MentorshipRequestForm mentorProfileId={mentor.id} search={typeof origin.search === "string" ? origin.search : undefined} rank={typeof origin.rank === "string" ? origin.rank : undefined} />}
   </div>;
 }

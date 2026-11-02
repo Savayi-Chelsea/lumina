@@ -17,7 +17,7 @@ vi.mock("@/lib/db", () => ({
 }));
 
 const TABLES = ["users", "profiles", "skills", "profile_skills", "work_experience", "mentorship_preferences", "profile_photos",
-  "connections", "conversations", "messages", "mentorship_requests", "notifications", "profile_change_outbox"];
+  "connections", "conversations", "messages", "mentorship_requests", "notifications", "profile_change_outbox", "privacy_consents"];
 const form = (values: Record<string, string>) => { const data = new FormData(); for (const [k, v] of Object.entries(values)) data.set(k, v); return data; };
 
 describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("connections, messaging, mentorship and profile editing on live PostgreSQL temporary tables", () => {

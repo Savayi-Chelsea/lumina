@@ -47,12 +47,12 @@ export async function manageOpportunity(_previous: ManageState, data: FormData):
 }
 
 export async function changePublication(data: FormData) {
-  await requireAdmin();
+  const session = await requireAdmin();
   const kind = data.get("kind") === "opportunities" ? "opportunities" : "events";
   const id = data.get("id");
   const status = data.get("status");
   const valid = typeof id === "string" && (PUBLICATION as readonly unknown[]).includes(status);
-  const changed = valid ? await setStatus(kind, id as string, status as Publication).catch(() => false) : false;
+  const changed = valid ? await setStatus(kind, id as string, status as Publication, session.user.id).catch(() => false) : false;
   refresh(kind);
   redirect(`/admin/${kind}?${changed ? `status=${status}` : "status=failed"}`);
 }

@@ -8,6 +8,8 @@ import { memberByProfile, removeConnection, requestConnection, respondToConnecti
 import { openConversation, sendMessage } from "@/lib/messages";
 import { MentorshipRequestError, parseMentorshipRequest, requestMentorship, respondToMentorship, withdrawMentorship } from "@/lib/mentorship-requests";
 import { markNotificationsRead } from "@/lib/notifications";
+import { FeedbackInputError, parseFeedback, parseOrigin, saveFeedback } from "@/lib/match-tracking";
+import { RecapInputError, createRecap, decideRecap, parseRecap, toggleReaction, withdrawRecap } from "@/lib/session-recaps";
 
 /** Social features are for active, verified members (and administrators). */
 async function member() {
@@ -74,7 +76,7 @@ export async function askForMentorship(_previous: RequestState, data: FormData):
   try { input = parseMentorshipRequest(data); } catch (error) {
     return { message: error instanceof MentorshipRequestError ? error.message : "Check your request." };
   }
-  const outcome = await requestMentorship(user.id, field(data, "mentor_profile_id"), input).catch(() => "failed");
+  const outcome = await requestMentorship(user.id, field(data, "mentor_profile_id"), input, parseOrigin(data.get("search"), data.get("rank"))).catch(() => "failed");
   if (outcome === "duplicate") return { message: "You already have a pending request with this mentor." };
   if (outcome !== "sent") return { message: "This mentor isn't taking requests right now. Try another mentor." };
   revalidatePath("/mentorship/requests");
@@ -100,4 +102,54 @@ export async function readAllNotifications() {
   await markNotificationsRead(session.user.id);
   revalidatePath("/notifications");
   redirect("/notifications");
+}
+
+export type RecapState = { message: string };
+
+export async function shareRecap(_previous: RecapState, data: FormData): Promise<RecapState> {
+  const user = await member();
+  let input;
+  try { input = parseRecap(data); } catch (error) {
+    return { message: error instanceof RecapInputError ? error.message : "Check your recap." };
+  }
+  const outcome = await createRecap(user.id, input).catch(() => "failed");
+  if (outcome === "duplicate") return { message: "A recap for this mentorship is already waiting for approval." };
+  if (outcome !== "sent") return { message: "You can only share recaps of your accepted mentorships." };
+  revalidatePath("/mentorship/requests");
+  redirect("/mentorship/requests?recap=sent#recaps");
+}
+
+export async function answerRecap(data: FormData) {
+  const user = await member();
+  const approve = field(data, "decision") === "approve";
+  await decideRecap(user.id, field(data, "recap_id"), approve).catch(() => false);
+  revalidatePath("/mentorship/requests"); revalidatePath("/recaps"); revalidatePath("/");
+  redirect(`/mentorship/requests?recap=${approve ? "published" : "declined"}#recaps`);
+}
+
+export async function withdrawRecapDraft(data: FormData) {
+  const user = await member();
+  await withdrawRecap(user.id, field(data, "recap_id")).catch(() => false);
+  revalidatePath("/mentorship/requests");
+  redirect("/mentorship/requests#recaps");
+}
+
+export async function reactToRecap(data: FormData) {
+  const user = await member();
+  await toggleReaction(user.id, field(data, "recap_id")).catch(() => false);
+  const to = back(data, "/recaps");
+  revalidatePath(to.split(/[?#]/)[0]);
+  redirect(to);
+}
+
+export async function rateMatch(data: FormData) {
+  const user = await member();
+  let outcome = "invalid";
+  try {
+    outcome = await saveFeedback(user.id, field(data, "mentorship_id"), parseFeedback(data)) ? "saved" : "unavailable";
+  } catch (error) {
+    if (!(error instanceof FeedbackInputError)) outcome = "failed";
+  }
+  revalidatePath("/mentorship/requests");
+  redirect(`/mentorship/requests?rated=${outcome}`);
 }

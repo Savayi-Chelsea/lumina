@@ -7,6 +7,7 @@ import { profileProgress } from "@/lib/profile-progress";
 import type { Profile } from "@/lib/profiles";
 
 vi.mock("@/app/auth-actions", () => ({ logOut: vi.fn(), googleSignIn: vi.fn() }));
+vi.mock("@/app/(alumni)/social-actions", () => ({ reactToRecap: vi.fn() }));
 
 describe("Lumina discovery presentation", () => {
   it("uses the final supplied logo in every size variant", () => {

@@ -28,11 +28,14 @@ const adminEventTitle = `Browser workshop ${subject.slice(-8)}`;
 const failures = [];
 const screenshots = [];
 const networkUsers = [];
+const recapTopic = `Browser recap ${randomUUID().slice(0, 8)}: platform engineering first steps`;
 let networkSkillId;
 const snapshot = async () => {
   const result = {};
   for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_embeddings", "profile_skills", "skills", "mentorship_preferences", "work_experience", "events", "event_registrations", "opportunities", "password_reset_tokens",
-    "connections", "conversations", "messages", "mentorship_requests", "notifications", "profile_photos"]) {
+    "connections", "conversations", "messages", "mentorship_requests", "notifications", "profile_photos", "session_recaps", "recap_reactions",
+    "mentor_search_events", "mentor_search_results", "mentorship_request_origins", "mentorship_feedback", "privacy_consents",
+    "mentor_availability", "mentorship_sessions", "email_preferences", "email_deliveries"]) {
     result[table] = JSON.stringify((await pool.query(`SELECT to_jsonb(t) AS row FROM public.${table} t ORDER BY to_jsonb(t)::text`)).rows);
   }
   return result;
@@ -153,7 +156,7 @@ try {
     await expect(auth.locator('.auth-notice-card')).toContainText("If a Lumina password account uses that email");
     const mailpit = process.env.MAILPIT_URL || "http://127.0.0.1:8025";
     let mail;
-    for (let attempt = 0; attempt < 40 && !mail; attempt++) {
+    for (let attempt = 0; attempt < 120 && !mail; attempt++) {
       const found = await (await fetch(`${mailpit}/api/v1/search?query=${encodeURIComponent(`to:"${passwordEmail}"`)}`)).json();
       if (found.messages?.length) mail = await (await fetch(`${mailpit}/api/v1/message/${found.messages[0].ID}`)).json();
       else await delay(250);
@@ -535,8 +538,138 @@ try {
     await expect(peer).toHaveURL(/\/messages\/[0-9a-f-]{36}$/);
     await expect(peer.locator(".message-thread")).toContainText("Mentorship request: Move into platform engineering");
     await page.goto(`${base}/notifications`); await expect(page.locator(".conversation-list")).toContainText("accepted your mentorship request");
+
+    // Session recap: the mentee drafts it, the mentor approves it, then it is public with reactions.
+    await page.goto(`${base}/mentorship/requests`);
+    await page.locator(".member-row").filter({ hasText: "Move into platform engineering" }).getByRole("link", { name: "Share a recap" }).click();
+    await expect(page.getByLabel("Session with")).not.toHaveValue("");
+    await page.getByLabel("Topic").fill(recapTopic);
+    await page.getByLabel("Session date").fill(new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Nairobi" }));
+    await page.getByLabel("What you covered and took away").fill("Short");
+    await page.getByRole("button", { name: "Send for approval" }).click();
+    await expect(page.getByLabel("What you covered and took away")).toHaveJSProperty("validity.tooShort", true);
+    await page.getByLabel("What you covered and took away").fill("We planned a Kubernetes learning path and agreed on a first small project to review together.");
+    await page.getByRole("button", { name: "Send for approval" }).click();
+    await expect(page).toHaveURL(/\/mentorship\/requests\?recap=sent/);
+    await expect(page.locator("#recaps")).toContainText("Awaiting their approval");
+    await page.goto(`${base}/recaps`); await expect(page.locator(".recap-card").filter({ hasText: recapTopic })).toHaveCount(0);
+    await peer.goto(`${base}/mentorship/requests`);
+    await peer.locator(".recap-draft").filter({ hasText: recapTopic }).getByRole("button", { name: "Approve and publish" }).click();
+    await expect(peer).toHaveURL(/recap=published/);
+    await page.goto(`${base}/recaps`);
+    const recapCard = page.locator(".recap-card").filter({ hasText: recapTopic });
+    await expect(recapCard).toContainText("Browser Alumnus 01 mentored");
+    await recapCard.getByRole("button", { name: /Insightful/ }).click();
+    await expect(page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: /Insightful/ })).toHaveAttribute("aria-pressed", "true");
+    await page.goto(`${base}/alumni/${peerProfile}`); await expect(page.locator(".li-section").filter({ hasText: "Mentoring sessions" })).toContainText(recapTopic);
+    for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.goto(`${base}/recaps`); await noOverflow(page, `${width}px session recaps`); await screenshot(page, `recaps-${width}`); }
     await peerContext.close();
-    console.log("PASS connect/accept, notifications, two-way messaging, profile editing with photo, mentorship settings, request and acceptance");
+    console.log("PASS connect/accept, notifications, two-way messaging, profile editing with photo, mentorship settings, request, acceptance and co-signed session recap");
+  }
+
+  {
+    // Match rating, session scheduling with calendar invitations, privacy controls, data export and account deletion.
+    const sessionFor = async (userId, n) => {
+      const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+      await context.addCookies([{ name: "authjs.session-token", url: base, httpOnly: true, sameSite: "Lax",
+        value: await encode({ secret, salt: "authjs.session-token", maxAge: 600, token: { luminaUserId: userId, name: `Browser Alumnus ${n}`, email: `${subject}-${n}@example.test` } }) }]);
+      const tab = await context.newPage(); tab.on("pageerror", error => failures.push(error.message));
+      return { context, tab };
+    };
+    const { context: mentorContext, tab: mentor } = await sessionFor(networkUsers[1], "01");
+    const { context: outsiderContext, tab: outsider } = await sessionFor(networkUsers[2], "02");
+    const myProfile = (await pool.query("SELECT id FROM public.profiles WHERE user_id=$1", [fixtureId])).rows[0].id;
+    const mentorRow = () => page.locator(".member-row").filter({ hasText: "Move into platform engineering" });
+
+    await page.goto(`${base}/mentorship/requests`);
+    await mentorRow().getByText("Rate this match").click();
+    await mentorRow().getByLabel("4", { exact: true }).check();
+    await mentorRow().getByLabel("Yes", { exact: true }).check();
+    await mentorRow().getByRole("button", { name: "Save rating" }).click();
+    await expect(page.locator(".notice")).toContainText("Your rating helps Lumina");
+    await expect(mentorRow()).toContainText("You rated this match 4/5");
+
+    const slotDay = new Date(Date.now() + 3 * 3600000 + 3 * 86400000).toISOString().slice(0, 10);
+    await mentor.goto(`${base}/mentorship/availability`);
+    await mentor.getByLabel("Date").fill(slotDay);
+    await mentor.getByLabel("Start time (Nairobi)").fill("10:00");
+    await mentor.getByLabel("Length").selectOption("60");
+    await mentor.getByLabel("Meeting link or place (optional)").fill("https://meet.example.test/browser");
+    await mentor.getByRole("button", { name: "Publish slot" }).click();
+    await expect(mentor.getByRole("status")).toContainText("Slot published");
+    await mentor.reload(); await expect(mentor.locator(".session-card")).toContainText("Video call");
+    await noOverflow(mentor, "availability");
+
+    await page.goto(`${base}/mentorship/requests`);
+    await mentorRow().getByRole("link", { name: "Book a session" }).click();
+    await page.locator(".slot-choice").first().click();
+    await page.getByLabel(/What would you like to cover/).fill("Kubernetes study plan");
+    await page.getByRole("button", { name: "Book session" }).click();
+    await expect(page).toHaveURL(/\/mentorship\/sessions\?booked=1$/);
+    const sessionCard = page.locator(".session-card").first();
+    await expect(sessionCard).toContainText("Browser Alumnus 01");
+    await expect(sessionCard).toContainText("Kubernetes study plan");
+    await expect(sessionCard.getByRole("link", { name: "Join the call" })).toHaveAttribute("href", "https://meet.example.test/browser");
+    const icsHref = await sessionCard.getByRole("link", { name: "Add to calendar" }).getAttribute("href");
+    const ics = await page.request.get(`${base}${icsHref}`);
+    assert.equal(ics.status(), 200); assert.match(ics.headers()["content-type"], /text\/calendar/); assert.match(await ics.text(), /BEGIN:VEVENT/);
+    assert.equal((await mentor.request.get(`${base}${icsHref}`)).status(), 200);
+    assert.equal((await outsider.request.get(`${base}${icsHref}`)).status(), 404, "Only the two participants can download the invitation");
+    const mailpit = process.env.MAILPIT_URL || "http://127.0.0.1:8025";
+    let invitation;
+    for (let attempt = 0; attempt < 120 && !invitation; attempt++) {
+      const found = await (await fetch(`${mailpit}/api/v1/search?query=${encodeURIComponent(`to:"${subject}@example.test" subject:"Mentoring session with"`)}`)).json();
+      if (found.messages?.length) invitation = found.messages[0]; else await delay(250);
+    }
+    assert.ok(invitation, "Booking emails a calendar invitation");
+    await mentor.goto(`${base}/notifications`); await expect(mentor.locator(".conversation-list")).toContainText("booked a mentoring session");
+    await mentor.goto(`${base}/mentorship/availability`); await expect(mentor.locator(".session-card").first()).toContainText("Booked by");
+    await noOverflow(page, "sessions"); await screenshot(page, "sessions-1440");
+    await sessionCard.getByRole("button", { name: "Cancel session" }).click();
+    await expect(page).toHaveURL(/cancelled=1$/);
+    await expect(page.locator(".notice")).toContainText("Session cancelled");
+
+    await page.goto(`${base}/account/privacy`);
+    await page.getByLabel(/List me in the Network directory/).uncheck();
+    await page.getByLabel(/Only my connections/).check();
+    await page.getByRole("button", { name: "Save privacy choices" }).click();
+    await expect(page.locator(".notice")).toContainText("privacy choices are saved");
+    await expect(page.locator(".consent-history")).toContainText("Directory listing");
+    for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.reload(); await noOverflow(page, `${width}px privacy`); await screenshot(page, `privacy-${width}`); }
+    await outsider.goto(`${base}/alumni/${myProfile}`);
+    await expect(outsider.locator(".li-limited")).toContainText("Shared with connections");
+    await expect(outsider.getByRole("heading", { name: "Experience" })).toHaveCount(0);
+    await outsider.goto(`${base}/network?q=${encodeURIComponent("Demo Browser User")}`); await expect(outsider.locator(".alumni-card")).toHaveCount(0);
+    await mentor.goto(`${base}/alumni/${myProfile}`);
+    await expect(mentor.locator(".li-limited")).toHaveCount(0);
+    await expect(mentor.getByRole("heading", { name: "Experience" })).toBeVisible();
+    const exported = await page.request.get(`${base}/api/account/export`);
+    assert.equal(exported.status(), 200); assert.match(exported.headers()["content-disposition"], /attachment; filename="lumina-my-data-/);
+    const exportText = await exported.text();
+    const data = JSON.parse(exportText);
+    assert.equal(data.account.email, `${subject}@example.test`);
+    assert.ok(data.sessions.length === 1 && data.mentorship_feedback.length === 1 && data.consent_history.length >= 2);
+    assert.ok(!/password_hash|google_subject|argon2/.test(exportText), "Export never contains secrets");
+    await page.goto(`${base}/account/privacy`);
+    await page.getByLabel(/List me in the Network directory/).check();
+    await page.getByLabel(/All verified alumni/).check();
+    await page.getByRole("button", { name: "Save privacy choices" }).click();
+    await expect(page.locator(".notice")).toContainText("privacy choices are saved");
+
+    const leaver = (await pool.query("INSERT INTO public.users(email,google_subject,account_status,alumni_verified) VALUES($1,$2,'active',true) RETURNING id", [`${subject}-leaver@example.test`, `${subject}-leaver`])).rows[0].id;
+    networkUsers.push(leaver);
+    await pool.query("INSERT INTO public.profiles(user_id, full_name) VALUES($1, 'Browser Leaver')", [leaver]);
+    const { context: leaverContext, tab: leaving } = await sessionFor(leaver, "leaver");
+    await leaving.goto(`${base}/account/privacy`);
+    await leaving.getByLabel("Type DELETE to confirm").fill("delete");
+    await leaving.getByRole("button", { name: "Delete my account" }).click();
+    await expect(leaving.getByLabel("Type DELETE to confirm")).toHaveJSProperty("validity.patternMismatch", true);
+    await leaving.getByLabel("Type DELETE to confirm").fill("DELETE");
+    await leaving.getByRole("button", { name: "Delete my account" }).click();
+    await expect(leaving).toHaveURL(/\/\?account=deleted$/);
+    assert.equal(Number((await pool.query("SELECT count(*) FROM public.users WHERE id=$1", [leaver])).rows[0].count), 0);
+    await Promise.all([mentorContext.close(), outsiderContext.close(), leaverContext.close()]);
+    console.log("PASS match rating, session booking with calendar invitation and email, cancellation, privacy controls, limited profile, data export and account deletion");
   }
 
   await pool.query("UPDATE public.users SET role='admin' WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
@@ -588,7 +721,7 @@ try {
     await page.getByRole("button",{ name: "Save draft", exact: true }).click();
     await expect(page.locator('.admin-item').filter({ hasText: adminEventTitle }).getByText("Draft", { exact: true })).toBeVisible();
     await page.goto(`${base}/opportunities?q=${encodeURIComponent(adminEventTitle)}`); await expect(page.locator('.opportunity-card')).toHaveCount(0);
-    await page.goto(`${base}/admin`); await expect(page.locator('.admin-stats .card')).toHaveCount(3);
+    await page.goto(`${base}/admin`); await expect(page.locator('.admin-stats .card')).toHaveCount(5); // exceptions, events, opportunities, system health, insight
     console.log("PASS admin event/opportunity create, validation, publish, archive, draft and dashboard counts");
     await page.goto(`${base}/admin/users?q=${encodeURIComponent("Browser Alumnus 03")}`);
     const person = page.locator('.admin-item').filter({ hasText: "Browser Alumnus 03" });
@@ -605,6 +738,30 @@ try {
     await expect(page.locator('.admin-item').filter({ hasText: "alum-001" }).getByRole("button")).toHaveCount(1);
     for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.goto(`${base}/admin/users`); await noOverflow(page, `${width}px admin users`); await screenshot(page, `admin-users-${width}`); }
     console.log("PASS admin user search, suspend (removes from Network), reinstate and sample labelling");
+    await page.goto(`${base}/admin/recaps`);
+    await page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: "Hide" }).click();
+    await expect(page.locator(".notice")).toContainText("Recap hidden");
+    await page.goto(`${base}/recaps`); await expect(page.locator(".recap-card").filter({ hasText: recapTopic })).toHaveCount(0);
+    await page.goto(`${base}/admin/recaps`);
+    await page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: "Restore" }).click();
+    await expect(page.locator(".notice")).toContainText("Recap restored");
+    await noOverflow(page, "admin session recaps");
+    console.log("PASS admin hides and restores a session recap");
+    await page.goto(`${base}/admin/audit`);
+    await expect(page.locator(".table-card")).toContainText("Suspended an account");
+    await expect(page.locator(".table-card")).toContainText("Hid a session recap");
+    await page.getByLabel("Action").selectOption("account.delete"); await page.getByRole("button", { name: "Filter" }).click();
+    await expect(page.locator(".table-card")).toContainText("Deleted account");
+    for (const [route, heading] of [["/admin/analytics", "Community analytics"], ["/admin/matching", "Mentor match quality"], ["/admin/health", "System health"], ["/admin/audit", "Audit log"]]) {
+      for (const [width, height] of [[375, 812], [1440, 900]]) {
+        await page.setViewportSize({ width, height }); await page.goto(`${base}${route}`);
+        await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+        await noOverflow(page, `${width}px ${route}`); await screenshot(page, `${route.slice(1).replace("/", "-")}-${width}`);
+      }
+    }
+    await page.goto(`${base}/admin/health`); await expect(page.locator(".health-card").first()).toContainText("Database");
+    await page.goto(`${base}/admin/matching`); await expect(page.locator("body")).toContainText("Request rate from search");
+    console.log("PASS admin audit log, analytics, match quality and system health");
   }
   await page.goto(`${base}/`); await page.getByRole("button",{ name: "Open account menu" }).click();
   await page.getByRole("button",{ name: "Sign out", exact: true }).click();

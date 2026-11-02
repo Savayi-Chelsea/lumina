@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import type { Session } from "next-auth";
 import type { Profile } from "@/lib/profiles";
@@ -9,14 +10,16 @@ import { HorizonArt } from "./horizon-art";
 import { Icon } from "./icon";
 import { AlumniCard } from "./alumni-card";
 import type { AlumniSummary } from "@/lib/alumni-directory";
+import type { Recap } from "@/lib/session-recaps";
+import { RecapCard } from "./recap-card";
 
 function SectionHeading({ id, eyebrow, title, href, link }: { id: string; eyebrow: string; title: string; href: string; link: string }) {
   return <div className="section-heading"><div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div><Link className="text-link" href={href}>{link}<Icon name="arrow" /></Link></div>;
 }
 
-export type NetworkSummary = { connections: number; invitations: number; messages: number; mentorshipWaiting: number } | null;
+export type NetworkSummary = { connections: number; invitations: number; messages: number; mentorshipWaiting: number; recapsWaiting: number } | null;
 
-export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false, summary = null }: { summary?: NetworkSummary; people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
+export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false, summary = null, recaps = [], recommendations }: { summary?: NetworkSummary; recaps?: Recap[]; recommendations?: ReactNode; people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
   const name = profile?.full_name || user.name || "Lumina member";
   const firstName = name.split(/\s+/)[0];
   const progress = profileProgress(profile);
@@ -35,7 +38,12 @@ export function AlumniHome({ user, profile, people = [], events = [], opportunit
       <div className="mentorship-entry card"><div><h3>A fresh perspective starts with a question.</h3><p>Describe your next step to find available mentors through real experience and skills. Results are ranked only after you submit a search.</p></div><Link className="button" href="/mentorship">Find a mentor<Icon name="arrow" /></Link></div>
     </section>
 
+    {recommendations}
+
     <section className="discovery-section" aria-labelledby="alumni-heading"><SectionHeading id="alumni-heading" eyebrow="PICK UP WHERE YOU LEFT OFF" title="Explore alumni" href="/network" link="Explore the network" /><p className="section-description">Start with alumni from your former department, followed by recently added profiles.</p>{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore the community professional profiles.</p><Link className="text-link" href="/verify">Complete verification<Icon name="arrow" /></Link></div> : discoveryUnavailable ? <div className="card"><p>Alumni discovery is temporarily unavailable. Please try the Network again shortly.</p><Link className="text-link" href="/network">Visit Network<Icon name="arrow" /></Link></div> : people.length ? <div className="alumni-grid">{people.map(person => <AlumniCard key={person.id} profile={person} />)}</div> : <div className="card"><p>Your community is taking shape. Verified alumni will appear here as they add their profiles.</p><Link className="text-link" href="/network">Explore the network<Icon name="arrow" /></Link></div>}</section>
+
+    {recaps.length > 0 && <section className="discovery-section" aria-labelledby="recaps-heading"><SectionHeading id="recaps-heading" eyebrow="LEARNING, PASSED ON" title="Recent mentoring sessions" href="/recaps" link="All session recaps" />
+      <div className="recap-grid">{recaps.map(recap => <RecapCard key={recap.id} recap={recap} returnTo="/" compact />)}</div></section>}
 
     <section className="discovery-section" aria-labelledby="events-heading"><SectionHeading id="events-heading" eyebrow="MAKE ROOM FOR A REUNION" title="Good things on the horizon." href="/events" link="Explore events" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to see upcoming gatherings and reserve your place.</p></div> : events.length ? <div className="event-grid">{events.map((event,index) => <EventCard key={event.id} event={event} index={index} />)}</div> : <div className="card"><p>No upcoming events yet. New gatherings are announced regularly.</p><Link className="text-link" href="/events">See all events<Icon name="arrow" /></Link></div>}</section>
 
@@ -46,6 +54,7 @@ export function AlumniHome({ user, profile, people = [], events = [], opportunit
           <li><Link href="/network/connections"><strong>{summary.invitations}</strong> {summary.invitations === 1 ? "invitation" : "invitations"} waiting</Link></li>
           <li><Link href="/messages"><strong>{summary.messages}</strong> unread {summary.messages === 1 ? "message" : "messages"}</Link></li>
           <li><Link href="/mentorship/requests"><strong>{summary.mentorshipWaiting}</strong> mentorship {summary.mentorshipWaiting === 1 ? "request" : "requests"} to answer</Link></li>
+          {summary.recapsWaiting > 0 && <li><Link href="/mentorship/requests#recaps"><strong>{summary.recapsWaiting}</strong> session {summary.recapsWaiting === 1 ? "recap" : "recaps"} to approve</Link></li>}
         </ul> : <p>Verify your alumni details to connect, message and find mentors.</p>}
         <Link className="text-link" href="/network/connections">Grow your network<Icon name="arrow" /></Link></section>
     </div>

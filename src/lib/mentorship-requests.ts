@@ -6,6 +6,7 @@ import { profileImageSql } from "@/lib/profile-image-sql";
 import { profileImage } from "@/lib/profile-image";
 import { uuidPattern } from "@/lib/community-input";
 import { discoverableUser } from "@/lib/social";
+import { recordOrigin } from "@/lib/match-tracking";
 
 export type MentorshipRequest = {
   id: string; goal: string; message: string; status: "pending" | "accepted" | "declined" | "withdrawn";
@@ -30,7 +31,7 @@ export function parseMentorshipRequest(data: FormData) {
 export type RequestOutcome = "sent" | "duplicate" | "unavailable";
 
 /** Only mentors who currently consent and are available can be asked. */
-export async function requestMentorship(menteeId: string, mentorProfileId: string, input: { goal: string; message: string }): Promise<RequestOutcome> {
+export async function requestMentorship(menteeId: string, mentorProfileId: string, input: { goal: string; message: string }, origin: { eventId: string; rank: number } | null = null): Promise<RequestOutcome> {
   if (!uuidPattern.test(mentorProfileId)) return "unavailable";
   const conn = await database().connect();
   try {
@@ -42,6 +43,7 @@ export async function requestMentorship(menteeId: string, mentorProfileId: strin
     const inserted = await conn.query(`INSERT INTO mentorship_requests (mentee_id, mentor_id, goal, message) VALUES ($1, $2, $3, $4)
       ON CONFLICT (mentee_id, mentor_id) WHERE status = 'pending' DO NOTHING RETURNING id`, [menteeId, mentor.user_id, input.goal, input.message]);
     if (!inserted.rowCount) { await conn.query("ROLLBACK"); return "duplicate"; }
+    await recordOrigin(conn, inserted.rows[0].id, menteeId, mentorProfileId, origin);
     await notify(conn, mentor.user_id, menteeId, "mentorship_request", "/mentorship/requests");
     await conn.query("COMMIT");
     return "sent";

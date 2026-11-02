@@ -3,7 +3,8 @@ import type { PoolClient } from "pg";
 import { database } from "@/lib/db";
 import { profileImageSql } from "@/lib/profile-image-sql";
 
-export type NotificationKind = "connection_request" | "connection_accepted" | "message" | "mentorship_request" | "mentorship_accepted" | "mentorship_declined";
+export type NotificationKind = "connection_request" | "connection_accepted" | "message" | "mentorship_request" | "mentorship_accepted" | "mentorship_declined"
+  | "session_booked" | "session_cancelled" | "recap_to_approve" | "recap_published";
 export type Notification = { id: string; kind: NotificationKind; link: string; created_at: string; read_at: string | null; actor_name: string | null; actor_image: string | null };
 
 type Queryable = Pick<PoolClient, "query">;
@@ -45,5 +46,9 @@ export function notificationText(kind: NotificationKind, actor: string) {
     case "mentorship_request": return `${actor} asked you to be their mentor.`;
     case "mentorship_accepted": return `${actor} accepted your mentorship request.`;
     case "mentorship_declined": return `${actor} isn't able to mentor you right now.`;
+    case "session_booked": return `${actor} booked a mentoring session with you.`;
+    case "session_cancelled": return `${actor} cancelled a mentoring session.`;
+    case "recap_to_approve": return `${actor} shared a session recap for you to approve.`;
+    case "recap_published": return `${actor} approved your session recap. It's now published.`;
   }
 }

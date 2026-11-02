@@ -26,8 +26,10 @@ function EditLink({ href, label }: { href: string; label: string }) {
  * LinkedIn-style profile used for your own profile (with edit links) and for
  * other members (with connect, message and mentorship actions).
  */
-export function ProfileView({ profile, own = false, actions, connections, sidebar, notice }: {
-  profile: FullProfile; own?: boolean; actions?: ReactNode; connections?: number; sidebar?: ReactNode; notice?: ReactNode;
+export function ProfileView({ profile, own = false, actions, connections, sidebar, notice, recaps, limited = false }: {
+  profile: FullProfile; own?: boolean; actions?: ReactNode; connections?: number; sidebar?: ReactNode; notice?: ReactNode; recaps?: ReactNode;
+  /** The member shares their full profile with connections only, and the viewer isn't one. */
+  limited?: boolean;
 }) {
   const topics = (profile.mentorship_topics || "").split("|").map(topic => topic.trim()).filter(Boolean);
   const current = [profile.current_job_title, profile.current_organization].filter(Boolean).join(" · ");
@@ -35,7 +37,7 @@ export function ProfileView({ profile, own = false, actions, connections, sideba
     <div className="li-main">
       {notice}
       <section className={`card li-hero banner-${profile.banner_theme || "horizon"}`} aria-label="Profile summary">
-        <div className="li-banner" aria-hidden="true"><span className="li-banner-orbit" /></div>
+        <div className="li-banner" aria-hidden="true" />
         <div className="li-hero-body">
           <div className="li-avatar-wrap"><AlumniAvatar name={profile.full_name} image={profile.image} large />
             {own && <Link className="li-photo-edit" href="/profile/edit/photo" aria-label="Change profile photo"><Icon name="camera" width={16} height={16} /></Link>}</div>
@@ -53,6 +55,8 @@ export function ProfileView({ profile, own = false, actions, connections, sideba
         </div>
       </section>
 
+      {limited ? <section className="card li-section li-limited"><h2>Shared with connections</h2>
+        <p className="muted">{profile.full_name.split(" ")[0]} shares their experience, skills and mentoring sessions with connections only. Connect to see their full profile.</p></section> : <>
       <section className="card li-section">
         <div className="li-section-head"><h2>About</h2>{own && <EditLink href="/profile/edit#about" label="Edit about" />}</div>
         {profile.biography ? <p className="profile-biography">{profile.biography}</p> : <p className="muted">{own ? "Tell people about your journey, what you work on now and what you'd like to help with." : "No summary added yet."}</p>}
@@ -85,6 +89,8 @@ export function ProfileView({ profile, own = false, actions, connections, sideba
           {topics.length ? <ul className="li-skills">{topics.map(topic => <li key={topic}>{topic}</li>)}</ul> : <p className="muted">Topics not listed yet.</p>}
         </> : <p className="muted">{own ? "You're not currently offering mentorship. Turn it on to appear in mentor search." : "Not currently taking mentorship requests."}</p>}
       </section>
+      {recaps}
+      </>}
     </div>
     {sidebar && <aside className="li-sidebar">{sidebar}</aside>}
   </div>;

@@ -14,9 +14,14 @@ ADDITIVE = {
     "005": ("005_password_reset.sql", {"password_reset_tokens"}),
     "006": ("006_social_profiles.sql", {"profile_photos", "connections", "conversations", "messages",
                                         "mentorship_requests", "notifications", "profile_change_outbox"}),
+    "007": ("007_session_recaps.sql", {"session_recaps", "recap_reactions"}),
+    "008": ("008_engagement_privacy.sql", {"mentor_search_events", "mentor_search_results", "mentorship_request_origins",
+                                           "mentorship_feedback", "privacy_consents", "mentor_availability", "mentorship_sessions",
+                                           "audit_log", "email_preferences", "email_deliveries"}),
 }
 # Defaulted columns a migration adds; every other value in these tables must be unchanged.
-ADDED_COLUMNS = {"006": {"profiles": ["open_to_opportunities", "banner_theme"]}}
+ADDED_COLUMNS = {"006": {"profiles": ["open_to_opportunities", "banner_theme"]},
+                 "008": {"profiles": ["show_in_directory", "profile_visibility"]}}
 
 
 def existing_snapshot(conn, tables, added):

@@ -1,4 +1,5 @@
 import "server-only";
+import { PRIVACY_POLICY_VERSION } from "@/lib/privacy";
 import type { PoolClient } from "pg";
 import { database } from "@/lib/db";
 import { uuidPattern } from "@/lib/community-input";
@@ -153,6 +154,12 @@ export async function getMentorshipSettings(profileId: string): Promise<Mentorsh
 
 export async function saveMentorshipSettings(profileId: string, settings: MentorshipSettings) {
   await withTransaction(async conn => {
+    const previous = (await conn.query<{ consent_to_matching: boolean }>("SELECT consent_to_matching FROM mentorship_preferences WHERE profile_id = $1", [profileId])).rows[0];
+    if ((previous?.consent_to_matching ?? false) !== settings.consent_to_matching) {
+      // Matching consent is recorded in the member's consent history (Data Protection Act).
+      await conn.query(`INSERT INTO privacy_consents (user_id, kind, value, policy_version) SELECT user_id, 'mentor_matching', $2, $3 FROM profiles WHERE id = $1`,
+        [profileId, settings.consent_to_matching ? "granted" : "withdrawn", PRIVACY_POLICY_VERSION]);
+    }
     await conn.query(`INSERT INTO mentorship_preferences (profile_id, consent_to_matching, available_for_mentorship, mentorship_topics)
       VALUES ($1, $2, $3, $4) ON CONFLICT (profile_id) DO UPDATE SET consent_to_matching = EXCLUDED.consent_to_matching,
       available_for_mentorship = EXCLUDED.available_for_mentorship, mentorship_topics = EXCLUDED.mentorship_topics`,

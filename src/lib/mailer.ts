@@ -26,6 +26,7 @@ function transporter() {
   return mailGlobal.luminaMailer;
 }
 
-export async function sendMail(message: { to: string; subject: string; text: string; html: string }) {
+/** `icalEvent` attaches a calendar invitation that mail apps offer to add to the calendar. */
+export async function sendMail(message: { to: string; subject: string; text: string; html: string; icalEvent?: { method: "REQUEST" | "CANCEL"; filename: string; content: string } }) {
   await transporter().sendMail({ from: process.env.MAIL_FROM, ...message });
 }

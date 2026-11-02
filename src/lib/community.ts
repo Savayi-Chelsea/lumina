@@ -1,5 +1,6 @@
 import "server-only";
 import { database } from "@/lib/db";
+import { AUDIT_INSERT } from "@/lib/audit";
 import { uuidPattern, type EventInput, type OpportunityInput, type Publication } from "@/lib/community-input";
 
 export type CommunityEvent = EventInput & {
@@ -103,12 +104,16 @@ export async function saveEvent(input: EventInput, status: Publication, adminId:
   const values = [input.title, input.summary, input.description, input.category, input.format, input.location, input.starts_at, input.ends_at, input.capacity, status];
   if (id) {
     if (!uuidPattern.test(id)) return null;
-    const result = await database().query<{ id: string }>(`UPDATE events SET title=$1, summary=$2, description=$3, category=$4, format=$5, location=$6,
-      starts_at=$7, ends_at=$8, capacity=$9, status=$10, updated_at=CURRENT_TIMESTAMP WHERE id=$11 RETURNING id`, [...values, id]);
+    const result = await database().query<{ id: string }>(`WITH saved AS (UPDATE events SET title=$1, summary=$2, description=$3, category=$4, format=$5, location=$6,
+      starts_at=$7, ends_at=$8, capacity=$9, status=$10, updated_at=CURRENT_TIMESTAMP WHERE id=$11 RETURNING id, status),
+      logged AS (${AUDIT_INSERT} SELECT $12, 'event.update', 'event', id::text, jsonb_build_object('status', status) FROM saved)
+      SELECT id FROM saved`, [...values, id, adminId]);
     return result.rows[0]?.id || null;
   }
-  return (await database().query<{ id: string }>(`INSERT INTO events (title, summary, description, category, format, location, starts_at, ends_at, capacity, status, created_by)
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id`, [...values, adminId])).rows[0].id;
+  return (await database().query<{ id: string }>(`WITH saved AS (INSERT INTO events (title, summary, description, category, format, location, starts_at, ends_at, capacity, status, created_by)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id, status),
+    logged AS (${AUDIT_INSERT} SELECT $11, 'event.create', 'event', id::text, jsonb_build_object('status', status) FROM saved)
+    SELECT id FROM saved`, [...values, adminId])).rows[0].id;
 }
 
 export async function adminOpportunities() {
@@ -119,18 +124,25 @@ export async function saveOpportunity(input: OpportunityInput, status: Publicati
   const values = [input.title, input.organization, input.opportunity_type, input.work_mode, input.location, input.industry, input.summary, input.description, input.how_to_apply, input.closes_on, status];
   if (id) {
     if (!uuidPattern.test(id)) return null;
-    const result = await database().query<{ id: string }>(`UPDATE opportunities SET title=$1, organization=$2, opportunity_type=$3, work_mode=$4, location=$5,
-      industry=$6, summary=$7, description=$8, how_to_apply=$9, closes_on=$10, status=$11, updated_at=CURRENT_TIMESTAMP WHERE id=$12 RETURNING id`, [...values, id]);
+    const result = await database().query<{ id: string }>(`WITH saved AS (UPDATE opportunities SET title=$1, organization=$2, opportunity_type=$3, work_mode=$4, location=$5,
+      industry=$6, summary=$7, description=$8, how_to_apply=$9, closes_on=$10, status=$11, updated_at=CURRENT_TIMESTAMP WHERE id=$12 RETURNING id, status),
+      logged AS (${AUDIT_INSERT} SELECT $13, 'opportunity.update', 'opportunity', id::text, jsonb_build_object('status', status) FROM saved)
+      SELECT id FROM saved`, [...values, id, adminId]);
     return result.rows[0]?.id || null;
   }
-  return (await database().query<{ id: string }>(`INSERT INTO opportunities (title, organization, opportunity_type, work_mode, location, industry, summary, description, how_to_apply, closes_on, status, created_by)
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id`, [...values, adminId])).rows[0].id;
+  return (await database().query<{ id: string }>(`WITH saved AS (INSERT INTO opportunities (title, organization, opportunity_type, work_mode, location, industry, summary, description, how_to_apply, closes_on, status, created_by)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING id, status),
+    logged AS (${AUDIT_INSERT} SELECT $12, 'opportunity.create', 'opportunity', id::text, jsonb_build_object('status', status) FROM saved)
+    SELECT id FROM saved`, [...values, adminId])).rows[0].id;
 }
 
-export async function setStatus(kind: "events" | "opportunities", id: string, status: Publication) {
+export async function setStatus(kind: "events" | "opportunities", id: string, status: Publication, adminId: string) {
   if (!uuidPattern.test(id)) return false;
   const table = kind === "events" ? "events" : "opportunities";
-  return Boolean((await database().query(`UPDATE ${table} SET status = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1`, [id, status])).rowCount);
+  const target = kind === "events" ? "event" : "opportunity";
+  return Boolean((await database().query(`WITH changed AS (UPDATE ${table} SET status = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id),
+    logged AS (${AUDIT_INSERT} SELECT $3, '${target}.status', '${target}', id::text, jsonb_build_object('status', $2::text) FROM changed)
+    SELECT id FROM changed`, [id, status, adminId])).rowCount);
 }
 
 export async function communityCounts() {

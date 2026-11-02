@@ -126,7 +126,7 @@ export async function suggestions(userId: string, limit = 6) {
       (SELECT count(*)::int FROM profile_skills ps WHERE ps.profile_id = p.id AND ps.skill_id IN (SELECT skill_id FROM mine)) AS shared_skills,
       COALESCE(p.former_kq_department = (SELECT former_kq_department FROM me), FALSE) AS same_department
     FROM profiles p JOIN users u ON u.id = p.user_id
-    WHERE ${discoverableUser("u", "p")} AND u.id <> $1
+    WHERE ${discoverableUser("u", "p")} AND p.show_in_directory AND u.id <> $1
       AND NOT EXISTS (SELECT 1 FROM connections c WHERE c.status <> 'declined'
         AND LEAST(c.requester_id, c.addressee_id) = LEAST(u.id, $1::uuid) AND GREATEST(c.requester_id, c.addressee_id) = GREATEST(u.id, $1::uuid))
     ORDER BY same_department DESC, shared_skills DESC, (p.industry = (SELECT industry FROM me)) DESC NULLS LAST, p.id
