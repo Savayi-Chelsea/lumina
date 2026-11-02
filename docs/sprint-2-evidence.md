@@ -20,6 +20,15 @@ All alumni, events and opportunities are fictional synthetic data.
 | Professional networking | Connect → accept → message; LinkedIn-style profiles with experience, skills, photo and mentorship settings |
 | Mentorship relationships | Request with goal and message → mentor accepts → conversation opens; notifications at each step |
 | Event-driven matching | Profile edit → outbox row (same transaction) → Kafka topic → indexer re-embeds only that profile |
+| Session recaps | Mentee or mentor drafts a recap → other person approves → published on profiles, Home and feed; reactions; admin hide/restore |
+| Mentors for you | Member's own profile → BGE embedding → most similar consenting mentors on Home, no search needed |
+| Match-quality measurement | Results shown (mentor, rank) → request origin → mentee rating → admin metrics by rank and source; search text never stored |
+| Ranking experiment | BGE candidates re-ranked with BM25 (RRF) → evaluated on labelled queries → rejected (lower MRR on career transitions); semantic kept |
+| Session scheduling | Mentor publishes slots → mentee books (row lock) → notification + email with calendar invitation → reminder 24 h before → cancel/reopen |
+| Privacy and data | Directory/visibility/email choices → consent history with policy version → JSON export → account deletion releasing the registry claim |
+| Accountability | Admin action + audit entry in one SQL statement → append-only audit log (database trigger) → filterable admin view |
+| Operations | Live health checks for database, model service, index coverage, Kafka backlog and SMTP on `/admin/health` |
+| Lived-in community data | Deterministic local generation of portraits, cover art, ~2,000 connections, 48 mentorships and ~58 recaps |
 
 ## 2. Test and build results
 
