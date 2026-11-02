@@ -10,7 +10,8 @@ from typing import Literal
 
 from .config import database_dsn, get_settings
 from .indexing import BGEEncoder, EmbeddingInputTooLong
-from .search import EmbeddingUnavailable, SearchRequest, SearchResponse, check_search_database, search_mentors
+from .search import (EmbeddingUnavailable, RecommendRequest, RecommendResponse, SearchRequest, SearchResponse,
+                     check_search_database, recommend_mentors, search_mentors)
 
 logger = logging.getLogger(__name__)
 _encoder = None
@@ -94,6 +95,23 @@ def mentor_search(
     except Exception as exc:
         logger.error("Mentor search unavailable (%s)", type(exc).__name__)
         raise HTTPException(status_code=503, detail="Mentor search temporarily unavailable") from None
+
+
+@app.post("/mentors/recommend", response_model=RecommendResponse)
+def mentor_recommend(request: RecommendRequest):
+    """Mentors whose profiles are closest to the member's own profile (BGE passage similarity)."""
+    try:
+        encoder = query_encoder()
+        with psycopg.connect(database_dsn(), autocommit=True) as conn:
+            with _inference_lock:
+                return recommend_mentors(conn, encoder, request)
+    except HTTPException:
+        raise
+    except EmbeddingInputTooLong:
+        raise HTTPException(status_code=422, detail="Profile exceeds the model token limit") from None
+    except Exception as exc:
+        logger.error("Mentor recommendations unavailable (%s)", type(exc).__name__)
+        raise HTTPException(status_code=503, detail="Mentor recommendations temporarily unavailable") from None
 
 
 @app.get("/ready", response_model=ReadinessResponse,

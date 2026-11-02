@@ -1,5 +1,5 @@
 {
-  "evaluated_at": "2026-10-18T22:56:12+00:00",
+  "evaluated_at": "2026-10-21T15:31:58+00:00",
   "k": 5,
   "corpus_size": 133,
   "model": "BAAI/bge-base-en-v1.5",
@@ -76,6 +76,42 @@
           },
           {
             "synthetic_id": "alum-102",
+            "department": "ICT / Digital",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-162",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-102",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-126",
             "department": "ICT / Digital",
             "relevant": true
           }
@@ -158,6 +194,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3333333333333333,
+        "f1_at_5": 0.5,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3333333333333333,
+        "top": [
+          {
+            "synthetic_id": "alum-045",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-171",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-147",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-036",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-032",
+            "department": "Flight Operations",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -232,6 +304,42 @@
           },
           {
             "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-005",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-022",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-199",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-079",
             "department": "Finance",
             "relevant": true
           }
@@ -314,6 +422,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-112",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-088",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-136",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-002",
+            "department": "Cabin Services",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -388,6 +532,42 @@
           },
           {
             "synthetic_id": "alum-190",
+            "department": "Cargo",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-190",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-094",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-154",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-166",
+            "department": "Cargo",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-070",
             "department": "Cargo",
             "relevant": true
           }
@@ -470,6 +650,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.7142857142857143,
+        "f1_at_5": 0.8333333333333333,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-137",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-023",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-185",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-173",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -544,6 +760,42 @@
           },
           {
             "synthetic_id": "alum-116",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-188",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-200",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-092",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-044",
             "department": "Human Resources",
             "relevant": true
           }
@@ -626,6 +878,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-133",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-061",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-097",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-109",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-001",
+            "department": "Safety & Quality",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -700,6 +988,42 @@
           },
           {
             "synthetic_id": "alum-105",
+            "department": "Ground Operations",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5555555555555556,
+        "f1_at_5": 0.7142857142857143,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-117",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-007",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-105",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-093",
+            "department": "Ground Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-019",
             "department": "Ground Operations",
             "relevant": true
           }
@@ -782,6 +1106,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.5,
+        "top": [
+          {
+            "synthetic_id": "alum-120",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-060",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-108",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-192",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-046",
+            "department": "Commercial",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -856,6 +1216,42 @@
           },
           {
             "synthetic_id": "alum-110",
+            "department": "Corporate Services",
+            "relevant": true
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.38461538461538464,
+        "f1_at_5": 0.5555555555555556,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-004",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-194",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-008",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-086",
             "department": "Corporate Services",
             "relevant": true
           }
@@ -938,6 +1334,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.45454545454545453,
+        "f1_at_5": 0.625,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.45454545454545453,
+        "top": [
+          {
+            "synthetic_id": "alum-131",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-006",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-083",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-059",
+            "department": "Customer Experience",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-107",
+            "department": "Customer Experience",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -1012,6 +1444,42 @@
           },
           {
             "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": false
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.2222222222222222,
+        "f1_at_5": 0.2857142857142857,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 0.5555555555555556,
+        "top": [
+          {
+            "synthetic_id": "alum-050",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-087",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-099",
+            "department": "Flight Operations",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-171",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-032",
             "department": "Flight Operations",
             "relevant": false
           }
@@ -1094,6 +1562,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 0,
+        "returned": 5,
+        "precision_at_5": 0.0,
+        "recall_at_5": 0.0,
+        "f1_at_5": 0.0,
+        "reciprocal_rank": 0.0,
+        "recall_ceiling": 0.38461538461538464,
+        "top": [
+          {
+            "synthetic_id": "alum-175",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-127",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-079",
+            "department": "Finance",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-163",
+            "department": "Finance",
+            "relevant": false
+          }
+        ]
       }
     },
     {
@@ -1172,6 +1676,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 4,
+        "returned": 5,
+        "precision_at_5": 0.8,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.6153846153846154,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.625,
+        "top": [
+          {
+            "synthetic_id": "alum-064",
+            "department": "Cabin Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-120",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-108",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-016",
+            "department": "Cabin Services",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-155",
+            "department": "Customer Experience",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -1246,6 +1786,42 @@
           },
           {
             "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.5714285714285715,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-014",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-198",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-126",
             "department": "ICT / Digital",
             "relevant": false
           }
@@ -1328,6 +1904,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.3125,
+        "f1_at_5": 0.47619047619047616,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.3125,
+        "top": [
+          {
+            "synthetic_id": "alum-152",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-176",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-188",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-104",
+            "department": "Human Resources",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-116",
+            "department": "Human Resources",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -1406,6 +2018,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 5,
+        "returned": 5,
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.21739130434782608,
+        "f1_at_5": 0.3571428571428571,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.21739130434782608,
+        "top": [
+          {
+            "synthetic_id": "alum-101",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-173",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-075",
+            "department": "Flight Operations",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-187",
+            "department": "Finance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-123",
+            "department": "Flight Operations",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -1466,6 +2114,42 @@
           {
             "synthetic_id": "alum-017",
             "department": "ICT / Digital",
+            "relevant": false
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.4,
+        "f1_at_5": 0.4000000000000001,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-060",
+            "department": "Commercial",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-004",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-031",
+            "department": "Commercial",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-194",
+            "department": "Corporate Services",
             "relevant": false
           }
         ]
@@ -1547,6 +2231,42 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 2,
+        "returned": 5,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.2857142857142857,
+        "f1_at_5": 0.3333333333333333,
+        "reciprocal_rank": 0.3333333333333333,
+        "recall_ceiling": 0.7142857142857143,
+        "top": [
+          {
+            "synthetic_id": "alum-017",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-078",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-186",
+            "department": "ICT / Digital",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-174",
+            "department": "ICT / Digital",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-198",
+            "department": "ICT / Digital",
+            "relevant": true
+          }
+        ]
       }
     },
     {
@@ -1622,6 +2342,42 @@
           {
             "synthetic_id": "alum-101",
             "department": "Engineering & Maintenance",
+            "relevant": false
+          }
+        ]
+      },
+      "hybrid": {
+        "hits": 3,
+        "returned": 5,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.75,
+        "f1_at_5": 0.6666666666666665,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-065",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-077",
+            "department": "Engineering & Maintenance",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-085",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-169",
+            "department": "Safety & Quality",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-025",
+            "department": "Safety & Quality",
             "relevant": false
           }
         ]
@@ -1703,13 +2459,50 @@
             "relevant": true
           }
         ]
+      },
+      "hybrid": {
+        "hits": 4,
+        "returned": 5,
+        "precision_at_5": 0.8,
+        "recall_at_5": 0.8,
+        "f1_at_5": 0.8000000000000002,
+        "reciprocal_rank": 0.5,
+        "recall_ceiling": 1.0,
+        "top": [
+          {
+            "synthetic_id": "alum-098",
+            "department": "Corporate Services",
+            "relevant": false
+          },
+          {
+            "synthetic_id": "alum-086",
+            "department": "Corporate Services",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-145",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-181",
+            "department": "Safety & Quality",
+            "relevant": true
+          },
+          {
+            "synthetic_id": "alum-062",
+            "department": "Corporate Services",
+            "relevant": true
+          }
+        ]
       }
     }
   ],
   "negative_control": {
     "query": "Astrophysics research on black holes and galaxy formation.",
     "semantic_results": 0,
-    "keyword_results": 0
+    "keyword_results": 0,
+    "hybrid_results": 0
   },
   "macro": {
     "domain": {
@@ -1721,6 +2514,13 @@
         "recall_ceiling": 0.4754
       },
       "keyword_baseline": {
+        "precision_at_5": 1.0,
+        "recall_at_5": 0.4754,
+        "f1_at_5": 0.6372,
+        "reciprocal_rank": 1.0,
+        "recall_ceiling": 0.4754
+      },
+      "hybrid": {
         "precision_at_5": 1.0,
         "recall_at_5": 0.4754,
         "f1_at_5": 0.6372,
@@ -1742,6 +2542,13 @@
         "f1_at_5": 0.3576,
         "reciprocal_rank": 0.6667,
         "recall_ceiling": 0.6809
+      },
+      "hybrid": {
+        "precision_at_5": 0.58,
+        "recall_at_5": 0.4488,
+        "f1_at_5": 0.4506,
+        "reciprocal_rank": 0.6833,
+        "recall_ceiling": 0.6809
       }
     },
     "all": {
@@ -1757,6 +2564,13 @@
         "recall_at_5": 0.4096,
         "f1_at_5": 0.5101,
         "reciprocal_rank": 0.8485,
+        "recall_ceiling": 0.5688
+      },
+      "hybrid": {
+        "precision_at_5": 0.8091,
+        "recall_at_5": 0.4633,
+        "f1_at_5": 0.5524,
+        "reciprocal_rank": 0.8561,
         "recall_ceiling": 0.5688
       }
     }

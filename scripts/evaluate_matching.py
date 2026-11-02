@@ -25,6 +25,7 @@ from psycopg.rows import dict_row
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from local_database import ROOT, local_dsn  # noqa: E402
 from services.matching.app.indexing import source_text  # noqa: E402
+from services.matching.app.hybrid import BM25, fuse  # noqa: E402
 
 K = 5
 LABELS = ROOT / "evaluation/relevance_labels.json"
@@ -126,11 +127,17 @@ def build_labels():
     print(f"Wrote {len(labels['queries'])} labelled queries over {len(profiles)} eligible mentors to {LABELS.relative_to(ROOT)}")
 
 
-def semantic_search(base, query):
+def semantic_search(base, query, top_k=K, ranking="semantic"):
     request = urllib.request.Request(f"{base}/mentors/search", method="POST", headers={"Content-Type": "application/json"},
-                                     data=json.dumps({"query": query, "top_k": K}).encode())
+                                     data=json.dumps({"query": query, "top_k": top_k, "ranking": ranking}).encode())
     with urllib.request.urlopen(request, timeout=120) as response:
         return [item["profile_id"] for item in json.load(response)["results"]]
+
+
+def hybrid_ranker(base, profiles):
+    """Semantic candidates (threshold applied) re-ranked with BM25 by reciprocal rank fusion."""
+    bm25 = BM25({p["profile_id"]: source_text({**p, "experience": p["experience"]}) for p in profiles})
+    return lambda query: fuse(semantic_search(base, query, 50), bm25.scores(query), K)
 
 
 def keyword_ranker(profiles):
@@ -172,30 +179,33 @@ def evaluate():
     if len(profiles) != labels["corpus_size"]:
         raise SystemExit(f"Corpus changed ({len(profiles)} vs {labels['corpus_size']} when labelled); rebuild labels")
     keyword = keyword_ranker(profiles)
+    hybrid = hybrid_ranker(base, profiles)
     report = {"evaluated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "k": K,
               "corpus_size": len(profiles), "model": "BAAI/bge-base-en-v1.5", "queries": []}
     for item in labels["queries"]:
         relevant_ids = {by_synthetic[s]["profile_id"] for s in item["relevant"] if s in by_synthetic}
         semantic = semantic_search(base, item["query"])
         baseline = keyword(item["query"])
+        fused = hybrid(item["query"])
         describe = lambda ids: [{"synthetic_id": by_profile[i]["synthetic_id"], "department": by_profile[i]["former_kq_department"],
                                  "relevant": i in relevant_ids} for i in ids if i in by_profile]
         report["queries"].append({"id": item["id"], "set": item["set"], "query": item["query"], "relevant_count": len(relevant_ids),
                                   "semantic": {**metrics(semantic, relevant_ids), "top": describe(semantic)},
-                                  "keyword_baseline": {**metrics(baseline, relevant_ids), "top": describe(baseline)}})
+                                  "keyword_baseline": {**metrics(baseline, relevant_ids), "top": describe(baseline)},
+                                  "hybrid": {**metrics(fused, relevant_ids), "top": describe(fused)}})
     control = semantic_search(base, NEGATIVE_CONTROL[1])
     report["negative_control"] = {"query": NEGATIVE_CONTROL[1], "semantic_results": len(control),
-                                  "keyword_results": len(keyword(NEGATIVE_CONTROL[1]))}
+                                  "keyword_results": len(keyword(NEGATIVE_CONTROL[1])), "hybrid_results": len(hybrid(NEGATIVE_CONTROL[1]))}
     keys = ("precision_at_5", "recall_at_5", "f1_at_5", "reciprocal_rank", "recall_ceiling")
     report["macro"] = {scope: {system: {key: mean([q[system] for q in report["queries"] if scope == "all" or q["set"] == scope], key) for key in keys}
-                               for system in ("semantic", "keyword_baseline")} for scope in ("domain", "transition", "all")}
+                               for system in ("semantic", "keyword_baseline", "hybrid")} for scope in ("domain", "transition", "all")}
     RESULTS.mkdir(parents=True, exist_ok=True)
     (RESULTS / "matching_evaluation.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     (RESULTS / "matching_evaluation.md").write_text(markdown(report), encoding="utf-8")
     for scope in ("domain", "transition", "all"):
-        s, b = report["macro"][scope]["semantic"], report["macro"][scope]["keyword_baseline"]
-        print(f"[{scope}] Semantic P@5 {s['precision_at_5']:.3f} R@5 {s['recall_at_5']:.3f} F1@5 {s['f1_at_5']:.3f} MRR {s['reciprocal_rank']:.3f} | "
-              f"Keyword P@5 {b['precision_at_5']:.3f} R@5 {b['recall_at_5']:.3f} F1@5 {b['f1_at_5']:.3f} MRR {b['reciprocal_rank']:.3f}")
+        for label, system in (("Semantic", "semantic"), ("Keyword", "keyword_baseline"), ("Hybrid", "hybrid")):
+            m = report["macro"][scope][system]
+            print(f"[{scope}] {label:8} P@5 {m['precision_at_5']:.3f} R@5 {m['recall_at_5']:.3f} F1@5 {m['f1_at_5']:.3f} MRR {m['reciprocal_rank']:.3f}")
     print(f"Negative control returned {report['negative_control']['semantic_results']} semantic results")
     print(f"Saved {(RESULTS / 'matching_evaluation.md').relative_to(ROOT)}")
 
@@ -214,14 +224,16 @@ def markdown(report):
         "| Query set | System | P@5 | R@5 | F1@5 | MRR | R@5 ceiling |", "| --- | --- | --- | --- | --- | --- | --- |",
         *[f"| {scope.title()} | {label} | {m['precision_at_5']:.3f} | {m['recall_at_5']:.3f} | {m['f1_at_5']:.3f} | {m['reciprocal_rank']:.3f} | {m['recall_ceiling']:.3f} |"
           for scope in ("domain", "transition", "all")
-          for label, m in (("Semantic (BGE + pgvector)", report["macro"][scope]["semantic"]), ("Keyword baseline (TF-IDF)", report["macro"][scope]["keyword_baseline"]))], "",
+          for label, m in (("Semantic (BGE + pgvector)", report["macro"][scope]["semantic"]), ("Keyword baseline (TF-IDF)", report["macro"][scope]["keyword_baseline"]),
+                           ("Hybrid (BGE candidates + BM25, RRF)", report["macro"][scope]["hybrid"]))], "",
         "R@5 cannot exceed the ceiling shown: with more than five relevant mentors, five results can only recover a fraction of them.", "",
         "## Per query", "",
-        "| Set | Query | Relevant | Semantic P@5 | Semantic R@5 | Keyword P@5 | Keyword R@5 |", "| --- | --- | --- | --- | --- | --- | --- |",
+        "| Set | Query | Relevant | Semantic P@5 | Semantic R@5 | Keyword P@5 | Keyword R@5 | Hybrid P@5 | Hybrid R@5 |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for q in report["queries"]:
         lines.append(f"| {q['set']} | {q['query']} | {q['relevant_count']} | {q['semantic']['precision_at_5']:.2f} | {q['semantic']['recall_at_5']:.2f} | "
-                     f"{q['keyword_baseline']['precision_at_5']:.2f} | {q['keyword_baseline']['recall_at_5']:.2f} |")
+                     f"{q['keyword_baseline']['precision_at_5']:.2f} | {q['keyword_baseline']['recall_at_5']:.2f} | "
+                     f"{q['hybrid']['precision_at_5']:.2f} | {q['hybrid']['recall_at_5']:.2f} |")
     misses = [q for q in report["queries"] if q["semantic"]["precision_at_5"] < 0.8]
     lines += ["", "## Failure cases (semantic P@5 below 0.8)", ""]
     if not misses:
@@ -229,10 +241,19 @@ def markdown(report):
     for q in misses:
         wrong = ", ".join(f"{t['synthetic_id']} ({t['department']})" for t in q["semantic"]["top"] if not t["relevant"]) or "fewer than five results above the similarity threshold"
         lines.append(f"- **{q['query']}** returned {q['semantic']['returned']} result(s); not relevant: {wrong}.")
+    keys = ("precision_at_5", "recall_at_5", "f1_at_5", "reciprocal_rank")
+    wins = all(report["macro"][scope]["hybrid"][k] >= report["macro"][scope]["semantic"][k] for scope in ("domain", "transition") for k in keys)
+    lines += ["", "## Ranking decision", "",
+              "The hybrid ranker keeps the semantic candidates (same similarity threshold) and re-orders them with BM25 keyword "
+              "scores by reciprocal rank fusion (`services/matching/app/hybrid.py`). It would replace semantic ranking in the live "
+              "service only if it matched or beat it on every macro metric in both query sets.", "",
+              f"**Result: {'hybrid adopted' if wins else 'semantic ranking kept'}.** " + ("" if wins else
+              "Keyword overlap favours mentors who share the member's words (often their old role) over mentors who match "
+              "where the member wants to go, which lowers ranking quality on career-transition queries."), ""]
     control = report["negative_control"]
     lines += ["", "## Negative control", "",
               f"Off-topic query “{control['query']}” returned {control['semantic_results']} semantic result(s) "
-              f"(similarity threshold applied) and {control['keyword_results']} keyword result(s).", "",
+              f"(similarity threshold applied), {control['keyword_results']} keyword result(s) and {control['hybrid_results']} hybrid result(s).", "",
               "## Limitations", "",
               "- Labels are derived from structured fields, not independent human judgement.",
               "- Synthetic biographies follow templates, which can make semantic and keyword signals easier than real profiles.",

@@ -38,7 +38,7 @@ class APITests(unittest.TestCase):
         response = self.client.post("/mentors/search", json={"query": "  AWS\n Docker mentorship  "})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.search.call_args.args[2].query, "AWS Docker mentorship")
-        self.assertEqual(response.json(), {"results": [], "top_k": 5, "similarity_threshold": 0.5})
+        self.assertEqual(response.json(), {"results": [], "top_k": 5, "similarity_threshold": 0.5, "ranking": "semantic"})
 
     def test_empty_query(self):
         for query in ("", " \t\n "):
