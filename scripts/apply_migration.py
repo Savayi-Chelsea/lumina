@@ -18,6 +18,9 @@ ADDITIVE = {
     "008": ("008_engagement_privacy.sql", {"mentor_search_events", "mentor_search_results", "mentorship_request_origins",
                                            "mentorship_feedback", "privacy_consents", "mentor_availability", "mentorship_sessions",
                                            "audit_log", "email_preferences", "email_deliveries"}),
+    "009": ("009_job_feed.sql", {"external_jobs", "job_feed_runs"}),
+    "010": ("010_job_feed_jobwebkenya.sql", set()),  # constraint change only
+    "011": ("011_opportunity_applications.sql", {"opportunity_applications"}),
 }
 # Defaulted columns a migration adds; every other value in these tables must be unchanged.
 ADDED_COLUMNS = {"006": {"profiles": ["open_to_opportunities", "banner_theme"]},

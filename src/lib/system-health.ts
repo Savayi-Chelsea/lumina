@@ -1,6 +1,7 @@
 import "server-only";
 import { connect } from "node:net";
 import { database } from "@/lib/db";
+import { jobFeedStatus } from "@/lib/job-feed";
 
 /**
  * Live status of every moving part, for administrators. Each check is bounded
@@ -89,8 +90,28 @@ async function indexCheck(): Promise<HealthCheck> {
   }
 }
 
+async function jobFeedCheck(): Promise<HealthCheck> {
+  const name = "Kenya job feed";
+  try {
+    const status = await jobFeedStatus();
+    const enabled = status.sources.filter(source => source.enabled);
+    if (!enabled.length) return { name, state: "warning", summary: "Off", detail: "No job source is enabled." };
+    const failing = enabled.filter(source => source.last_status === "failed");
+    const newest = enabled.map(source => source.last_success).filter((value): value is string => Boolean(value)).sort().at(-1);
+    const hours = newest ? (Date.now() - new Date(newest).getTime()) / 3_600_000 : Infinity;
+    const detail = enabled.map(source => `${source.label}: ${source.active} live${source.last_status === "failed" ? ` (last refresh failed: ${source.last_error ?? "unknown"})` : ""}`).join("; ")
+      + (status.sources.some(source => !source.enabled && source.source === "jsearch") ? ". JSearch is off (no JSEARCH_API_KEY)" : "");
+    if (!status.active) return { name, state: failing.length ? "critical" : "warning", summary: failing.length ? "Sources unreachable" : "No listings yet",
+      detail: `${detail}. Use Refresh now under Administration › Opportunities.` };
+    if (failing.length || hours > 48) return { name, state: "warning", summary: hours > 48 ? "Out of date" : "Last refresh failed", detail };
+    return { name, state: "good", summary: `${status.active} live listings`, detail: `${detail}. Updated ${new Date(newest!).toLocaleString("en-GB", { timeZone: "Africa/Nairobi" })}` };
+  } catch {
+    return { name, state: "critical", summary: "Unknown", detail: "The job feed tables could not be read. Is migration 009 applied?" };
+  }
+}
+
 export async function systemHealth() {
-  const checks = await Promise.all([databaseCheck(), matchingCheck(), indexCheck(), brokerCheck(), emailCheck()]);
+  const checks = await Promise.all([databaseCheck(), matchingCheck(), indexCheck(), brokerCheck(), emailCheck(), jobFeedCheck()]);
   const overall: HealthState = checks.some(c => c.state === "critical") ? "critical" : checks.some(c => c.state === "warning") ? "warning" : "good";
   return { checks, overall, checked_at: new Date().toISOString() };
 }

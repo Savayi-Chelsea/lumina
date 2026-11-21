@@ -12,6 +12,8 @@ import { AlumniCard } from "./alumni-card";
 import type { AlumniSummary } from "@/lib/alumni-directory";
 import type { Recap } from "@/lib/session-recaps";
 import { RecapCard } from "./recap-card";
+import { JobCard } from "./job-card";
+import type { ExternalJob } from "@/lib/job-feed";
 
 function SectionHeading({ id, eyebrow, title, href, link }: { id: string; eyebrow: string; title: string; href: string; link: string }) {
   return <div className="section-heading"><div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div><Link className="text-link" href={href}>{link}<Icon name="arrow" /></Link></div>;
@@ -19,7 +21,7 @@ function SectionHeading({ id, eyebrow, title, href, link }: { id: string; eyebro
 
 export type NetworkSummary = { connections: number; invitations: number; messages: number; mentorshipWaiting: number; recapsWaiting: number } | null;
 
-export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false, summary = null, recaps = [], recommendations }: { summary?: NetworkSummary; recaps?: Recap[]; recommendations?: ReactNode; people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
+export function AlumniHome({ user, profile, people = [], events = [], opportunities = [], discoveryUnavailable = false, summary = null, recaps = [], recommendations, jobs = [] }: { summary?: NetworkSummary; recaps?: Recap[]; recommendations?: ReactNode; jobs?: ExternalJob[]; people?: AlumniSummary[]; events?: CommunityEvent[]; opportunities?: Opportunity[]; discoveryUnavailable?: boolean; user: Session["user"]; profile: Profile | null }) {
   const name = profile?.full_name || user.name || "Lumina member";
   const firstName = name.split(/\s+/)[0];
   const progress = profileProgress(profile);
@@ -47,7 +49,7 @@ export function AlumniHome({ user, profile, people = [], events = [], opportunit
 
     <section className="discovery-section" aria-labelledby="events-heading"><SectionHeading id="events-heading" eyebrow="MAKE ROOM FOR A REUNION" title="Good things on the horizon." href="/events" link="Explore events" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to see upcoming gatherings and reserve your place.</p></div> : events.length ? <div className="event-grid">{events.map((event,index) => <EventCard key={event.id} event={event} index={index} />)}</div> : <div className="card"><p>No upcoming events yet. New gatherings are announced regularly.</p><Link className="text-link" href="/events">See all events<Icon name="arrow" /></Link></div>}</section>
 
-    <div className="home-bottom-grid"><section className="discovery-section" aria-labelledby="opportunities-heading"><SectionHeading id="opportunities-heading" eyebrow="YOUR EXPERIENCE HAS PLACES TO GO" title="What could come next?" href="/opportunities" link="Explore" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore opportunities shared with the community.</p></div> : opportunities.length ? <div className="opportunity-list">{opportunities.map(opportunity => <OpportunityCard key={opportunity.id} opportunity={opportunity} />)}</div> : <div className="card"><p>No open opportunities right now. Check back soon.</p></div>}</section>
+    <div className="home-bottom-grid"><section className="discovery-section" aria-labelledby="opportunities-heading"><SectionHeading id="opportunities-heading" eyebrow="YOUR EXPERIENCE HAS PLACES TO GO" title="What could come next?" href="/opportunities" link="Explore" />{!verified && user.role !== "admin" ? <div className="card"><p>Verify your alumni details to explore opportunities shared with the community.</p></div> : opportunities.length ? <div className="opportunity-list">{opportunities.map(opportunity => <OpportunityCard key={opportunity.id} opportunity={opportunity} />)}</div> : <div className="card"><p>No open opportunities right now. Check back soon.</p></div>}{jobs.length > 0 && <div className="home-jobs"><div className="home-jobs-heading"><h3>Jobs in Kenya{jobs.some(job => job.recommended) ? " for you" : ""}</h3><Link className="text-link" href={jobs.some(job => job.recommended) ? "/opportunities/jobs?topic=for-you" : "/opportunities/jobs"}>See all jobs<Icon name="arrow" /></Link></div><div className="opportunity-list">{jobs.map(job => <JobCard key={job.id} job={job} compact />)}</div></div>}</section>
       <section className="community-placeholder" aria-labelledby="community-heading"><span className="community-icon"><Icon name="people" width={30} height={30} /></span><p className="eyebrow">YOUR NETWORK</p><h2 id="community-heading">Stay close to<br /><em>your people.</em></h2>
         {summary ? <ul className="network-summary-list">
           <li><Link href="/network/connections"><strong>{summary.connections}</strong> {summary.connections === 1 ? "connection" : "connections"}</Link></li>
