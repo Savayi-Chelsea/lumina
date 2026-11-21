@@ -3,6 +3,7 @@ import { PRIVACY_POLICY_VERSION } from "@/lib/privacy";
 import type { PoolClient } from "pg";
 import { database } from "@/lib/db";
 import { uuidPattern } from "@/lib/community-input";
+import { SKILL_CATALOG, sortSkills } from "@/lib/skill-catalog";
 
 export const BANNER_THEMES = { horizon: "Horizon", savanna: "Savanna", coast: "Coast", night: "Night flight", dawn: "Dawn" } as const;
 export const SKILL_LIMIT = 30;
@@ -103,6 +104,16 @@ export function parseSkill(data: FormData) {
   const name = text(data, "skill", "Skill", 100, true)!.replace(/\s+/g, " ");
   if (name.length < 2) throw new ProfileInputError("Skill must be at least 2 characters.");
   return name;
+}
+
+/**
+ * Picker options, A–Z: the skill catalog plus skills already listed on at least
+ * two profiles (so one member's one-off entry is not offered to everyone).
+ */
+export async function skillOptions() {
+  const used = (await database().query<{ name: string }>(`SELECT s.name FROM skills s JOIN profile_skills ps ON ps.skill_id = s.id
+    GROUP BY s.id, s.name HAVING count(*) >= 2`)).rows.map(row => row.name);
+  return sortSkills([...SKILL_CATALOG, ...used]);
 }
 
 export async function listSkills(profileId: string) {
