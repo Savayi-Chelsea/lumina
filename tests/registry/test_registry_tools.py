@@ -21,8 +21,10 @@ class GeneratorTests(unittest.TestCase):
         source = ROOT / "data/synthetic_alumni.csv"
         self.assertEqual(registry_rows(source), registry_rows(source))
         rows = registry_rows(source)
-        self.assertEqual(len(rows), 50)
-        self.assertEqual(len({row["id"] for row in rows}), 50)
+        # One fixture per synthetic alumnus: ALUM-001..ALUM-200 since the dataset expansion.
+        self.assertEqual(len(rows), 200)
+        self.assertEqual(len({row["id"] for row in rows}), 200)
+        self.assertEqual(rows[-1]["synthetic_staff_number"], "SYN-ALUM-200")
         self.assertEqual(set(rows[0]), set(FIELDS))
         self.assertEqual(rows[0]["synthetic_staff_number"], "SYN-ALUM-001")
         self.assertEqual(rows[0]["surname"], "Wafula")
@@ -55,6 +57,19 @@ class GeneratorTests(unittest.TestCase):
                 local_dsn()
 
 
+    def test_only_lumina_or_named_evaluation_databases_are_local_targets(self):
+        for name, allowed in (("lumina", True), ("lumina_eval_500", True), ("postgres", False), ("lumina_eval_", False),
+                              ("lumina_evaluation", False), ("lumina_eval_500%3Bdrop", False)):
+            with self.subTest(name), patch("local_database.load_dotenv"), patch.dict(os.environ, {
+                "DATABASE_URL": f"postgresql://test:test@localhost/{name}",
+            }):
+                if allowed:
+                    self.assertIn(name, local_dsn())
+                else:
+                    with self.assertRaises(ValueError):
+                        local_dsn()
+
+
 @unittest.skipUnless(os.getenv("LUMINA_TEST_DATABASE") == "1", "Opt in to local database tests")
 class ImportDatabaseTests(unittest.TestCase):
     def test_import_is_repeatable_and_preserves_claims_and_source_values(self):
@@ -62,7 +77,7 @@ class ImportDatabaseTests(unittest.TestCase):
         with psycopg.connect(local_dsn()) as conn:
             conn.execute("CREATE TEMP TABLE alumni_registry (LIKE public.alumni_registry INCLUDING ALL)")
             rows = registry_rows(ROOT / "data/synthetic_alumni.csv")
-            self.assertEqual(import_rows(conn, rows), 50)
+            self.assertEqual(import_rows(conn, rows), 200)
             owner = uuid4()
             conn.execute("UPDATE alumni_registry SET claimed_by_user_id=%s, claimed_at=now() WHERE id=%s", (owner, rows[0]["id"]))
             before = conn.execute("SELECT to_jsonb(r) FROM alumni_registry r ORDER BY id").fetchall()

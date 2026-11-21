@@ -1,0 +1,9 @@
+corpus,eligible_mentors,system,n,mean_ms,median_ms,p95_ms,max_ms
+200,133,semantic,33,93.3,88.8,125.5,133.6
+200,133,keyword_baseline,33,1.6,1.6,2.0,2.0
+200,133,hybrid,33,91.9,90.4,108.1,112.8
+200,133,semantic_repeated,225,91.0,88.5,110.0,139.4
+500,325,semantic,45,90.5,89.3,107.1,110.6
+500,325,keyword_baseline,45,2.0,1.9,2.5,4.3
+500,325,hybrid,45,95.7,92.5,110.8,140.2
+500,325,semantic_repeated,225,92.3,91.0,111.2,130.6

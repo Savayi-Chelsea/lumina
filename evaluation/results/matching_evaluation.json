@@ -1,8 +1,11 @@
 {
-  "evaluated_at": "2026-10-21T15:31:58+00:00",
+  "evaluated_at": "2026-11-17T14:41:58+00:00",
   "k": 5,
   "corpus_size": 133,
   "model": "BAAI/bge-base-en-v1.5",
+  "similarity_threshold": 0.5,
+  "non_synthetic_mentors_excluded": 0,
+  "labels": "evaluation/relevance_labels.json",
   "queries": [
     {
       "id": "cloud",
@@ -2498,12 +2501,37 @@
       }
     }
   ],
+  "unanswerable": [],
   "negative_control": {
     "query": "Astrophysics research on black holes and galaxy formation.",
     "semantic_results": 0,
     "keyword_results": 0,
     "hybrid_results": 0
   },
+  "latency": {
+    "semantic": {
+      "n": 22,
+      "mean_ms": 93.5,
+      "median_ms": 90.7,
+      "p95_ms": 123.9,
+      "max_ms": 134.0
+    },
+    "keyword_baseline": {
+      "n": 22,
+      "mean_ms": 1.6,
+      "median_ms": 1.6,
+      "p95_ms": 1.8,
+      "max_ms": 2.6
+    },
+    "hybrid": {
+      "n": 22,
+      "mean_ms": 94.1,
+      "median_ms": 90.2,
+      "p95_ms": 107.7,
+      "max_ms": 155.0
+    }
+  },
+  "latency_rounds": 0,
   "macro": {
     "domain": {
       "semantic": {
@@ -2574,5 +2602,401 @@
         "recall_ceiling": 0.5688
       }
     }
-  }
+  },
+  "confidence_intervals": {
+    "domain": {
+      "semantic": {
+        "precision_at_5": [
+          1.0,
+          1.0
+        ],
+        "recall_at_5": [
+          0.4157,
+          0.5405
+        ],
+        "f1_at_5": [
+          0.5818,
+          0.6941
+        ],
+        "reciprocal_rank": [
+          1.0,
+          1.0
+        ]
+      },
+      "keyword_baseline": {
+        "precision_at_5": [
+          1.0,
+          1.0
+        ],
+        "recall_at_5": [
+          0.4157,
+          0.5405
+        ],
+        "f1_at_5": [
+          0.5818,
+          0.6941
+        ],
+        "reciprocal_rank": [
+          1.0,
+          1.0
+        ]
+      },
+      "hybrid": {
+        "precision_at_5": [
+          1.0,
+          1.0
+        ],
+        "recall_at_5": [
+          0.4157,
+          0.5405
+        ],
+        "f1_at_5": [
+          0.5818,
+          0.6941
+        ],
+        "reciprocal_rank": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "transition": {
+      "semantic": {
+        "precision_at_5": [
+          0.42,
+          0.82
+        ],
+        "recall_at_5": [
+          0.292,
+          0.6763
+        ],
+        "f1_at_5": [
+          0.3332,
+          0.6244
+        ],
+        "reciprocal_rank": [
+          0.525,
+          1.0
+        ]
+      },
+      "keyword_baseline": {
+        "precision_at_5": [
+          0.32,
+          0.68
+        ],
+        "recall_at_5": [
+          0.2007,
+          0.4734
+        ],
+        "f1_at_5": [
+          0.2333,
+          0.4898
+        ],
+        "reciprocal_rank": [
+          0.45,
+          0.8833
+        ]
+      },
+      "hybrid": {
+        "precision_at_5": [
+          0.38,
+          0.76
+        ],
+        "recall_at_5": [
+          0.273,
+          0.638
+        ],
+        "f1_at_5": [
+          0.309,
+          0.5768
+        ],
+        "reciprocal_rank": [
+          0.4667,
+          0.9
+        ]
+      }
+    },
+    "all": {
+      "semantic": {
+        "precision_at_5": [
+          0.7,
+          0.9364
+        ],
+        "recall_at_5": [
+          0.3841,
+          0.5743
+        ],
+        "f1_at_5": [
+          0.4829,
+          0.6423
+        ],
+        "reciprocal_rank": [
+          0.7727,
+          1.0
+        ]
+      },
+      "keyword_baseline": {
+        "precision_at_5": [
+          0.6273,
+          0.9
+        ],
+        "recall_at_5": [
+          0.3321,
+          0.4849
+        ],
+        "f1_at_5": [
+          0.4193,
+          0.5947
+        ],
+        "reciprocal_rank": [
+          0.7121,
+          0.9545
+        ]
+      },
+      "hybrid": {
+        "precision_at_5": [
+          0.6818,
+          0.9182
+        ],
+        "recall_at_5": [
+          0.3743,
+          0.5562
+        ],
+        "f1_at_5": [
+          0.4693,
+          0.6256
+        ],
+        "reciprocal_rank": [
+          0.7273,
+          0.9545
+        ]
+      }
+    }
+  },
+  "significance": [
+    {
+      "scope": "transition",
+      "a": "semantic",
+      "b": "keyword_baseline",
+      "metric": "f1_at_5",
+      "n_queries": 10,
+      "n_nonzero_differences": 9,
+      "a_better": 6,
+      "b_better": 3,
+      "mean_difference": 0.1249,
+      "statistic": 11.0,
+      "p_value": 0.2031
+    },
+    {
+      "scope": "transition",
+      "a": "semantic",
+      "b": "keyword_baseline",
+      "metric": "reciprocal_rank",
+      "n_queries": 10,
+      "n_nonzero_differences": 5,
+      "a_better": 3,
+      "b_better": 2,
+      "mean_difference": 0.1083,
+      "statistic": 5.0,
+      "p_value": 0.625
+    },
+    {
+      "scope": "transition",
+      "a": "semantic",
+      "b": "hybrid",
+      "metric": "f1_at_5",
+      "n_queries": 10,
+      "n_nonzero_differences": 4,
+      "a_better": 3,
+      "b_better": 1,
+      "mean_difference": 0.0319,
+      "statistic": 3.0,
+      "p_value": 0.625
+    },
+    {
+      "scope": "transition",
+      "a": "semantic",
+      "b": "hybrid",
+      "metric": "reciprocal_rank",
+      "n_queries": 10,
+      "n_nonzero_differences": 3,
+      "a_better": 2,
+      "b_better": 1,
+      "mean_difference": 0.0917,
+      "statistic": 1.0,
+      "p_value": 0.5
+    },
+    {
+      "scope": "transition",
+      "a": "hybrid",
+      "b": "keyword_baseline",
+      "metric": "f1_at_5",
+      "n_queries": 10,
+      "n_nonzero_differences": 8,
+      "a_better": 6,
+      "b_better": 2,
+      "mean_difference": 0.093,
+      "statistic": 10.0,
+      "p_value": 0.3125
+    },
+    {
+      "scope": "transition",
+      "a": "hybrid",
+      "b": "keyword_baseline",
+      "metric": "reciprocal_rank",
+      "n_queries": 10,
+      "n_nonzero_differences": 5,
+      "a_better": 3,
+      "b_better": 2,
+      "mean_difference": 0.0167,
+      "statistic": 7.0,
+      "p_value": 1.0
+    },
+    {
+      "scope": "all",
+      "a": "semantic",
+      "b": "keyword_baseline",
+      "metric": "f1_at_5",
+      "n_queries": 22,
+      "n_nonzero_differences": 9,
+      "a_better": 6,
+      "b_better": 3,
+      "mean_difference": 0.0568,
+      "statistic": 11.0,
+      "p_value": 0.1731
+    },
+    {
+      "scope": "all",
+      "a": "semantic",
+      "b": "keyword_baseline",
+      "metric": "reciprocal_rank",
+      "n_queries": 22,
+      "n_nonzero_differences": 5,
+      "a_better": 3,
+      "b_better": 2,
+      "mean_difference": 0.0492,
+      "statistic": 5.0,
+      "p_value": 0.5002
+    },
+    {
+      "scope": "all",
+      "a": "semantic",
+      "b": "hybrid",
+      "metric": "f1_at_5",
+      "n_queries": 22,
+      "n_nonzero_differences": 4,
+      "a_better": 3,
+      "b_better": 1,
+      "mean_difference": 0.0145,
+      "statistic": 3.0,
+      "p_value": 0.4652
+    },
+    {
+      "scope": "all",
+      "a": "semantic",
+      "b": "hybrid",
+      "metric": "reciprocal_rank",
+      "n_queries": 22,
+      "n_nonzero_differences": 3,
+      "a_better": 2,
+      "b_better": 1,
+      "mean_difference": 0.0417,
+      "statistic": 1.0,
+      "p_value": 0.2763
+    },
+    {
+      "scope": "all",
+      "a": "hybrid",
+      "b": "keyword_baseline",
+      "metric": "f1_at_5",
+      "n_queries": 22,
+      "n_nonzero_differences": 8,
+      "a_better": 6,
+      "b_better": 2,
+      "mean_difference": 0.0423,
+      "statistic": 10.0,
+      "p_value": 0.2626
+    },
+    {
+      "scope": "all",
+      "a": "hybrid",
+      "b": "keyword_baseline",
+      "metric": "reciprocal_rank",
+      "n_queries": 22,
+      "n_nonzero_differences": 5,
+      "a_better": 3,
+      "b_better": 2,
+      "mean_difference": 0.0076,
+      "statistic": 7.0,
+      "p_value": 0.8923
+    }
+  ],
+  "threshold_sweep": [
+    {
+      "threshold": 0.4,
+      "precision_at_5": 0.8273,
+      "recall_at_5": 0.4763,
+      "f1_at_5": 0.5669,
+      "reciprocal_rank": 0.8977,
+      "mean_results_returned": 5.0,
+      "queries_with_fewer_than_5": 0,
+      "queries_with_no_results": 0,
+      "negative_control_results": 5
+    },
+    {
+      "threshold": 0.45,
+      "precision_at_5": 0.8273,
+      "recall_at_5": 0.4763,
+      "f1_at_5": 0.5669,
+      "reciprocal_rank": 0.8977,
+      "mean_results_returned": 5.0,
+      "queries_with_fewer_than_5": 0,
+      "queries_with_no_results": 0,
+      "negative_control_results": 0
+    },
+    {
+      "threshold": 0.5,
+      "precision_at_5": 0.8273,
+      "recall_at_5": 0.4763,
+      "f1_at_5": 0.5669,
+      "reciprocal_rank": 0.8977,
+      "mean_results_returned": 5.0,
+      "queries_with_fewer_than_5": 0,
+      "queries_with_no_results": 0,
+      "negative_control_results": 0
+    },
+    {
+      "threshold": 0.55,
+      "precision_at_5": 0.7182,
+      "recall_at_5": 0.3862,
+      "f1_at_5": 0.4767,
+      "reciprocal_rank": 0.8636,
+      "mean_results_returned": 3.9545,
+      "queries_with_fewer_than_5": 6,
+      "queries_with_no_results": 2,
+      "negative_control_results": 0
+    },
+    {
+      "threshold": 0.6,
+      "precision_at_5": 0.5182,
+      "recall_at_5": 0.2495,
+      "f1_at_5": 0.3311,
+      "reciprocal_rank": 0.5909,
+      "mean_results_returned": 2.5909,
+      "queries_with_fewer_than_5": 12,
+      "queries_with_no_results": 9,
+      "negative_control_results": 0
+    },
+    {
+      "threshold": 0.65,
+      "precision_at_5": 0.2091,
+      "recall_at_5": 0.0965,
+      "f1_at_5": 0.1296,
+      "reciprocal_rank": 0.3182,
+      "mean_results_returned": 1.0455,
+      "queries_with_fewer_than_5": 19,
+      "queries_with_no_results": 15,
+      "negative_control_results": 0
+    }
+  ]
 }

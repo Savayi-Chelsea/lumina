@@ -1,0 +1,12 @@
+{
+  "evaluated_at": "2026-11-17T13:24:29+00:00",
+  "checks": 18,
+  "passed": 18,
+  "all_passed": true,
+  "propagations_measured": 7,
+  "end_to_end_seconds": {
+    "min": 0.687,
+    "median": 1.088,
+    "max": 10.748
+  }
+}

@@ -1,0 +1,40 @@
+corpus,set,system,queries,precision_at_5,recall_at_5,normalised_recall_at_5,f1_at_5,reciprocal_rank
+200,domain,Semantic,12,1.0,0.4754,1.0,0.6372,1.0
+200,domain,Keyword (TF-IDF),12,1.0,0.4754,1.0,0.6372,1.0
+200,domain,Hybrid (BGE + BM25),12,1.0,0.4754,1.0,0.6372,1.0
+200,skill,Semantic,6,0.7333,0.5708,0.7556,0.6264,1.0
+200,skill,Keyword (TF-IDF),6,0.9333,0.7986,1.0,0.834,1.0
+200,skill,Hybrid (BGE + BM25),6,0.8,0.6319,0.8222,0.6901,1.0
+200,transition,Semantic,11,0.5636,0.434,0.6364,0.4386,0.7045
+200,transition,Keyword (TF-IDF),11,0.4545,0.3006,0.4909,0.3251,0.6061
+200,transition,Hybrid (BGE + BM25),11,0.5273,0.408,0.5955,0.4096,0.6212
+200,leadership,Semantic,3,0.4,0.25,0.4167,0.2963,0.4167
+200,leadership,Keyword (TF-IDF),3,0.7333,0.7222,0.8889,0.6852,1.0
+200,leadership,Hybrid (BGE + BM25),3,0.6,0.5278,0.6944,0.5278,0.7333
+200,broad,Semantic,1,0.0,0.0,0.0,0.0,0.0
+200,broad,Keyword (TF-IDF),1,0.0,0.0,0.0,0.0,0.0
+200,broad,Hybrid (BGE + BM25),1,0.0,0.0,0.0,0.0,0.0
+200,all,Semantic,33,0.7212,0.4441,0.751,0.5188,0.8182
+200,all,Keyword (TF-IDF),33,0.7515,0.4839,0.7899,0.554,0.8384
+200,all,Hybrid (BGE + BM25),33,0.7394,0.4718,0.7747,0.5417,0.8192
+500,domain,Semantic,12,1.0,0.1696,1.0,0.2892,1.0
+500,domain,Keyword (TF-IDF),12,1.0,0.1696,1.0,0.2892,1.0
+500,domain,Hybrid (BGE + BM25),12,1.0,0.1696,1.0,0.2892,1.0
+500,skill,Semantic,6,0.8333,0.3459,0.8333,0.4723,1.0
+500,skill,Keyword (TF-IDF),6,1.0,0.4279,1.0,0.5798,1.0
+500,skill,Hybrid (BGE + BM25),6,1.0,0.4279,1.0,0.5798,1.0
+500,transition,Semantic,15,0.84,0.425,0.8933,0.4906,1.0
+500,transition,Keyword (TF-IDF),15,0.6133,0.2486,0.6167,0.3236,0.7889
+500,transition,Hybrid (BGE + BM25),15,0.76,0.3635,0.8033,0.428,0.9222
+500,leadership,Semantic,5,0.52,0.0951,0.52,0.1559,0.7067
+500,leadership,Keyword (TF-IDF),5,0.88,0.1332,0.88,0.2242,1.0
+500,leadership,Hybrid (BGE + BM25),5,0.64,0.1062,0.64,0.1761,1.0
+500,industry,Semantic,4,0.9,0.7056,0.9,0.7831,1.0
+500,industry,Keyword (TF-IDF),4,1.0,0.8056,1.0,0.8831,1.0
+500,industry,Hybrid (BGE + BM25),4,0.95,0.7556,0.95,0.8331,1.0
+500,broad,Semantic,3,0.2667,0.0623,0.2667,0.0975,0.4
+500,broad,Keyword (TF-IDF),3,0.6,0.1159,0.6,0.1847,0.8333
+500,broad,Hybrid (BGE + BM25),3,0.5333,0.0923,0.5333,0.1476,0.5
+500,all,Semantic,45,0.8133,0.3105,0.8311,0.3971,0.9274
+500,all,Keyword (TF-IDF),45,0.8311,0.2793,0.8322,0.378,0.9185
+500,all,Hybrid (BGE + BM25),45,0.8444,0.3086,0.8589,0.4006,0.9407

@@ -1,0 +1,21 @@
+
+> lumina@0.1.0 test:frontend:browser
+> node tests/frontend/browser-smoke.mjs
+
+PASS scrollable public landing, join/sign-in CTAs, error state and responsive layouts
+PASS email/password registration, duplicate rejection, generic failures, rate limiting, sign-in and emailed single-use password reset
+PASS pending state, keyboard account disclosure and gated community listings
+PASS pending Network, mentorship, events and opportunities gates
+PASS all 200 exact seeded alumni appear in real paginated Network
+PASS real Network search, all four filters, URL state, pagination, profile and return navigation
+PASS mentorship validation, character counter, prompts, loading, ranked cards, no-match, unavailable, malformed and retry states
+PASS logo, mobile/tablet navigation, forms, cards, dialogs and layouts at all five target viewports
+PASS events RSVP/cancel, format filter, Home attendance, opportunity type filter, search and closed-listing hiding
+PASS connect/accept, notifications, two-way messaging, profile editing with photo, mentorship settings, request, acceptance and co-signed session recap
+PASS match rating, session booking with calendar invitation and email, cancellation, privacy controls, limited profile, data export and account deletion
+PASS admin event/opportunity create, validation, publish, archive, draft and dashboard counts
+PASS admin user search, suspend (removes from Network), reinstate and sample labelling
+PASS admin hides and restores a session recap
+PASS admin audit log, analytics, match quality and system health
+PASS admin exceptions remain accessible only to admins; actual sign out returns to landing
+PASS browser fixture removed; existing data preserved

@@ -1,0 +1,501 @@
+synthetic_id,former_kq_department,industry,current_job_title,consent_to_matching,available_for_mentorship,embedded,eligible
+alum-001,Safety & Quality,Consulting,Safety Officer,True,True,True,True
+alum-002,Cabin Services,Consulting,Flight Attendant,True,True,True,True
+alum-003,Corporate Services,Finance,Legal Officer,True,True,True,True
+alum-004,Corporate Services,Telecommunications,Legal Officer,True,True,True,True
+alum-005,Finance,Technology,Accountant,True,True,True,True
+alum-006,Customer Experience,Aviation,Service Quality Analyst,True,True,True,True
+alum-007,Ground Operations,Technology,Station Coordinator,True,True,True,True
+alum-008,Corporate Services,Consulting,Procurement Officer,True,True,True,True
+alum-009,Cabin Services,Consulting,Purser,True,True,True,True
+alum-010,Safety & Quality,Telecommunications,Quality Assurance Officer,True,True,True,True
+alum-011,Safety & Quality,Consulting,Compliance Analyst,True,False,True,False
+alum-012,Cabin Services,Consulting,Cabin Crew Supervisor,False,True,False,False
+alum-013,Customer Experience,Logistics,Service Quality Analyst,True,False,True,False
+alum-014,ICT / Digital,Aviation,Systems Administrator,True,True,True,True
+alum-015,Flight Operations,Technology,First Officer,True,False,True,False
+alum-016,Cabin Services,Aviation,Purser,True,True,True,True
+alum-017,ICT / Digital,Aviation,Network Engineer,True,True,True,True
+alum-018,Safety & Quality,Aviation,Safety Officer,True,False,True,False
+alum-019,Ground Operations,Technology,Ground Operations Officer,True,True,True,True
+alum-020,Flight Operations,Consulting,First Officer,False,True,False,False
+alum-021,Cabin Services,Finance,Purser,True,True,True,True
+alum-022,Finance,Aviation,Accountant,True,True,True,True
+alum-023,Engineering & Maintenance,Consulting,Technical Engineer,True,True,True,True
+alum-024,Safety & Quality,Consulting,Quality Assurance Officer,True,True,True,True
+alum-025,Safety & Quality,Aviation,Quality Assurance Officer,True,True,True,True
+alum-026,Safety & Quality,Aviation,Safety Officer,True,True,True,True
+alum-027,Commercial,Technology,Sales Executive,True,True,True,True
+alum-028,Customer Experience,Logistics,Customer Service Agent,True,True,True,True
+alum-029,Corporate Services,Technology,Legal Officer,False,True,False,False
+alum-030,Human Resources,Aviation,HR Business Partner,True,True,True,True
+alum-031,Commercial,Logistics,Marketing Officer,True,True,True,True
+alum-032,Flight Operations,Telecommunications,Captain,True,True,True,True
+alum-033,Safety & Quality,Telecommunications,Compliance Analyst,False,True,False,False
+alum-034,Customer Experience,Logistics,Service Quality Analyst,True,False,True,False
+alum-035,Customer Experience,Technology,Customer Service Agent,True,True,True,True
+alum-036,Flight Operations,Logistics,Flight Operations Officer,True,True,True,True
+alum-037,Safety & Quality,Aviation,Safety Officer,False,True,False,False
+alum-038,Safety & Quality,Logistics,Safety Officer,True,True,True,True
+alum-039,Customer Experience,Consulting,Customer Experience Officer,True,True,True,True
+alum-040,ICT / Digital,Aviation,Network Engineer,False,False,False,False
+alum-041,Commercial,Consulting,Revenue Analyst,False,True,False,False
+alum-042,ICT / Digital,Technology,Systems Administrator,False,True,False,False
+alum-043,Commercial,Finance,Revenue Analyst,True,False,True,False
+alum-044,Human Resources,Finance,HR Business Partner,True,True,True,True
+alum-045,Flight Operations,Logistics,First Officer,True,True,True,True
+alum-046,Commercial,Logistics,Revenue Analyst,True,True,True,True
+alum-047,Cabin Services,Aviation,Cabin Crew Supervisor,True,True,True,True
+alum-048,Ground Operations,Consulting,Ground Operations Officer,False,False,False,False
+alum-049,Ground Operations,Logistics,Ramp Supervisor,True,False,True,False
+alum-050,Flight Operations,Consulting,Captain,True,True,True,True
+alum-051,Flight Operations,Aviation,Flight Operations Manager,True,True,True,True
+alum-052,Cabin Services,Education,Cabin Crew Trainer,True,True,True,True
+alum-053,Engineering & Maintenance,Manufacturing,Maintenance Manager,False,True,False,False
+alum-054,ICT / Digital,Logistics,IT Manager,False,False,False,False
+alum-055,Finance,Finance,Financial Analyst,False,True,False,False
+alum-056,Human Resources,Consulting,Leadership Coach,True,False,True,False
+alum-057,Ground Operations,Transport,Fleet Operations Supervisor,True,False,True,False
+alum-058,Cargo,Logistics,Customs and Compliance Officer,True,True,True,True
+alum-059,Customer Experience,Technology,Service Design Lead,True,True,True,True
+alum-060,Commercial,Telecommunications,Marketing Manager,True,True,True,True
+alum-061,Safety & Quality,Manufacturing,Quality Assurance Lead,True,True,True,True
+alum-062,Corporate Services,Energy,Contracts Manager,True,True,True,True
+alum-063,Flight Operations,Education,Flight Instructor,True,False,True,False
+alum-064,Cabin Services,Hospitality,Guest Experience Manager,True,True,True,True
+alum-065,Engineering & Maintenance,Manufacturing,Maintenance Manager,True,True,True,True
+alum-066,ICT / Digital,Finance,Cybersecurity Analyst,True,False,True,False
+alum-067,Finance,Consulting,Audit Associate,True,False,True,False
+alum-068,Human Resources,Food and beverage,People and Culture Manager,True,False,True,False
+alum-069,Ground Operations,Aviation,Station Manager,True,True,True,True
+alum-070,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-071,Customer Experience,Finance,Contact Centre Manager,True,True,True,True
+alum-072,Commercial,Logistics,Business Development Manager,True,True,True,True
+alum-073,Safety & Quality,Finance,Compliance Manager,True,False,True,False
+alum-074,Corporate Services,Logistics,Procurement Manager,False,True,False,False
+alum-075,Flight Operations,Consulting,Aviation Safety Consultant,True,True,True,True
+alum-076,Cabin Services,Technology,Customer Success Lead,False,True,False,False
+alum-077,Engineering & Maintenance,Manufacturing,Maintenance Manager,True,True,True,True
+alum-078,ICT / Digital,Technology,DevOps Engineer,True,True,True,True
+alum-079,Finance,Consulting,Audit Associate,True,True,True,True
+alum-080,Human Resources,Finance,Talent Acquisition Lead,True,True,True,True
+alum-081,Ground Operations,Aviation,Airport Operations Manager,True,True,True,True
+alum-082,Cargo,Aviation,Freight Operations Lead,True,False,True,False
+alum-083,Customer Experience,Technology,Service Design Lead,True,True,True,True
+alum-084,Commercial,Logistics,Business Development Manager,True,True,True,True
+alum-085,Safety & Quality,Manufacturing,Quality Assurance Lead,True,True,True,True
+alum-086,Corporate Services,Energy,Contracts Manager,True,True,True,True
+alum-087,Flight Operations,Aviation,Captain,True,True,True,True
+alum-088,Cabin Services,Hospitality,Guest Experience Manager,True,True,True,True
+alum-089,Engineering & Maintenance,Consulting,Engineering Consultant,False,True,False,False
+alum-090,ICT / Digital,Finance,Cybersecurity Analyst,True,False,True,False
+alum-091,Finance,Consulting,Audit Associate,True,False,True,False
+alum-092,Human Resources,Finance,Talent Acquisition Lead,True,True,True,True
+alum-093,Ground Operations,Aviation,Airport Operations Manager,True,True,True,True
+alum-094,Cargo,Food and beverage,Supply Chain Analyst,True,True,True,True
+alum-095,Customer Experience,Hospitality,Guest Relations Manager,True,False,True,False
+alum-096,Commercial,Hospitality,Revenue Manager,True,False,True,False
+alum-097,Safety & Quality,Finance,Compliance Manager,True,True,True,True
+alum-098,Corporate Services,Logistics,Procurement Manager,True,True,True,True
+alum-099,Flight Operations,Consulting,Aviation Safety Consultant,True,True,True,True
+alum-100,Cabin Services,Technology,Customer Success Lead,True,True,True,True
+alum-101,Engineering & Maintenance,Consulting,Engineering Consultant,True,True,True,True
+alum-102,ICT / Digital,Technology,Cloud Engineer,True,True,True,True
+alum-103,Finance,Hospitality,Revenue Accountant,True,True,True,True
+alum-104,Human Resources,Technology,HR Business Partner,True,True,True,True
+alum-105,Ground Operations,Aviation,Airport Operations Manager,True,True,True,True
+alum-106,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-107,Customer Experience,Hospitality,Guest Relations Manager,True,True,True,True
+alum-108,Commercial,Hospitality,Revenue Manager,True,True,True,True
+alum-109,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-110,Corporate Services,Education,Operations Administrator,True,True,True,True
+alum-111,Flight Operations,Aviation,Captain,False,True,False,False
+alum-112,Cabin Services,Hospitality,Guest Experience Manager,True,True,True,True
+alum-113,Engineering & Maintenance,Consulting,Engineering Consultant,False,True,False,False
+alum-114,ICT / Digital,Technology,Cloud Engineer,False,True,False,False
+alum-115,Finance,Hospitality,Revenue Accountant,False,True,False,False
+alum-116,Human Resources,Finance,Talent Acquisition Lead,True,True,True,True
+alum-117,Ground Operations,Logistics,Operations Lead,True,True,True,True
+alum-118,Cargo,Logistics,Customs and Compliance Officer,True,False,True,False
+alum-119,Customer Experience,Finance,Contact Centre Manager,False,False,False,False
+alum-120,Commercial,Hospitality,Revenue Manager,True,True,True,True
+alum-121,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-122,Corporate Services,Education,Operations Administrator,True,True,True,True
+alum-123,Flight Operations,Consulting,Aviation Safety Consultant,True,True,True,True
+alum-124,Cabin Services,Education,Cabin Crew Trainer,True,False,True,False
+alum-125,Engineering & Maintenance,Manufacturing,Maintenance Manager,True,False,True,False
+alum-126,ICT / Digital,Logistics,IT Manager,True,True,True,True
+alum-127,Finance,Consulting,Audit Associate,True,True,True,True
+alum-128,Human Resources,Technology,HR Business Partner,True,False,True,False
+alum-129,Ground Operations,Transport,Fleet Operations Supervisor,False,True,False,False
+alum-130,Cargo,Aviation,Freight Operations Lead,True,True,True,True
+alum-131,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-132,Commercial,Aviation,Pricing Analyst,True,False,True,False
+alum-133,Safety & Quality,Finance,Compliance Manager,True,True,True,True
+alum-134,Corporate Services,Education,Operations Administrator,True,True,True,True
+alum-135,Flight Operations,Education,Flight Instructor,True,True,True,True
+alum-136,Cabin Services,Education,Cabin Crew Trainer,True,True,True,True
+alum-137,Engineering & Maintenance,Aviation,Licensed Aircraft Engineer,True,True,True,True
+alum-138,ICT / Digital,Technology,Cloud Engineer,False,True,False,False
+alum-139,Finance,Consulting,Audit Associate,True,True,True,True
+alum-140,Human Resources,Finance,Talent Acquisition Lead,True,True,True,True
+alum-141,Ground Operations,Transport,Fleet Operations Supervisor,True,False,True,False
+alum-142,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-143,Customer Experience,Hospitality,Guest Relations Manager,False,True,False,False
+alum-144,Commercial,Logistics,Business Development Manager,True,False,True,False
+alum-145,Safety & Quality,Energy,Health and Safety Advisor,True,True,True,True
+alum-146,Corporate Services,Logistics,Procurement Manager,False,True,False,False
+alum-147,Flight Operations,Aviation,Captain,True,True,True,True
+alum-148,Cabin Services,Education,Cabin Crew Trainer,True,False,True,False
+alum-149,Engineering & Maintenance,Aviation,Reliability Engineer,True,False,True,False
+alum-150,ICT / Digital,Technology,Cloud Engineer,False,True,False,False
+alum-151,Finance,Logistics,Finance Manager,False,True,False,False
+alum-152,Human Resources,Consulting,Leadership Coach,True,True,True,True
+alum-153,Ground Operations,Aviation,Airport Operations Manager,True,True,True,True
+alum-154,Cargo,Food and beverage,Supply Chain Analyst,True,True,True,True
+alum-155,Customer Experience,Hospitality,Guest Relations Manager,True,True,True,True
+alum-156,Commercial,Logistics,Business Development Manager,True,False,True,False
+alum-157,Safety & Quality,Aviation,Safety Manager,True,False,True,False
+alum-158,Corporate Services,Logistics,Procurement Manager,True,True,True,True
+alum-159,Flight Operations,Aviation,Flight Operations Manager,True,True,True,True
+alum-160,Cabin Services,Aviation,Purser,True,True,True,True
+alum-161,Engineering & Maintenance,Consulting,Engineering Consultant,True,False,True,False
+alum-162,ICT / Digital,Technology,Cloud Engineer,True,True,True,True
+alum-163,Finance,Consulting,Audit Associate,True,True,True,True
+alum-164,Human Resources,Technology,HR Business Partner,False,True,False,False
+alum-165,Ground Operations,Logistics,Operations Lead,False,True,False,False
+alum-166,Cargo,Food and beverage,Supply Chain Analyst,True,True,True,True
+alum-167,Customer Experience,Finance,Contact Centre Manager,True,True,True,True
+alum-168,Commercial,Aviation,Pricing Analyst,True,True,True,True
+alum-169,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-170,Corporate Services,Consulting,Legal Counsel,True,True,True,True
+alum-171,Flight Operations,Education,Flight Instructor,True,True,True,True
+alum-172,Cabin Services,Technology,Customer Success Lead,True,True,True,True
+alum-173,Engineering & Maintenance,Consulting,Engineering Consultant,True,True,True,True
+alum-174,ICT / Digital,Technology,DevOps Engineer,True,True,True,True
+alum-175,Finance,Logistics,Finance Manager,True,True,True,True
+alum-176,Human Resources,Consulting,Leadership Coach,True,True,True,True
+alum-177,Ground Operations,Transport,Fleet Operations Supervisor,True,True,True,True
+alum-178,Cargo,Logistics,Customs and Compliance Officer,True,False,True,False
+alum-179,Customer Experience,Telecommunications,Customer Experience Manager,True,False,True,False
+alum-180,Commercial,Telecommunications,Marketing Manager,False,True,False,False
+alum-181,Safety & Quality,Energy,Health and Safety Advisor,True,True,True,True
+alum-182,Corporate Services,Education,Operations Administrator,True,True,True,True
+alum-183,Flight Operations,Education,Flight Instructor,True,True,True,True
+alum-184,Cabin Services,Technology,Customer Success Lead,False,True,False,False
+alum-185,Engineering & Maintenance,Aviation,Licensed Aircraft Engineer,True,True,True,True
+alum-186,ICT / Digital,Logistics,IT Manager,True,True,True,True
+alum-187,Finance,Consulting,Audit Associate,True,True,True,True
+alum-188,Human Resources,Technology,HR Business Partner,True,True,True,True
+alum-189,Ground Operations,Aviation,Airport Operations Manager,True,False,True,False
+alum-190,Cargo,Food and beverage,Supply Chain Analyst,True,True,True,True
+alum-191,Customer Experience,Finance,Contact Centre Manager,True,False,True,False
+alum-192,Commercial,Logistics,Business Development Manager,True,True,True,True
+alum-193,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-194,Corporate Services,Energy,Contracts Manager,True,True,True,True
+alum-195,Flight Operations,Aviation,Flight Operations Manager,True,True,True,True
+alum-196,Cabin Services,Technology,Customer Success Lead,False,True,False,False
+alum-197,Engineering & Maintenance,Consulting,Engineering Consultant,True,False,True,False
+alum-198,ICT / Digital,Finance,Cybersecurity Analyst,True,True,True,True
+alum-199,Finance,Logistics,Finance Manager,True,True,True,True
+alum-200,Human Resources,Finance,Talent Acquisition Lead,True,True,True,True
+alum-201,Finance,Technology,Associate Product Manager,True,True,True,True
+alum-202,Engineering & Maintenance,Aviation,Maintenance Manager,True,True,True,True
+alum-203,Customer Experience,Technology,Associate Product Manager,True,True,True,True
+alum-204,Commercial,Hospitality,Revenue Analyst,True,True,True,True
+alum-205,Safety & Quality,Healthcare,Patient Experience Officer,True,True,True,True
+alum-206,Safety & Quality,Consulting,Audit Partner,True,True,True,True
+alum-207,Engineering & Maintenance,Aviation,Licensed Aircraft Engineer,True,True,True,True
+alum-208,Customer Experience,Real Estate,Property Sales Agent,True,True,True,True
+alum-209,ICT / Digital,Telecommunications,Data Analyst,True,True,True,True
+alum-210,Ground Operations,Aviation,"General Manager, Airport Operations",True,True,True,True
+alum-211,Finance,Non-profit,Programme Officer,True,False,True,False
+alum-212,Ground Operations,Logistics,Logistics Manager,True,True,True,True
+alum-213,Finance,Real Estate,Property Sales Agent,True,True,True,True
+alum-214,Flight Operations,Tourism,Head of Tourism Partnerships,True,True,True,True
+alum-215,Commercial,Media,Communications Officer,True,True,True,True
+alum-216,Human Resources,Technology,Head of People,True,True,True,True
+alum-217,Cargo,Agriculture,Agribusiness Officer,True,True,True,True
+alum-218,Commercial,Media,Communications Manager,True,True,True,True
+alum-219,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-220,Cabin Services,Tourism,Tour Operations Manager,True,True,True,True
+alum-221,Human Resources,Technology,Head of People,False,True,False,False
+alum-222,Safety & Quality,Aviation,Director of Safety and Quality,True,True,True,True
+alum-223,Flight Operations,Education,Teaching Assistant,True,True,True,True
+alum-224,Finance,Consulting,Audit Manager,True,True,True,True
+alum-225,ICT / Digital,Telecommunications,Head of Data,False,True,False,False
+alum-226,Safety & Quality,Healthcare,Hospital Operations Manager,True,False,True,False
+alum-227,Commercial,Hospitality,Head of Revenue,False,True,False,False
+alum-228,Corporate Services,Energy,Procurement Officer,False,True,False,False
+alum-229,Cabin Services,Aviation,Head of Cabin Services,True,True,True,True
+alum-230,Flight Operations,Aviation,First Officer,True,False,True,False
+alum-231,Finance,Finance,Chief Financial Officer,True,True,True,True
+alum-232,Safety & Quality,Manufacturing,Head of Quality,True,True,True,True
+alum-233,Finance,Finance,Finance Manager,True,False,True,False
+alum-234,Cabin Services,Real Estate,Property Sales Agent,False,False,False,False
+alum-235,Commercial,Media,Communications Officer,True,True,True,True
+alum-236,Corporate Services,Energy,Head of Procurement,True,True,True,True
+alum-237,Human Resources,Technology,HR Officer,True,True,True,True
+alum-238,Ground Operations,Small business,Co-founder,True,True,True,True
+alum-239,Commercial,Small business,Founder,True,True,True,True
+alum-240,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-241,Engineering & Maintenance,Manufacturing,Head of Quality,False,True,False,False
+alum-242,Safety & Quality,Consulting,Audit Associate,False,False,False,False
+alum-243,Cargo,Logistics,Chief Operating Officer,True,False,True,False
+alum-244,Safety & Quality,Manufacturing,Quality Assurance Lead,True,True,True,True
+alum-245,Finance,Small business,Founder and Managing Director,True,True,True,True
+alum-246,Cargo,Aviation,Freight Operations Lead,True,False,True,False
+alum-247,Finance,Small business,Co-founder,True,False,True,False
+alum-248,Cabin Services,Aviation,Cabin Services Manager,True,True,True,True
+alum-249,Commercial,Telecommunications,Chief Marketing Officer,True,True,True,True
+alum-250,Human Resources,Consulting,Leadership Coach,True,False,True,False
+alum-251,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-252,Safety & Quality,Aviation,Safety Officer,False,True,False,False
+alum-253,Corporate Services,Energy,Procurement Manager,True,True,True,True
+alum-254,Cargo,Logistics,Head of Logistics,True,False,True,False
+alum-255,Corporate Services,Energy,Head of Procurement,True,True,True,True
+alum-256,Customer Experience,Technology,Product Manager,False,True,False,False
+alum-257,Corporate Services,Government,Senior Policy Analyst,True,False,True,False
+alum-258,Customer Experience,Technology,Senior Product Manager,True,True,True,True
+alum-259,Human Resources,Technology,Head of People,True,True,True,True
+alum-260,Corporate Services,Consulting,Head of Legal,True,True,True,True
+alum-261,Flight Operations,Small business,Co-founder,True,True,True,True
+alum-262,Ground Operations,Small business,Co-founder,True,False,True,False
+alum-263,Ground Operations,Agriculture,Agribusiness Manager,True,True,True,True
+alum-264,Flight Operations,Education,Flight Instructor,False,True,False,False
+alum-265,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-266,ICT / Digital,Technology,Software Engineer,True,True,True,True
+alum-267,Ground Operations,Agriculture,Agribusiness Officer,True,True,True,True
+alum-268,ICT / Digital,Telecommunications,Analytics Manager,True,False,True,False
+alum-269,Safety & Quality,Aviation,Safety Officer,True,True,True,True
+alum-270,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-271,ICT / Digital,Technology,Product Manager,True,True,True,True
+alum-272,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-273,Commercial,Media,Communications Officer,True,False,True,False
+alum-274,Commercial,Logistics,Sales Executive,True,True,True,True
+alum-275,Commercial,Hospitality,Head of Revenue,True,True,True,True
+alum-276,Engineering & Maintenance,Aviation,Aircraft Maintenance Engineer,False,True,False,False
+alum-277,Human Resources,Government,Policy Officer,True,True,True,True
+alum-278,ICT / Digital,Finance,Cybersecurity Analyst,True,False,True,False
+alum-279,Finance,Consulting,Audit Associate,True,True,True,True
+alum-280,Finance,Telecommunications,Data Analyst,True,False,True,False
+alum-281,Ground Operations,Small business,Co-founder,True,True,True,True
+alum-282,Human Resources,Consulting,Career Coach,True,True,True,True
+alum-283,Engineering & Maintenance,Energy,Solar Installation Technician,True,True,True,True
+alum-284,Commercial,Hospitality,Revenue Manager,True,True,True,True
+alum-285,Flight Operations,Consulting,Leadership Coach,True,False,True,False
+alum-286,Customer Experience,Telecommunications,Customer Experience Analyst,False,True,False,False
+alum-287,Finance,Non-profit,Programme Officer,True,True,True,True
+alum-288,Customer Experience,Consulting,"Founder, Coaching Practice",True,True,True,True
+alum-289,Customer Experience,Technology,Associate Product Manager,False,True,False,False
+alum-290,Cabin Services,Telecommunications,Chief Customer Officer,True,False,True,False
+alum-291,Safety & Quality,Manufacturing,Quality Assurance Lead,True,True,True,True
+alum-292,Ground Operations,Government,Senior Policy Analyst,False,True,False,False
+alum-293,ICT / Digital,Technology,Senior Software Engineer,True,True,True,True
+alum-294,Commercial,Hospitality,Head of Revenue,True,True,True,True
+alum-295,Human Resources,Government,Policy Officer,True,True,True,True
+alum-296,Cabin Services,Healthcare,Patient Experience Officer,True,True,True,True
+alum-297,Flight Operations,Consulting,Leadership Coach,True,True,True,True
+alum-298,Corporate Services,Real Estate,Property Sales Agent,True,True,True,True
+alum-299,ICT / Digital,Technology,Software Engineer,True,True,True,True
+alum-300,Corporate Services,Consulting,Legal Counsel,True,True,True,True
+alum-301,Flight Operations,Education,Head of Training,False,True,False,False
+alum-302,Cabin Services,Hospitality,Guest Relations Officer,True,True,True,True
+alum-303,Engineering & Maintenance,Energy,Solar Installation Technician,True,True,True,True
+alum-304,Engineering & Maintenance,Energy,Renewable Energy Engineer,True,True,True,True
+alum-305,ICT / Digital,Technology,DevOps Engineer,True,True,True,True
+alum-306,Corporate Services,Energy,Procurement Officer,True,True,True,True
+alum-307,Engineering & Maintenance,Aviation,Aircraft Maintenance Engineer,True,True,True,True
+alum-308,Human Resources,Non-profit,Programme Officer,True,True,True,True
+alum-309,Engineering & Maintenance,Aviation,Licensed Aircraft Engineer,True,True,True,True
+alum-310,Finance,Finance,Head of Finance,True,True,True,True
+alum-311,Human Resources,Consulting,Leadership Coach,True,True,True,True
+alum-312,Flight Operations,Aviation,Director of Flight Operations,False,True,False,False
+alum-313,Cargo,Agriculture,Agribusiness Officer,True,True,True,True
+alum-314,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-315,Finance,Consulting,Audit Manager,True,True,True,True
+alum-316,Flight Operations,Education,Head of Training,True,True,True,True
+alum-317,Corporate Services,Consulting,Legal Associate,True,True,True,True
+alum-318,Human Resources,Consulting,Leadership Coach,True,True,True,True
+alum-319,Commercial,Media,Communications Manager,True,True,True,True
+alum-320,Engineering & Maintenance,Energy,Renewable Energy Engineer,True,True,True,True
+alum-321,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-322,Cargo,Aviation,Head of Cargo,True,True,True,True
+alum-323,ICT / Digital,Technology,Senior DevOps Engineer,True,True,True,True
+alum-324,Finance,Finance,Finance Manager,True,True,True,True
+alum-325,Customer Experience,Hospitality,Hotel Operations Manager,True,True,True,True
+alum-326,Customer Experience,Consulting,"Founder, Coaching Practice",True,True,True,True
+alum-327,Cargo,Aviation,Cargo Operations Manager,False,True,False,False
+alum-328,ICT / Digital,Technology,Software Engineer,True,True,True,True
+alum-329,Finance,Small business,Founder,True,True,True,True
+alum-330,Commercial,Tourism,Head of Tourism Partnerships,True,True,True,True
+alum-331,Engineering & Maintenance,Manufacturing,Quality Manager,True,True,True,True
+alum-332,Safety & Quality,Aviation,Head of Safety,True,True,True,True
+alum-333,Engineering & Maintenance,Education,Lecturer,True,True,True,True
+alum-334,Human Resources,Education,Teaching Assistant,True,True,True,True
+alum-335,Cabin Services,Consulting,Principal Coach,True,True,True,True
+alum-336,Cabin Services,Healthcare,Hospital Operations Manager,False,True,False,False
+alum-337,Engineering & Maintenance,Aviation,Safety Manager,True,False,True,False
+alum-338,Safety & Quality,Manufacturing,Quality Assurance Lead,True,True,True,True
+alum-339,Cabin Services,Hospitality,Guest Experience Manager,True,True,True,True
+alum-340,ICT / Digital,Technology,Senior Software Engineer,True,True,True,True
+alum-341,Commercial,Hospitality,Commercial Director,True,True,True,True
+alum-342,Commercial,Logistics,Business Development Manager,True,True,True,True
+alum-343,Ground Operations,Aviation,Airport Operations Manager,True,False,True,False
+alum-344,Customer Experience,Consulting,Leadership Coach,True,True,True,True
+alum-345,Customer Experience,Consulting,Principal Coach,True,False,True,False
+alum-346,Safety & Quality,Healthcare,Head of Hospital Operations,True,True,True,True
+alum-347,Human Resources,Technology,HR Officer,True,True,True,True
+alum-348,Corporate Services,Consulting,Legal Counsel,True,True,True,True
+alum-349,Corporate Services,Consulting,Legal Counsel,True,True,True,True
+alum-350,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-351,Cabin Services,Hospitality,Hotel Operations Manager,True,True,True,True
+alum-352,Ground Operations,Logistics,Chief Operating Officer,True,False,True,False
+alum-353,Corporate Services,Media,Communications Manager,True,False,True,False
+alum-354,Flight Operations,Aviation,Head of Safety,True,False,True,False
+alum-355,Ground Operations,Logistics,Head of Logistics,True,True,True,True
+alum-356,ICT / Digital,Technology,Software Developer,True,True,True,True
+alum-357,Commercial,Tourism,Travel Consultant,False,True,False,False
+alum-358,Engineering & Maintenance,Energy,Renewable Energy Engineer,True,True,True,True
+alum-359,ICT / Digital,Telecommunications,Analytics Manager,False,True,False,False
+alum-360,Cabin Services,Telecommunications,Head of Customer Experience,True,True,True,True
+alum-361,Cargo,Small business,Co-founder,True,True,True,True
+alum-362,Human Resources,Consulting,Leadership Coach,False,True,False,False
+alum-363,Corporate Services,Energy,Procurement Manager,False,True,False,False
+alum-364,Corporate Services,Government,Policy Officer,True,True,True,True
+alum-365,Engineering & Maintenance,Small business,Co-founder,True,True,True,True
+alum-366,Flight Operations,Education,Teaching Assistant,True,False,True,False
+alum-367,Commercial,Hospitality,Revenue Manager,False,False,False,False
+alum-368,Flight Operations,Government,Deputy Director,True,True,True,True
+alum-369,Engineering & Maintenance,Small business,Co-founder,True,True,True,True
+alum-370,Flight Operations,Aviation,First Officer,True,False,True,False
+alum-371,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-372,Safety & Quality,Aviation,Safety Officer,False,True,False,False
+alum-373,Customer Experience,Telecommunications,Head of Customer Experience,False,True,False,False
+alum-374,Engineering & Maintenance,Education,Teaching Assistant,False,False,False,False
+alum-375,Finance,Small business,Founder and Managing Director,True,True,True,True
+alum-376,Commercial,Media,Communications Manager,False,True,False,False
+alum-377,Commercial,Logistics,Business Development Manager,False,True,False,False
+alum-378,Cargo,Energy,Procurement Officer,False,True,False,False
+alum-379,Ground Operations,Hospitality,Guest Experience Manager,True,False,True,False
+alum-380,Cabin Services,Technology,HR Business Partner,True,True,True,True
+alum-381,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-382,Finance,Telecommunications,Data Analyst,True,True,True,True
+alum-383,Engineering & Maintenance,Manufacturing,Quality Assurance Lead,False,True,False,False
+alum-384,Cargo,Small business,Co-founder,True,False,True,False
+alum-385,Human Resources,Consulting,Leadership Coach,False,True,False,False
+alum-386,Corporate Services,Government,Senior Policy Analyst,True,True,True,True
+alum-387,Flight Operations,Aviation,First Officer,True,False,True,False
+alum-388,ICT / Digital,Telecommunications,Data Analyst,True,True,True,True
+alum-389,Cabin Services,Hospitality,Guest Experience Manager,True,False,True,False
+alum-390,Ground Operations,Logistics,Logistics Manager,True,False,True,False
+alum-391,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-392,Engineering & Maintenance,Aviation,Maintenance Manager,True,False,True,False
+alum-393,Ground Operations,Aviation,Station Manager,True,True,True,True
+alum-394,Engineering & Maintenance,Energy,Solar Installation Technician,False,True,False,False
+alum-395,Human Resources,Technology,HR Officer,True,True,True,True
+alum-396,Cargo,Aviation,Freight Operations Lead,True,True,True,True
+alum-397,ICT / Digital,Technology,Head of Cloud Platforms,True,True,True,True
+alum-398,Ground Operations,Aviation,Station Manager,True,True,True,True
+alum-399,ICT / Digital,Technology,Software Engineer,True,True,True,True
+alum-400,Cargo,Aviation,Cargo Operations Manager,True,True,True,True
+alum-401,Cargo,Logistics,Head of Logistics,True,True,True,True
+alum-402,Ground Operations,Logistics,Logistics Coordinator,True,True,True,True
+alum-403,Corporate Services,Energy,Head of Procurement,True,True,True,True
+alum-404,Cargo,Agriculture,Agribusiness Officer,True,True,True,True
+alum-405,Customer Experience,Healthcare,Patient Experience Officer,True,False,True,False
+alum-406,Cargo,Energy,Procurement Manager,True,False,True,False
+alum-407,Ground Operations,Aviation,Station Manager,True,True,True,True
+alum-408,Ground Operations,Aviation,Station Manager,True,True,True,True
+alum-409,Corporate Services,Consulting,Legal Counsel,False,True,False,False
+alum-410,Cabin Services,Consulting,Career Coach,False,True,False,False
+alum-411,Cargo,Aviation,Head of Cargo,True,False,True,False
+alum-412,Cargo,Energy,Procurement Manager,True,True,True,True
+alum-413,Human Resources,Technology,HR Business Partner,True,True,True,True
+alum-414,Cargo,Small business,Co-founder,True,True,True,True
+alum-415,Human Resources,Consulting,"Founder, Coaching Practice",True,False,True,False
+alum-416,Commercial,Hospitality,Head of Revenue,True,False,True,False
+alum-417,ICT / Digital,Finance,Information Security Manager,True,False,True,False
+alum-418,Ground Operations,Government,Policy Officer,True,True,True,True
+alum-419,Flight Operations,Tourism,Tour Operations Manager,True,True,True,True
+alum-420,ICT / Digital,Technology,Product Manager,False,False,False,False
+alum-421,Safety & Quality,Aviation,Safety Manager,True,False,True,False
+alum-422,Customer Experience,Telecommunications,Chief Customer Officer,True,True,True,True
+alum-423,Engineering & Maintenance,Technology,Software Developer,True,False,True,False
+alum-424,Engineering & Maintenance,Aviation,Maintenance Manager,True,True,True,True
+alum-425,Corporate Services,Real Estate,Property Sales Agent,True,True,True,True
+alum-426,Commercial,Telecommunications,Marketing Manager,True,True,True,True
+alum-427,Finance,Finance,Finance Manager,True,True,True,True
+alum-428,Safety & Quality,Energy,Solar Installation Technician,True,False,True,False
+alum-429,Human Resources,Technology,Head of People,True,True,True,True
+alum-430,Corporate Services,Energy,Procurement Manager,True,True,True,True
+alum-431,Cabin Services,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-432,ICT / Digital,Small business,Founder,True,True,True,True
+alum-433,Corporate Services,Government,Policy Officer,True,True,True,True
+alum-434,Engineering & Maintenance,Energy,Renewable Energy Engineer,True,False,True,False
+alum-435,Corporate Services,Energy,Procurement Officer,False,True,False,False
+alum-436,Safety & Quality,Energy,Solar Installation Technician,True,False,True,False
+alum-437,Cabin Services,Real Estate,Property Sales Agent,True,True,True,True
+alum-438,Engineering & Maintenance,Small business,Co-founder,True,True,True,True
+alum-439,Ground Operations,Agriculture,Agribusiness Officer,True,False,True,False
+alum-440,Finance,Small business,Co-founder,False,True,False,False
+alum-441,Finance,Consulting,Audit Associate,True,True,True,True
+alum-442,Flight Operations,Aviation,First Officer,True,False,True,False
+alum-443,Ground Operations,Logistics,Head of Logistics,True,False,True,False
+alum-444,Cargo,Agriculture,Agribusiness Officer,True,True,True,True
+alum-445,Finance,Telecommunications,Data Analyst,True,True,True,True
+alum-446,Corporate Services,Consulting,General Counsel,False,False,False,False
+alum-447,ICT / Digital,Small business,Co-founder,True,True,True,True
+alum-448,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-449,Finance,Small business,Founder and Managing Director,True,False,True,False
+alum-450,Cabin Services,Hospitality,Guest Relations Officer,False,True,False,False
+alum-451,Commercial,Logistics,Business Development Manager,True,False,True,False
+alum-452,Cargo,Logistics,Logistics Manager,False,True,False,False
+alum-453,ICT / Digital,Technology,Product Manager,True,True,True,True
+alum-454,Ground Operations,Hospitality,Guest Experience Manager,True,True,True,True
+alum-455,Engineering & Maintenance,Aviation,Licensed Aircraft Engineer,True,True,True,True
+alum-456,Cabin Services,Telecommunications,Head of Customer Experience,False,True,False,False
+alum-457,Flight Operations,Small business,Co-founder,False,True,False,False
+alum-458,Customer Experience,Consulting,Leadership Coach,True,False,True,False
+alum-459,Human Resources,Healthcare,Patient Experience Officer,False,False,False,False
+alum-460,Flight Operations,Government,Policy Officer,True,True,True,True
+alum-461,ICT / Digital,Technology,Software Engineer,True,True,True,True
+alum-462,Customer Experience,Hospitality,Hotel Operations Manager,True,True,True,True
+alum-463,Human Resources,Technology,Head of People,True,True,True,True
+alum-464,Human Resources,Healthcare,Patient Experience Officer,False,True,False,False
+alum-465,Corporate Services,Consulting,Legal Counsel,True,False,True,False
+alum-466,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-467,Safety & Quality,Energy,Renewable Energy Engineer,True,False,True,False
+alum-468,Customer Experience,Telecommunications,Customer Experience Manager,True,True,True,True
+alum-469,Flight Operations,Aviation,Captain,True,True,True,True
+alum-470,Human Resources,Consulting,Leadership Coach,False,True,False,False
+alum-471,Ground Operations,Logistics,Logistics Manager,True,True,True,True
+alum-472,ICT / Digital,Finance,Cybersecurity Analyst,False,True,False,False
+alum-473,Customer Experience,Telecommunications,Customer Experience Manager,False,True,False,False
+alum-474,Cabin Services,Hospitality,Guest Relations Officer,False,False,False,False
+alum-475,Cabin Services,Real Estate,Head of Property Management,True,True,True,True
+alum-476,ICT / Digital,Small business,Co-founder,True,True,True,True
+alum-477,Safety & Quality,Healthcare,Patient Experience Officer,True,True,True,True
+alum-478,Flight Operations,Government,Senior Policy Analyst,False,True,False,False
+alum-479,Commercial,Logistics,Business Development Manager,True,False,True,False
+alum-480,Flight Operations,Education,Teaching Assistant,True,False,True,False
+alum-481,Customer Experience,Technology,Product Manager,False,True,False,False
+alum-482,Finance,Consulting,Audit Manager,True,True,True,True
+alum-483,Safety & Quality,Aviation,Safety Manager,True,True,True,True
+alum-484,Ground Operations,Aviation,Airport Operations Officer,True,True,True,True
+alum-485,Flight Operations,Education,Teaching Assistant,True,True,True,True
+alum-486,Ground Operations,Aviation,Airport Operations Officer,False,True,False,False
+alum-487,Human Resources,Technology,HR Officer,False,True,False,False
+alum-488,Commercial,Hospitality,Revenue Manager,True,True,True,True
+alum-489,Flight Operations,Government,Deputy Director,True,True,True,True
+alum-490,Cabin Services,Hospitality,Guest Experience Manager,True,True,True,True
+alum-491,Cabin Services,Tourism,Tour Operations Manager,True,True,True,True
+alum-492,Finance,Finance,Head of Finance,True,False,True,False
+alum-493,Cargo,Logistics,Logistics Manager,True,True,True,True
+alum-494,Human Resources,Technology,Chief People Officer,True,True,True,True
+alum-495,Flight Operations,Government,Senior Policy Analyst,False,True,False,False
+alum-496,Finance,Telecommunications,Analytics Manager,True,True,True,True
+alum-497,Cabin Services,Technology,Software Developer,True,False,True,False
+alum-498,Corporate Services,Consulting,General Counsel,True,True,True,True
+alum-499,Cabin Services,Telecommunications,Customer Experience Analyst,True,True,True,True
+alum-500,Customer Experience,Consulting,Leadership Coach,True,False,True,False

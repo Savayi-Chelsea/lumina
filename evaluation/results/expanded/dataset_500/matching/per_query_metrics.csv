@@ -1,0 +1,136 @@
+query_id,set,query,relevant_count,system,returned,hits,precision_at_5,recall_at_5,f1_at_5,reciprocal_rank,recall_ceiling
+cloud,domain,I want to move from IT support into AWS cloud engineering and DevOps.,27,semantic,5,5,1.0,0.18518518518518517,0.3125,1.0,0.18518518518518517
+cloud,domain,I want to move from IT support into AWS cloud engineering and DevOps.,27,keyword_baseline,5,5,1.0,0.18518518518518517,0.3125,1.0,0.18518518518518517
+cloud,domain,I want to move from IT support into AWS cloud engineering and DevOps.,27,hybrid,5,5,1.0,0.18518518518518517,0.3125,1.0,0.18518518518518517
+pilot,domain,How do I progress from first officer to captain as an airline pilot?,26,semantic,5,5,1.0,0.19230769230769232,0.32258064516129037,1.0,0.19230769230769232
+pilot,domain,How do I progress from first officer to captain as an airline pilot?,26,keyword_baseline,5,5,1.0,0.19230769230769232,0.32258064516129037,1.0,0.19230769230769232
+pilot,domain,How do I progress from first officer to captain as an airline pilot?,26,hybrid,5,5,1.0,0.19230769230769232,0.32258064516129037,1.0,0.19230769230769232
+finance,domain,"I need guidance on a finance career: budgeting, forecasting and financial reporting.",33,semantic,5,5,1.0,0.15151515151515152,0.2631578947368421,1.0,0.15151515151515152
+finance,domain,"I need guidance on a finance career: budgeting, forecasting and financial reporting.",33,keyword_baseline,5,5,1.0,0.15151515151515152,0.2631578947368421,1.0,0.15151515151515152
+finance,domain,"I need guidance on a finance career: budgeting, forecasting and financial reporting.",33,hybrid,5,5,1.0,0.15151515151515152,0.2631578947368421,1.0,0.15151515151515152
+cabin-hospitality,domain,How can I use my cabin crew experience to move into hospitality and guest experience?,31,semantic,5,5,1.0,0.16129032258064516,0.27777777777777773,1.0,0.16129032258064516
+cabin-hospitality,domain,How can I use my cabin crew experience to move into hospitality and guest experience?,31,keyword_baseline,5,5,1.0,0.16129032258064516,0.27777777777777773,1.0,0.16129032258064516
+cabin-hospitality,domain,How can I use my cabin crew experience to move into hospitality and guest experience?,31,hybrid,5,5,1.0,0.16129032258064516,0.27777777777777773,1.0,0.16129032258064516
+cargo,domain,"I want a career in cargo, freight logistics and supply chain management.",30,semantic,5,5,1.0,0.16666666666666666,0.2857142857142857,1.0,0.16666666666666666
+cargo,domain,"I want a career in cargo, freight logistics and supply chain management.",30,keyword_baseline,5,5,1.0,0.16666666666666666,0.2857142857142857,1.0,0.16666666666666666
+cargo,domain,"I want a career in cargo, freight logistics and supply chain management.",30,hybrid,5,5,1.0,0.16666666666666666,0.2857142857142857,1.0,0.16666666666666666
+maintenance,domain,"Advice on aircraft maintenance engineering, inspections and maintenance planning.",23,semantic,5,5,1.0,0.21739130434782608,0.3571428571428571,1.0,0.21739130434782608
+maintenance,domain,"Advice on aircraft maintenance engineering, inspections and maintenance planning.",23,keyword_baseline,5,5,1.0,0.21739130434782608,0.3571428571428571,1.0,0.21739130434782608
+maintenance,domain,"Advice on aircraft maintenance engineering, inspections and maintenance planning.",23,hybrid,5,5,1.0,0.21739130434782608,0.3571428571428571,1.0,0.21739130434782608
+hr,domain,"Help me grow in human resources: recruitment, talent and people management.",28,semantic,5,5,1.0,0.17857142857142858,0.30303030303030304,1.0,0.17857142857142858
+hr,domain,"Help me grow in human resources: recruitment, talent and people management.",28,keyword_baseline,5,5,1.0,0.17857142857142858,0.30303030303030304,1.0,0.17857142857142858
+hr,domain,"Help me grow in human resources: recruitment, talent and people management.",28,hybrid,5,5,1.0,0.17857142857142858,0.30303030303030304,1.0,0.17857142857142858
+safety,domain,"I am interested in aviation safety management, risk assessment and compliance audits.",38,semantic,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+safety,domain,"I am interested in aviation safety management, risk assessment and compliance audits.",38,keyword_baseline,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+safety,domain,"I am interested in aviation safety management, risk assessment and compliance audits.",38,hybrid,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+ground,domain,How do I lead airport ground handling and ramp operations teams?,25,semantic,5,5,1.0,0.2,0.33333333333333337,1.0,0.2
+ground,domain,How do I lead airport ground handling and ramp operations teams?,25,keyword_baseline,5,5,1.0,0.2,0.33333333333333337,1.0,0.2
+ground,domain,How do I lead airport ground handling and ramp operations teams?,25,hybrid,5,5,1.0,0.2,0.33333333333333337,1.0,0.2
+commercial,domain,"I want to work in sales, marketing and airline revenue management.",38,semantic,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+commercial,domain,"I want to work in sales, marketing and airline revenue management.",38,keyword_baseline,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+commercial,domain,"I want to work in sales, marketing and airline revenue management.",38,hybrid,5,5,1.0,0.13157894736842105,0.23255813953488372,1.0,0.13157894736842105
+procurement,domain,"Guidance on procurement, contract management and supplier negotiation.",34,semantic,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+procurement,domain,"Guidance on procurement, contract management and supplier negotiation.",34,keyword_baseline,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+procurement,domain,"Guidance on procurement, contract management and supplier negotiation.",34,hybrid,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+service-quality,domain,How can I improve customer service quality and complaint handling?,29,semantic,5,5,1.0,0.1724137931034483,0.29411764705882354,1.0,0.1724137931034483
+service-quality,domain,How can I improve customer service quality and complaint handling?,29,keyword_baseline,5,5,1.0,0.1724137931034483,0.29411764705882354,1.0,0.1724137931034483
+service-quality,domain,How can I improve customer service quality and complaint handling?,29,hybrid,5,5,1.0,0.1724137931034483,0.29411764705882354,1.0,0.1724137931034483
+s-kubernetes,skill,I need a mentor who has run Kubernetes and Terraform in production.,9,semantic,5,3,0.6,0.3333333333333333,0.42857142857142855,1.0,0.5555555555555556
+s-kubernetes,skill,I need a mentor who has run Kubernetes and Terraform in production.,9,keyword_baseline,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+s-kubernetes,skill,I need a mentor who has run Kubernetes and Terraform in production.,9,hybrid,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+s-ifrs,skill,Who can help me master IFRS financial reporting?,24,semantic,5,5,1.0,0.20833333333333334,0.3448275862068966,1.0,0.20833333333333334
+s-ifrs,skill,Who can help me master IFRS financial reporting?,24,keyword_baseline,5,5,1.0,0.20833333333333334,0.3448275862068966,1.0,0.20833333333333334
+s-ifrs,skill,Who can help me master IFRS financial reporting?,24,hybrid,5,5,1.0,0.20833333333333334,0.3448275862068966,1.0,0.20833333333333334
+s-sql-bi,skill,I want to get better at SQL and building Power BI dashboards.,7,semantic,5,4,0.8,0.5714285714285714,0.6666666666666666,1.0,0.7142857142857143
+s-sql-bi,skill,I want to get better at SQL and building Power BI dashboards.,7,keyword_baseline,5,5,1.0,0.7142857142857143,0.8333333333333333,1.0,0.7142857142857143
+s-sql-bi,skill,I want to get better at SQL and building Power BI dashboards.,7,hybrid,5,5,1.0,0.7142857142857143,0.8333333333333333,1.0,0.7142857142857143
+s-iso,skill,Looking for guidance on ISO 9001 quality management audits.,18,semantic,5,4,0.8,0.2222222222222222,0.3478260869565218,1.0,0.2777777777777778
+s-iso,skill,Looking for guidance on ISO 9001 quality management audits.,18,keyword_baseline,5,5,1.0,0.2777777777777778,0.4347826086956522,1.0,0.2777777777777778
+s-iso,skill,Looking for guidance on ISO 9001 quality management audits.,18,hybrid,5,5,1.0,0.2777777777777778,0.4347826086956522,1.0,0.2777777777777778
+s-revenue,skill,I want to learn revenue management and pricing strategy.,14,semantic,5,4,0.8,0.2857142857142857,0.4210526315789473,1.0,0.35714285714285715
+s-revenue,skill,I want to learn revenue management and pricing strategy.,14,keyword_baseline,5,5,1.0,0.35714285714285715,0.5263157894736842,1.0,0.35714285714285715
+s-revenue,skill,I want to learn revenue management and pricing strategy.,14,hybrid,5,5,1.0,0.35714285714285715,0.5263157894736842,1.0,0.35714285714285715
+s-customs,skill,"Help with customs clearance, dangerous goods and freight forwarding.",11,semantic,5,5,1.0,0.45454545454545453,0.625,1.0,0.45454545454545453
+s-customs,skill,"Help with customs clearance, dangerous goods and freight forwarding.",11,keyword_baseline,5,5,1.0,0.45454545454545453,0.625,1.0,0.45454545454545453
+s-customs,skill,"Help with customs clearance, dangerous goods and freight forwarding.",11,hybrid,5,5,1.0,0.45454545454545453,0.625,1.0,0.45454545454545453
+t-instructor,transition,I'm a pilot who wants to teach new pilots for a living.,10,semantic,5,3,0.6,0.3,0.4,1.0,0.5
+t-instructor,transition,I'm a pilot who wants to teach new pilots for a living.,10,keyword_baseline,5,2,0.4,0.2,0.26666666666666666,1.0,0.5
+t-instructor,transition,I'm a pilot who wants to teach new pilots for a living.,10,hybrid,5,3,0.6,0.3,0.4,0.3333333333333333,0.5
+t-banking,transition,I want to leave aviation and work in a bank.,17,semantic,5,4,0.8,0.23529411764705882,0.3636363636363636,1.0,0.29411764705882354
+t-banking,transition,I want to leave aviation and work in a bank.,17,keyword_baseline,5,1,0.2,0.058823529411764705,0.0909090909090909,0.3333333333333333,0.29411764705882354
+t-banking,transition,I want to leave aviation and work in a bank.,17,hybrid,5,3,0.6,0.17647058823529413,0.2727272727272727,1.0,0.29411764705882354
+t-hospitality,transition,How do I move from airline work into hotels and resorts?,21,semantic,5,5,1.0,0.23809523809523808,0.3846153846153846,1.0,0.23809523809523808
+t-hospitality,transition,How do I move from airline work into hotels and resorts?,21,keyword_baseline,5,5,1.0,0.23809523809523808,0.3846153846153846,1.0,0.23809523809523808
+t-hospitality,transition,How do I move from airline work into hotels and resorts?,21,hybrid,5,5,1.0,0.23809523809523808,0.3846153846153846,1.0,0.23809523809523808
+t-security,transition,I'm interested in protecting systems from hackers at a fintech company.,11,semantic,5,3,0.6,0.2727272727272727,0.37499999999999994,1.0,0.45454545454545453
+t-security,transition,I'm interested in protecting systems from hackers at a fintech company.,11,keyword_baseline,5,2,0.4,0.18181818181818182,0.25000000000000006,1.0,0.45454545454545453
+t-security,transition,I'm interested in protecting systems from hackers at a fintech company.,11,hybrid,5,3,0.6,0.2727272727272727,0.37499999999999994,1.0,0.45454545454545453
+t-coaching,transition,I would like to train and coach people as my main job.,34,semantic,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+t-coaching,transition,I would like to train and coach people as my main job.,34,keyword_baseline,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+t-coaching,transition,I would like to train and coach people as my main job.,34,hybrid,5,5,1.0,0.14705882352941177,0.25641025641025644,1.0,0.14705882352941177
+t-consulting,transition,Can I become an independent consultant after my airline career?,43,semantic,5,4,0.8,0.09302325581395349,0.16666666666666666,1.0,0.11627906976744186
+t-consulting,transition,Can I become an independent consultant after my airline career?,43,keyword_baseline,5,4,0.8,0.09302325581395349,0.16666666666666666,1.0,0.11627906976744186
+t-consulting,transition,Can I become an independent consultant after my airline career?,43,hybrid,5,5,1.0,0.11627906976744186,0.20833333333333334,1.0,0.11627906976744186
+t-telecom,transition,I want to join a mobile network operator.,22,semantic,5,4,0.8,0.18181818181818182,0.2962962962962963,1.0,0.22727272727272727
+t-telecom,transition,I want to join a mobile network operator.,22,keyword_baseline,5,0,0.0,0.0,0.0,0.0,0.22727272727272727
+t-telecom,transition,I want to join a mobile network operator.,22,hybrid,5,1,0.2,0.045454545454545456,0.07407407407407407,0.5,0.22727272727272727
+t-data,transition,I want to build data pipelines and work on analytics.,19,semantic,5,5,1.0,0.2631578947368421,0.4166666666666667,1.0,0.2631578947368421
+t-data,transition,I want to build data pipelines and work on analytics.,19,keyword_baseline,5,5,1.0,0.2631578947368421,0.4166666666666667,1.0,0.2631578947368421
+t-data,transition,I want to build data pipelines and work on analytics.,19,hybrid,5,5,1.0,0.2631578947368421,0.4166666666666667,1.0,0.2631578947368421
+t-manufacturing,transition,What is it like to run quality and maintenance in a factory?,9,semantic,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+t-manufacturing,transition,What is it like to run quality and maintenance in a factory?,9,keyword_baseline,5,3,0.6,0.3333333333333333,0.42857142857142855,0.5,0.5555555555555556
+t-manufacturing,transition,What is it like to run quality and maintenance in a factory?,9,hybrid,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+t-energy,transition,"Careers in the energy sector, for example geothermal power.",17,semantic,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-energy,transition,"Careers in the energy sector, for example geothermal power.",17,keyword_baseline,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-energy,transition,"Careers in the energy sector, for example geothermal power.",17,hybrid,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-developer,transition,I'm a flight attendant who wants to become a software developer.,8,semantic,5,4,0.8,0.5,0.6153846153846154,1.0,0.625
+t-developer,transition,I'm a flight attendant who wants to become a software developer.,8,keyword_baseline,5,3,0.6,0.375,0.4615384615384615,1.0,0.625
+t-developer,transition,I'm a flight attendant who wants to become a software developer.,8,hybrid,5,4,0.8,0.5,0.6153846153846154,1.0,0.625
+t-renewables,transition,I want to move from aircraft engineering into renewable energy.,17,semantic,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-renewables,transition,I want to move from aircraft engineering into renewable energy.,17,keyword_baseline,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-renewables,transition,I want to move from aircraft engineering into renewable energy.,17,hybrid,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+t-product,transition,How do I become a product manager at a fintech or tech company?,5,semantic,5,5,1.0,1.0,1.0,1.0,1.0
+t-product,transition,How do I become a product manager at a fintech or tech company?,5,keyword_baseline,5,5,1.0,1.0,1.0,1.0,1.0
+t-product,transition,How do I become a product manager at a fintech or tech company?,5,hybrid,5,5,1.0,1.0,1.0,1.0,1.0
+t-ngo,transition,I'd like to work for an NGO on development programmes.,2,semantic,5,2,0.4,1.0,0.5714285714285715,1.0,1.0
+t-ngo,transition,I'd like to work for an NGO on development programmes.,2,keyword_baseline,5,0,0.0,0.0,0.0,0.0,1.0
+t-ngo,transition,I'd like to work for an NGO on development programmes.,2,hybrid,5,2,0.4,1.0,0.5714285714285715,1.0,1.0
+t-healthcare,transition,Can airline operations experience transfer to running a hospital?,4,semantic,5,4,0.8,1.0,0.888888888888889,1.0,1.0
+t-healthcare,transition,Can airline operations experience transfer to running a hospital?,4,keyword_baseline,5,1,0.2,0.25,0.22222222222222224,1.0,1.0
+t-healthcare,transition,Can airline operations experience transfer to running a hospital?,4,hybrid,5,1,0.2,0.25,0.22222222222222224,1.0,1.0
+l-first-manager,leadership,I've just been promoted and will manage a team for the first time.,67,semantic,5,1,0.2,0.014925373134328358,0.02777777777777778,0.3333333333333333,0.07462686567164178
+l-first-manager,leadership,I've just been promoted and will manage a team for the first time.,67,keyword_baseline,5,5,1.0,0.07462686567164178,0.13888888888888887,1.0,0.07462686567164178
+l-first-manager,leadership,I've just been promoted and will manage a team for the first time.,67,hybrid,5,3,0.6,0.04477611940298507,0.08333333333333333,1.0,0.07462686567164178
+l-executive,leadership,How do I prepare for a director or executive role?,36,semantic,5,3,0.6,0.08333333333333333,0.14634146341463414,1.0,0.1388888888888889
+l-executive,leadership,How do I prepare for a director or executive role?,36,keyword_baseline,5,4,0.8,0.1111111111111111,0.19512195121951217,1.0,0.1388888888888889
+l-executive,leadership,How do I prepare for a director or executive role?,36,hybrid,5,3,0.6,0.08333333333333333,0.14634146341463414,1.0,0.1388888888888889
+l-change,leadership,I need advice on leading organisational change and transformation.,39,semantic,5,1,0.2,0.02564102564102564,0.045454545454545456,0.2,0.1282051282051282
+l-change,leadership,I need advice on leading organisational change and transformation.,39,keyword_baseline,5,5,1.0,0.1282051282051282,0.22727272727272727,1.0,0.1282051282051282
+l-change,leadership,I need advice on leading organisational change and transformation.,39,hybrid,5,2,0.4,0.05128205128205128,0.09090909090909091,1.0,0.1282051282051282
+l-strategy,leadership,Help me think strategically and present plans to senior stakeholders.,52,semantic,5,3,0.6,0.057692307692307696,0.10526315789473685,1.0,0.09615384615384616
+l-strategy,leadership,Help me think strategically and present plans to senior stakeholders.,52,keyword_baseline,5,3,0.6,0.057692307692307696,0.10526315789473685,1.0,0.09615384615384616
+l-strategy,leadership,Help me think strategically and present plans to senior stakeholders.,52,hybrid,5,3,0.6,0.057692307692307696,0.10526315789473685,1.0,0.09615384615384616
+l-operations,leadership,How do I lead large shift-based operations teams at an airport?,17,semantic,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+l-operations,leadership,How do I lead large shift-based operations teams at an airport?,17,keyword_baseline,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+l-operations,leadership,How do I lead large shift-based operations teams at an airport?,17,hybrid,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+i-tourism,industry,I want to move into tourism and safari travel.,5,semantic,5,3,0.6,0.6,0.6,1.0,1.0
+i-tourism,industry,I want to move into tourism and safari travel.,5,keyword_baseline,5,5,1.0,1.0,1.0,1.0,1.0
+i-tourism,industry,I want to move into tourism and safari travel.,5,hybrid,5,4,0.8,0.8,0.8000000000000002,1.0,1.0
+i-government,industry,What are careers like in government and public policy?,9,semantic,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+i-government,industry,What are careers like in government and public policy?,9,keyword_baseline,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+i-government,industry,What are careers like in government and public policy?,9,hybrid,5,5,1.0,0.5555555555555556,0.7142857142857143,1.0,0.5555555555555556
+i-agriculture,industry,I'd like to work in agriculture or agribusiness exports.,6,semantic,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+i-agriculture,industry,I'd like to work in agriculture or agribusiness exports.,6,keyword_baseline,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+i-agriculture,industry,I'd like to work in agriculture or agribusiness exports.,6,hybrid,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+i-real-estate,industry,Is real estate a good next step after the airline?,6,semantic,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+i-real-estate,industry,Is real estate a good next step after the airline?,6,keyword_baseline,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+i-real-estate,industry,Is real estate a good next step after the airline?,6,hybrid,5,5,1.0,0.8333333333333334,0.9090909090909091,1.0,0.8333333333333334
+b-next-step,broad,I left the airline recently and I'm not sure what to do next.,96,semantic,5,1,0.2,0.010416666666666666,0.019801980198019802,0.2,0.052083333333333336
+b-next-step,broad,I left the airline recently and I'm not sure what to do next.,96,keyword_baseline,5,3,0.6,0.03125,0.0594059405940594,1.0,0.052083333333333336
+b-next-step,broad,I left the airline recently and I'm not sure what to do next.,96,hybrid,5,4,0.8,0.041666666666666664,0.07920792079207921,0.5,0.052083333333333336
+b-business,broad,I want to start my own business.,17,semantic,5,3,0.6,0.17647058823529413,0.2727272727272727,1.0,0.29411764705882354
+b-business,broad,I want to start my own business.,17,keyword_baseline,5,5,1.0,0.29411764705882354,0.45454545454545453,1.0,0.29411764705882354
+b-business,broad,I want to start my own business.,17,hybrid,5,4,0.8,0.23529411764705882,0.3636363636363636,1.0,0.29411764705882354
+b-cv,broad,Help me rewrite my CV and prepare for interviews outside aviation.,45,semantic,5,0,0.0,0.0,0.0,0.0,0.1111111111111111
+b-cv,broad,Help me rewrite my CV and prepare for interviews outside aviation.,45,keyword_baseline,5,1,0.2,0.022222222222222223,0.039999999999999994,0.5,0.1111111111111111
+b-cv,broad,Help me rewrite my CV and prepare for interviews outside aviation.,45,hybrid,5,0,0.0,0.0,0.0,0.0,0.1111111111111111

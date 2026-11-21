@@ -1,0 +1,83 @@
+{
+  "run_at": "2026-11-19T19:18:29+00:00",
+  "suites": [
+    {
+      "suite": "lint",
+      "area": "Static analysis (ESLint)",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "run",
+      "exit_code": 0,
+      "seconds": 8,
+      "result": "pass"
+    },
+    {
+      "suite": "typecheck",
+      "area": "Type safety (tsc --noEmit)",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "run",
+      "exit_code": 0,
+      "seconds": 2,
+      "result": "pass"
+    },
+    {
+      "suite": "vitest",
+      "area": "Web app: auth, verification, mentorship, social, privacy, jobs (incl. live PostgreSQL)",
+      "passed": 325,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "tests",
+      "exit_code": 0,
+      "seconds": 7,
+      "result": "pass"
+    },
+    {
+      "suite": "pytest",
+      "area": "Matching service, indexing, Kafka worker (live broker), registry, seeding, email worker (+334 subtests passed)",
+      "passed": 78,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "tests",
+      "exit_code": 0,
+      "seconds": 51,
+      "result": "pass"
+    },
+    {
+      "suite": "http-smoke",
+      "area": "Production HTTP: sessions, roles, verification, sign-out",
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "scenarios",
+      "exit_code": 0,
+      "seconds": 5,
+      "result": "pass"
+    },
+    {
+      "suite": "browser-smoke",
+      "area": "Browser end-to-end: every member and admin journey, 5 viewports",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "scenarios",
+      "exit_code": 0,
+      "seconds": 79,
+      "result": "pass"
+    },
+    {
+      "suite": "mentorship-live",
+      "area": "Live demo path: Google-linked session to real BGE mentor results",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "scenarios",
+      "exit_code": 0,
+      "seconds": 5,
+      "result": "pass"
+    }
+  ],
+  "all_passed": true
+}

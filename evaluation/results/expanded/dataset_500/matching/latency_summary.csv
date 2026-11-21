@@ -1,0 +1,5 @@
+system,n,mean_ms,median_ms,p95_ms,max_ms
+semantic,45,90.5,89.3,107.1,110.6
+keyword_baseline,45,2.0,1.9,2.5,4.3
+hybrid,45,95.7,92.5,110.8,140.2
+semantic_repeated,225,92.3,91.0,111.2,130.6

@@ -1,0 +1,328 @@
+query_id,set,system,rank,synthetic_id,former_kq_department,current_job_title,industry,semantic_similarity,relevant
+cloud,domain,semantic,1,alum-174,ICT / Digital,DevOps Engineer,Technology,0.641894,True
+cloud,domain,semantic,2,alum-078,ICT / Digital,DevOps Engineer,Technology,0.620498,True
+cloud,domain,semantic,3,alum-102,ICT / Digital,Cloud Engineer,Technology,0.609567,True
+cloud,domain,semantic,4,alum-162,ICT / Digital,Cloud Engineer,Technology,0.609129,True
+cloud,domain,semantic,5,alum-126,ICT / Digital,IT Manager,Logistics,0.608646,True
+cloud,domain,keyword_baseline,1,alum-162,ICT / Digital,Cloud Engineer,Technology,,True
+cloud,domain,keyword_baseline,2,alum-174,ICT / Digital,DevOps Engineer,Technology,,True
+cloud,domain,keyword_baseline,3,alum-126,ICT / Digital,IT Manager,Logistics,,True
+cloud,domain,keyword_baseline,4,alum-014,ICT / Digital,Systems Administrator,Aviation,,True
+cloud,domain,keyword_baseline,5,alum-102,ICT / Digital,Cloud Engineer,Technology,,True
+cloud,domain,hybrid,1,alum-174,ICT / Digital,DevOps Engineer,Technology,,True
+cloud,domain,hybrid,2,alum-162,ICT / Digital,Cloud Engineer,Technology,,True
+cloud,domain,hybrid,3,alum-078,ICT / Digital,DevOps Engineer,Technology,,True
+cloud,domain,hybrid,4,alum-102,ICT / Digital,Cloud Engineer,Technology,,True
+cloud,domain,hybrid,5,alum-126,ICT / Digital,IT Manager,Logistics,,True
+pilot,domain,semantic,1,alum-147,Flight Operations,Captain,Aviation,0.65638,True
+pilot,domain,semantic,2,alum-171,Flight Operations,Flight Instructor,Education,0.652913,True
+pilot,domain,semantic,3,alum-045,Flight Operations,First Officer,Logistics,0.649568,True
+pilot,domain,semantic,4,alum-050,Flight Operations,Captain,Consulting,0.647451,True
+pilot,domain,semantic,5,alum-032,Flight Operations,Captain,Telecommunications,0.644833,True
+pilot,domain,keyword_baseline,1,alum-045,Flight Operations,First Officer,Logistics,,True
+pilot,domain,keyword_baseline,2,alum-032,Flight Operations,Captain,Telecommunications,,True
+pilot,domain,keyword_baseline,3,alum-147,Flight Operations,Captain,Aviation,,True
+pilot,domain,keyword_baseline,4,alum-036,Flight Operations,Flight Operations Officer,Logistics,,True
+pilot,domain,keyword_baseline,5,alum-050,Flight Operations,Captain,Consulting,,True
+pilot,domain,hybrid,1,alum-045,Flight Operations,First Officer,Logistics,,True
+pilot,domain,hybrid,2,alum-171,Flight Operations,Flight Instructor,Education,,True
+pilot,domain,hybrid,3,alum-147,Flight Operations,Captain,Aviation,,True
+pilot,domain,hybrid,4,alum-036,Flight Operations,Flight Operations Officer,Logistics,,True
+pilot,domain,hybrid,5,alum-032,Flight Operations,Captain,Telecommunications,,True
+finance,domain,semantic,1,alum-005,Finance,Accountant,Technology,0.632518,True
+finance,domain,semantic,2,alum-022,Finance,Accountant,Aviation,0.622221,True
+finance,domain,semantic,3,alum-187,Finance,Audit Associate,Consulting,0.612432,True
+finance,domain,semantic,4,alum-079,Finance,Audit Associate,Consulting,0.610676,True
+finance,domain,semantic,5,alum-139,Finance,Audit Associate,Consulting,0.60603,True
+finance,domain,keyword_baseline,1,alum-199,Finance,Finance Manager,Logistics,,True
+finance,domain,keyword_baseline,2,alum-005,Finance,Accountant,Technology,,True
+finance,domain,keyword_baseline,3,alum-022,Finance,Accountant,Aviation,,True
+finance,domain,keyword_baseline,4,alum-127,Finance,Audit Associate,Consulting,,True
+finance,domain,keyword_baseline,5,alum-187,Finance,Audit Associate,Consulting,,True
+finance,domain,hybrid,1,alum-005,Finance,Accountant,Technology,,True
+finance,domain,hybrid,2,alum-022,Finance,Accountant,Aviation,,True
+finance,domain,hybrid,3,alum-187,Finance,Audit Associate,Consulting,,True
+finance,domain,hybrid,4,alum-199,Finance,Finance Manager,Logistics,,True
+finance,domain,hybrid,5,alum-079,Finance,Audit Associate,Consulting,,True
+cabin-hospitality,domain,semantic,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,0.734315,True
+cabin-hospitality,domain,semantic,2,alum-088,Cabin Services,Guest Experience Manager,Hospitality,0.699681,True
+cabin-hospitality,domain,semantic,3,alum-112,Cabin Services,Guest Experience Manager,Hospitality,0.686775,True
+cabin-hospitality,domain,semantic,4,alum-136,Cabin Services,Cabin Crew Trainer,Education,0.67035,True
+cabin-hospitality,domain,semantic,5,alum-016,Cabin Services,Purser,Aviation,0.665411,True
+cabin-hospitality,domain,keyword_baseline,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,keyword_baseline,2,alum-112,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,keyword_baseline,3,alum-088,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,keyword_baseline,4,alum-136,Cabin Services,Cabin Crew Trainer,Education,,True
+cabin-hospitality,domain,keyword_baseline,5,alum-009,Cabin Services,Purser,Consulting,,True
+cabin-hospitality,domain,hybrid,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,hybrid,2,alum-112,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,hybrid,3,alum-088,Cabin Services,Guest Experience Manager,Hospitality,,True
+cabin-hospitality,domain,hybrid,4,alum-136,Cabin Services,Cabin Crew Trainer,Education,,True
+cabin-hospitality,domain,hybrid,5,alum-002,Cabin Services,Flight Attendant,Consulting,,True
+cargo,domain,semantic,1,alum-190,Cargo,Supply Chain Analyst,Food and beverage,0.651239,True
+cargo,domain,semantic,2,alum-094,Cargo,Supply Chain Analyst,Food and beverage,0.647142,True
+cargo,domain,semantic,3,alum-070,Cargo,Logistics Manager,Logistics,0.639815,True
+cargo,domain,semantic,4,alum-142,Cargo,Logistics Manager,Logistics,0.631572,True
+cargo,domain,semantic,5,alum-166,Cargo,Supply Chain Analyst,Food and beverage,0.631325,True
+cargo,domain,keyword_baseline,1,alum-154,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,keyword_baseline,2,alum-142,Cargo,Logistics Manager,Logistics,,True
+cargo,domain,keyword_baseline,3,alum-094,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,keyword_baseline,4,alum-166,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,keyword_baseline,5,alum-190,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,hybrid,1,alum-190,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,hybrid,2,alum-094,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,hybrid,3,alum-154,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,hybrid,4,alum-166,Cargo,Supply Chain Analyst,Food and beverage,,True
+cargo,domain,hybrid,5,alum-070,Cargo,Logistics Manager,Logistics,,True
+maintenance,domain,semantic,1,alum-137,Engineering & Maintenance,Licensed Aircraft Engineer,Aviation,0.665308,True
+maintenance,domain,semantic,2,alum-023,Engineering & Maintenance,Technical Engineer,Consulting,0.664128,True
+maintenance,domain,semantic,3,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,0.656021,True
+maintenance,domain,semantic,4,alum-185,Engineering & Maintenance,Licensed Aircraft Engineer,Aviation,0.650997,True
+maintenance,domain,semantic,5,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,0.643878,True
+maintenance,domain,keyword_baseline,1,alum-173,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+maintenance,domain,keyword_baseline,2,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+maintenance,domain,keyword_baseline,3,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+maintenance,domain,keyword_baseline,4,alum-023,Engineering & Maintenance,Technical Engineer,Consulting,,True
+maintenance,domain,keyword_baseline,5,alum-137,Engineering & Maintenance,Licensed Aircraft Engineer,Aviation,,True
+maintenance,domain,hybrid,1,alum-137,Engineering & Maintenance,Licensed Aircraft Engineer,Aviation,,True
+maintenance,domain,hybrid,2,alum-023,Engineering & Maintenance,Technical Engineer,Consulting,,True
+maintenance,domain,hybrid,3,alum-185,Engineering & Maintenance,Licensed Aircraft Engineer,Aviation,,True
+maintenance,domain,hybrid,4,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+maintenance,domain,hybrid,5,alum-173,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+hr,domain,semantic,1,alum-188,Human Resources,HR Business Partner,Technology,0.611961,True
+hr,domain,semantic,2,alum-044,Human Resources,HR Business Partner,Finance,0.592866,True
+hr,domain,semantic,3,alum-152,Human Resources,Leadership Coach,Consulting,0.588796,True
+hr,domain,semantic,4,alum-092,Human Resources,Talent Acquisition Lead,Finance,0.583731,True
+hr,domain,semantic,5,alum-030,Human Resources,HR Business Partner,Aviation,0.58105,True
+hr,domain,keyword_baseline,1,alum-152,Human Resources,Leadership Coach,Consulting,,True
+hr,domain,keyword_baseline,2,alum-200,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,keyword_baseline,3,alum-140,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,keyword_baseline,4,alum-092,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,keyword_baseline,5,alum-116,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,hybrid,1,alum-152,Human Resources,Leadership Coach,Consulting,,True
+hr,domain,hybrid,2,alum-188,Human Resources,HR Business Partner,Technology,,True
+hr,domain,hybrid,3,alum-200,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,hybrid,4,alum-092,Human Resources,Talent Acquisition Lead,Finance,,True
+hr,domain,hybrid,5,alum-044,Human Resources,HR Business Partner,Finance,,True
+safety,domain,semantic,1,alum-097,Safety & Quality,Compliance Manager,Finance,0.68903,True
+safety,domain,semantic,2,alum-133,Safety & Quality,Compliance Manager,Finance,0.683834,True
+safety,domain,semantic,3,alum-109,Safety & Quality,Safety Manager,Aviation,0.683046,True
+safety,domain,semantic,4,alum-121,Safety & Quality,Safety Manager,Aviation,0.676795,True
+safety,domain,semantic,5,alum-061,Safety & Quality,Quality Assurance Lead,Manufacturing,0.674136,True
+safety,domain,keyword_baseline,1,alum-001,Safety & Quality,Safety Officer,Consulting,,True
+safety,domain,keyword_baseline,2,alum-024,Safety & Quality,Quality Assurance Officer,Consulting,,True
+safety,domain,keyword_baseline,3,alum-109,Safety & Quality,Safety Manager,Aviation,,True
+safety,domain,keyword_baseline,4,alum-133,Safety & Quality,Compliance Manager,Finance,,True
+safety,domain,keyword_baseline,5,alum-145,Safety & Quality,Health and Safety Advisor,Energy,,True
+safety,domain,hybrid,1,alum-133,Safety & Quality,Compliance Manager,Finance,,True
+safety,domain,hybrid,2,alum-061,Safety & Quality,Quality Assurance Lead,Manufacturing,,True
+safety,domain,hybrid,3,alum-097,Safety & Quality,Compliance Manager,Finance,,True
+safety,domain,hybrid,4,alum-109,Safety & Quality,Safety Manager,Aviation,,True
+safety,domain,hybrid,5,alum-001,Safety & Quality,Safety Officer,Consulting,,True
+ground,domain,semantic,1,alum-117,Ground Operations,Operations Lead,Logistics,0.66371,True
+ground,domain,semantic,2,alum-105,Ground Operations,Airport Operations Manager,Aviation,0.635955,True
+ground,domain,semantic,3,alum-007,Ground Operations,Station Coordinator,Technology,0.632927,True
+ground,domain,semantic,4,alum-093,Ground Operations,Airport Operations Manager,Aviation,0.631075,True
+ground,domain,semantic,5,alum-069,Ground Operations,Station Manager,Aviation,0.630903,True
+ground,domain,keyword_baseline,1,alum-007,Ground Operations,Station Coordinator,Technology,,True
+ground,domain,keyword_baseline,2,alum-019,Ground Operations,Ground Operations Officer,Technology,,True
+ground,domain,keyword_baseline,3,alum-093,Ground Operations,Airport Operations Manager,Aviation,,True
+ground,domain,keyword_baseline,4,alum-117,Ground Operations,Operations Lead,Logistics,,True
+ground,domain,keyword_baseline,5,alum-105,Ground Operations,Airport Operations Manager,Aviation,,True
+ground,domain,hybrid,1,alum-117,Ground Operations,Operations Lead,Logistics,,True
+ground,domain,hybrid,2,alum-007,Ground Operations,Station Coordinator,Technology,,True
+ground,domain,hybrid,3,alum-105,Ground Operations,Airport Operations Manager,Aviation,,True
+ground,domain,hybrid,4,alum-093,Ground Operations,Airport Operations Manager,Aviation,,True
+ground,domain,hybrid,5,alum-019,Ground Operations,Ground Operations Officer,Technology,,True
+commercial,domain,semantic,1,alum-120,Commercial,Revenue Manager,Hospitality,0.700382,True
+commercial,domain,semantic,2,alum-192,Commercial,Business Development Manager,Logistics,0.696566,True
+commercial,domain,semantic,3,alum-060,Commercial,Marketing Manager,Telecommunications,0.687676,True
+commercial,domain,semantic,4,alum-168,Commercial,Pricing Analyst,Aviation,0.681072,True
+commercial,domain,semantic,5,alum-108,Commercial,Revenue Manager,Hospitality,0.680615,True
+commercial,domain,keyword_baseline,1,alum-046,Commercial,Revenue Analyst,Logistics,,True
+commercial,domain,keyword_baseline,2,alum-108,Commercial,Revenue Manager,Hospitality,,True
+commercial,domain,keyword_baseline,3,alum-027,Commercial,Sales Executive,Technology,,True
+commercial,domain,keyword_baseline,4,alum-192,Commercial,Business Development Manager,Logistics,,True
+commercial,domain,keyword_baseline,5,alum-031,Commercial,Marketing Officer,Logistics,,True
+commercial,domain,hybrid,1,alum-120,Commercial,Revenue Manager,Hospitality,,True
+commercial,domain,hybrid,2,alum-060,Commercial,Marketing Manager,Telecommunications,,True
+commercial,domain,hybrid,3,alum-108,Commercial,Revenue Manager,Hospitality,,True
+commercial,domain,hybrid,4,alum-192,Commercial,Business Development Manager,Logistics,,True
+commercial,domain,hybrid,5,alum-046,Commercial,Revenue Analyst,Logistics,,True
+procurement,domain,semantic,1,alum-194,Corporate Services,Contracts Manager,Energy,0.623399,True
+procurement,domain,semantic,2,alum-086,Corporate Services,Contracts Manager,Energy,0.617398,True
+procurement,domain,semantic,3,alum-098,Corporate Services,Procurement Manager,Logistics,0.616468,True
+procurement,domain,semantic,4,alum-004,Corporate Services,Legal Officer,Telecommunications,0.594591,True
+procurement,domain,semantic,5,alum-008,Corporate Services,Procurement Officer,Consulting,0.594244,True
+procurement,domain,keyword_baseline,1,alum-004,Corporate Services,Legal Officer,Telecommunications,,True
+procurement,domain,keyword_baseline,2,alum-122,Corporate Services,Operations Administrator,Education,,True
+procurement,domain,keyword_baseline,3,alum-008,Corporate Services,Procurement Officer,Consulting,,True
+procurement,domain,keyword_baseline,4,alum-098,Corporate Services,Procurement Manager,Logistics,,True
+procurement,domain,keyword_baseline,5,alum-110,Corporate Services,Operations Administrator,Education,,True
+procurement,domain,hybrid,1,alum-004,Corporate Services,Legal Officer,Telecommunications,,True
+procurement,domain,hybrid,2,alum-194,Corporate Services,Contracts Manager,Energy,,True
+procurement,domain,hybrid,3,alum-098,Corporate Services,Procurement Manager,Logistics,,True
+procurement,domain,hybrid,4,alum-008,Corporate Services,Procurement Officer,Consulting,,True
+procurement,domain,hybrid,5,alum-086,Corporate Services,Contracts Manager,Energy,,True
+service-quality,domain,semantic,1,alum-131,Customer Experience,Customer Experience Manager,Telecommunications,0.59151,True
+service-quality,domain,semantic,2,alum-006,Customer Experience,Service Quality Analyst,Aviation,0.554491,True
+service-quality,domain,semantic,3,alum-059,Customer Experience,Service Design Lead,Technology,0.548766,True
+service-quality,domain,semantic,4,alum-083,Customer Experience,Service Design Lead,Technology,0.54613,True
+service-quality,domain,semantic,5,alum-035,Customer Experience,Customer Service Agent,Technology,0.545476,True
+service-quality,domain,keyword_baseline,1,alum-131,Customer Experience,Customer Experience Manager,Telecommunications,,True
+service-quality,domain,keyword_baseline,2,alum-107,Customer Experience,Guest Relations Manager,Hospitality,,True
+service-quality,domain,keyword_baseline,3,alum-167,Customer Experience,Contact Centre Manager,Finance,,True
+service-quality,domain,keyword_baseline,4,alum-006,Customer Experience,Service Quality Analyst,Aviation,,True
+service-quality,domain,keyword_baseline,5,alum-083,Customer Experience,Service Design Lead,Technology,,True
+service-quality,domain,hybrid,1,alum-131,Customer Experience,Customer Experience Manager,Telecommunications,,True
+service-quality,domain,hybrid,2,alum-006,Customer Experience,Service Quality Analyst,Aviation,,True
+service-quality,domain,hybrid,3,alum-083,Customer Experience,Service Design Lead,Technology,,True
+service-quality,domain,hybrid,4,alum-059,Customer Experience,Service Design Lead,Technology,,True
+service-quality,domain,hybrid,5,alum-107,Customer Experience,Guest Relations Manager,Hospitality,,True
+t-instructor,transition,semantic,1,alum-159,Flight Operations,Flight Operations Manager,Aviation,0.595611,True
+t-instructor,transition,semantic,2,alum-171,Flight Operations,Flight Instructor,Education,0.581519,True
+t-instructor,transition,semantic,3,alum-087,Flight Operations,Captain,Aviation,0.580953,True
+t-instructor,transition,semantic,4,alum-147,Flight Operations,Captain,Aviation,0.577038,False
+t-instructor,transition,semantic,5,alum-050,Flight Operations,Captain,Consulting,0.576099,False
+t-instructor,transition,keyword_baseline,1,alum-032,Flight Operations,Captain,Telecommunications,,False
+t-instructor,transition,keyword_baseline,2,alum-045,Flight Operations,First Officer,Logistics,,False
+t-instructor,transition,keyword_baseline,3,alum-051,Flight Operations,Flight Operations Manager,Aviation,,True
+t-instructor,transition,keyword_baseline,4,alum-036,Flight Operations,Flight Operations Officer,Logistics,,False
+t-instructor,transition,keyword_baseline,5,alum-050,Flight Operations,Captain,Consulting,,False
+t-instructor,transition,hybrid,1,alum-050,Flight Operations,Captain,Consulting,,False
+t-instructor,transition,hybrid,2,alum-087,Flight Operations,Captain,Aviation,,True
+t-instructor,transition,hybrid,3,alum-099,Flight Operations,Aviation Safety Consultant,Consulting,,False
+t-instructor,transition,hybrid,4,alum-171,Flight Operations,Flight Instructor,Education,,True
+t-instructor,transition,hybrid,5,alum-032,Flight Operations,Captain,Telecommunications,,False
+t-banking,transition,semantic,1,alum-175,Finance,Finance Manager,Logistics,0.5845,False
+t-banking,transition,semantic,2,alum-187,Finance,Audit Associate,Consulting,0.579627,False
+t-banking,transition,semantic,3,alum-127,Finance,Audit Associate,Consulting,0.578598,False
+t-banking,transition,semantic,4,alum-159,Flight Operations,Flight Operations Manager,Aviation,0.577284,False
+t-banking,transition,semantic,5,alum-192,Commercial,Business Development Manager,Logistics,0.56245,False
+t-banking,transition,keyword_baseline,1,alum-001,Safety & Quality,Safety Officer,Consulting,,False
+t-banking,transition,keyword_baseline,2,alum-039,Customer Experience,Customer Experience Officer,Consulting,,False
+t-banking,transition,keyword_baseline,3,alum-097,Safety & Quality,Compliance Manager,Finance,,True
+t-banking,transition,keyword_baseline,4,alum-071,Customer Experience,Contact Centre Manager,Finance,,True
+t-banking,transition,keyword_baseline,5,alum-044,Human Resources,HR Business Partner,Finance,,True
+t-banking,transition,hybrid,1,alum-175,Finance,Finance Manager,Logistics,,False
+t-banking,transition,hybrid,2,alum-127,Finance,Audit Associate,Consulting,,False
+t-banking,transition,hybrid,3,alum-187,Finance,Audit Associate,Consulting,,False
+t-banking,transition,hybrid,4,alum-079,Finance,Audit Associate,Consulting,,False
+t-banking,transition,hybrid,5,alum-163,Finance,Audit Associate,Consulting,,False
+t-hospitality,transition,semantic,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,0.640149,True
+t-hospitality,transition,semantic,2,alum-088,Cabin Services,Guest Experience Manager,Hospitality,0.627095,True
+t-hospitality,transition,semantic,3,alum-120,Commercial,Revenue Manager,Hospitality,0.615226,True
+t-hospitality,transition,semantic,4,alum-107,Customer Experience,Guest Relations Manager,Hospitality,0.612925,True
+t-hospitality,transition,semantic,5,alum-112,Cabin Services,Guest Experience Manager,Hospitality,0.602832,True
+t-hospitality,transition,keyword_baseline,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,,True
+t-hospitality,transition,keyword_baseline,2,alum-028,Customer Experience,Customer Service Agent,Logistics,,False
+t-hospitality,transition,keyword_baseline,3,alum-027,Commercial,Sales Executive,Technology,,False
+t-hospitality,transition,keyword_baseline,4,alum-016,Cabin Services,Purser,Aviation,,False
+t-hospitality,transition,keyword_baseline,5,alum-120,Commercial,Revenue Manager,Hospitality,,True
+t-hospitality,transition,hybrid,1,alum-064,Cabin Services,Guest Experience Manager,Hospitality,,True
+t-hospitality,transition,hybrid,2,alum-120,Commercial,Revenue Manager,Hospitality,,True
+t-hospitality,transition,hybrid,3,alum-108,Commercial,Revenue Manager,Hospitality,,True
+t-hospitality,transition,hybrid,4,alum-016,Cabin Services,Purser,Aviation,,False
+t-hospitality,transition,hybrid,5,alum-155,Customer Experience,Guest Relations Manager,Hospitality,,True
+t-security,transition,semantic,1,alum-198,ICT / Digital,Cybersecurity Analyst,Finance,0.566297,True
+t-security,transition,semantic,2,alum-078,ICT / Digital,DevOps Engineer,Technology,0.542419,False
+t-security,transition,semantic,3,alum-014,ICT / Digital,Systems Administrator,Aviation,0.515949,True
+t-security,transition,semantic,4,alum-174,ICT / Digital,DevOps Engineer,Technology,0.515676,False
+t-security,transition,semantic,5,alum-186,ICT / Digital,IT Manager,Logistics,0.515319,False
+t-security,transition,keyword_baseline,1,alum-014,ICT / Digital,Systems Administrator,Aviation,,True
+t-security,transition,keyword_baseline,2,alum-078,ICT / Digital,DevOps Engineer,Technology,,False
+t-security,transition,keyword_baseline,3,alum-126,ICT / Digital,IT Manager,Logistics,,False
+t-security,transition,keyword_baseline,4,alum-017,ICT / Digital,Network Engineer,Aviation,,False
+t-security,transition,keyword_baseline,5,alum-174,ICT / Digital,DevOps Engineer,Technology,,False
+t-security,transition,hybrid,1,alum-014,ICT / Digital,Systems Administrator,Aviation,,True
+t-security,transition,hybrid,2,alum-078,ICT / Digital,DevOps Engineer,Technology,,False
+t-security,transition,hybrid,3,alum-198,ICT / Digital,Cybersecurity Analyst,Finance,,True
+t-security,transition,hybrid,4,alum-174,ICT / Digital,DevOps Engineer,Technology,,False
+t-security,transition,hybrid,5,alum-126,ICT / Digital,IT Manager,Logistics,,False
+t-coaching,transition,semantic,1,alum-152,Human Resources,Leadership Coach,Consulting,0.574021,True
+t-coaching,transition,semantic,2,alum-176,Human Resources,Leadership Coach,Consulting,0.562386,True
+t-coaching,transition,semantic,3,alum-104,Human Resources,HR Business Partner,Technology,0.551289,True
+t-coaching,transition,semantic,4,alum-136,Cabin Services,Cabin Crew Trainer,Education,0.540681,True
+t-coaching,transition,semantic,5,alum-188,Human Resources,HR Business Partner,Technology,0.539467,True
+t-coaching,transition,keyword_baseline,1,alum-152,Human Resources,Leadership Coach,Consulting,,True
+t-coaching,transition,keyword_baseline,2,alum-176,Human Resources,Leadership Coach,Consulting,,True
+t-coaching,transition,keyword_baseline,3,alum-116,Human Resources,Talent Acquisition Lead,Finance,,True
+t-coaching,transition,keyword_baseline,4,alum-104,Human Resources,HR Business Partner,Technology,,True
+t-coaching,transition,keyword_baseline,5,alum-188,Human Resources,HR Business Partner,Technology,,True
+t-coaching,transition,hybrid,1,alum-152,Human Resources,Leadership Coach,Consulting,,True
+t-coaching,transition,hybrid,2,alum-176,Human Resources,Leadership Coach,Consulting,,True
+t-coaching,transition,hybrid,3,alum-188,Human Resources,HR Business Partner,Technology,,True
+t-coaching,transition,hybrid,4,alum-104,Human Resources,HR Business Partner,Technology,,True
+t-coaching,transition,hybrid,5,alum-116,Human Resources,Talent Acquisition Lead,Finance,,True
+t-consulting,transition,semantic,1,alum-075,Flight Operations,Aviation Safety Consultant,Consulting,0.610195,True
+t-consulting,transition,semantic,2,alum-123,Flight Operations,Aviation Safety Consultant,Consulting,0.60441,True
+t-consulting,transition,semantic,3,alum-099,Flight Operations,Aviation Safety Consultant,Consulting,0.600055,True
+t-consulting,transition,semantic,4,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,0.588215,True
+t-consulting,transition,semantic,5,alum-079,Finance,Audit Associate,Consulting,0.585884,True
+t-consulting,transition,keyword_baseline,1,alum-087,Flight Operations,Captain,Aviation,,False
+t-consulting,transition,keyword_baseline,2,alum-036,Flight Operations,Flight Operations Officer,Logistics,,True
+t-consulting,transition,keyword_baseline,3,alum-046,Commercial,Revenue Analyst,Logistics,,True
+t-consulting,transition,keyword_baseline,4,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+t-consulting,transition,keyword_baseline,5,alum-173,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+t-consulting,transition,hybrid,1,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+t-consulting,transition,hybrid,2,alum-173,Engineering & Maintenance,Engineering Consultant,Consulting,,True
+t-consulting,transition,hybrid,3,alum-075,Flight Operations,Aviation Safety Consultant,Consulting,,True
+t-consulting,transition,hybrid,4,alum-187,Finance,Audit Associate,Consulting,,True
+t-consulting,transition,hybrid,5,alum-123,Flight Operations,Aviation Safety Consultant,Consulting,,True
+t-telecom,transition,semantic,1,alum-060,Commercial,Marketing Manager,Telecommunications,0.552901,True
+t-telecom,transition,semantic,2,alum-017,ICT / Digital,Network Engineer,Aviation,0.531484,False
+t-telecom,transition,semantic,3,alum-004,Corporate Services,Legal Officer,Telecommunications,0.527864,True
+t-telecom,transition,semantic,4,alum-031,Commercial,Marketing Officer,Logistics,0.52529,False
+t-telecom,transition,semantic,5,alum-194,Corporate Services,Contracts Manager,Energy,0.522553,False
+t-telecom,transition,keyword_baseline,1,alum-186,ICT / Digital,IT Manager,Logistics,,False
+t-telecom,transition,keyword_baseline,2,alum-017,ICT / Digital,Network Engineer,Aviation,,False
+t-telecom,transition,hybrid,1,alum-017,ICT / Digital,Network Engineer,Aviation,,False
+t-telecom,transition,hybrid,2,alum-060,Commercial,Marketing Manager,Telecommunications,,True
+t-telecom,transition,hybrid,3,alum-004,Corporate Services,Legal Officer,Telecommunications,,True
+t-telecom,transition,hybrid,4,alum-031,Commercial,Marketing Officer,Logistics,,False
+t-telecom,transition,hybrid,5,alum-194,Corporate Services,Contracts Manager,Energy,,False
+t-data,transition,semantic,1,alum-078,ICT / Digital,DevOps Engineer,Technology,0.523161,False
+t-data,transition,semantic,2,alum-174,ICT / Digital,DevOps Engineer,Technology,0.515777,False
+t-data,transition,semantic,3,alum-017,ICT / Digital,Network Engineer,Aviation,0.507896,False
+t-data,transition,semantic,4,alum-186,ICT / Digital,IT Manager,Logistics,0.505703,True
+t-data,transition,semantic,5,alum-198,ICT / Digital,Cybersecurity Analyst,Finance,0.503719,True
+t-data,transition,keyword_baseline,1,alum-155,Customer Experience,Guest Relations Manager,Hospitality,,True
+t-data,transition,keyword_baseline,2,alum-014,ICT / Digital,Systems Administrator,Aviation,,False
+t-data,transition,keyword_baseline,3,alum-017,ICT / Digital,Network Engineer,Aviation,,False
+t-data,transition,keyword_baseline,4,alum-071,Customer Experience,Contact Centre Manager,Finance,,True
+t-data,transition,keyword_baseline,5,alum-167,Customer Experience,Contact Centre Manager,Finance,,True
+t-data,transition,hybrid,1,alum-017,ICT / Digital,Network Engineer,Aviation,,False
+t-data,transition,hybrid,2,alum-078,ICT / Digital,DevOps Engineer,Technology,,False
+t-data,transition,hybrid,3,alum-186,ICT / Digital,IT Manager,Logistics,,True
+t-data,transition,hybrid,4,alum-174,ICT / Digital,DevOps Engineer,Technology,,False
+t-data,transition,hybrid,5,alum-198,ICT / Digital,Cybersecurity Analyst,Finance,,True
+t-manufacturing,transition,semantic,1,alum-085,Safety & Quality,Quality Assurance Lead,Manufacturing,0.579724,True
+t-manufacturing,transition,semantic,2,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,0.575934,True
+t-manufacturing,transition,semantic,3,alum-065,Engineering & Maintenance,Maintenance Manager,Manufacturing,0.558452,True
+t-manufacturing,transition,semantic,4,alum-169,Safety & Quality,Safety Manager,Aviation,0.558446,False
+t-manufacturing,transition,semantic,5,alum-061,Safety & Quality,Quality Assurance Lead,Manufacturing,0.55814,True
+t-manufacturing,transition,keyword_baseline,1,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+t-manufacturing,transition,keyword_baseline,2,alum-065,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+t-manufacturing,transition,keyword_baseline,3,alum-023,Engineering & Maintenance,Technical Engineer,Consulting,,False
+t-manufacturing,transition,keyword_baseline,4,alum-173,Engineering & Maintenance,Engineering Consultant,Consulting,,False
+t-manufacturing,transition,keyword_baseline,5,alum-101,Engineering & Maintenance,Engineering Consultant,Consulting,,False
+t-manufacturing,transition,hybrid,1,alum-065,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+t-manufacturing,transition,hybrid,2,alum-077,Engineering & Maintenance,Maintenance Manager,Manufacturing,,True
+t-manufacturing,transition,hybrid,3,alum-085,Safety & Quality,Quality Assurance Lead,Manufacturing,,True
+t-manufacturing,transition,hybrid,4,alum-169,Safety & Quality,Safety Manager,Aviation,,False
+t-manufacturing,transition,hybrid,5,alum-025,Safety & Quality,Quality Assurance Officer,Aviation,,False
+t-energy,transition,semantic,1,alum-098,Corporate Services,Procurement Manager,Logistics,0.548327,False
+t-energy,transition,semantic,2,alum-086,Corporate Services,Contracts Manager,Energy,0.546427,True
+t-energy,transition,semantic,3,alum-145,Safety & Quality,Health and Safety Advisor,Energy,0.544438,True
+t-energy,transition,semantic,4,alum-181,Safety & Quality,Health and Safety Advisor,Energy,0.531139,True
+t-energy,transition,semantic,5,alum-027,Commercial,Sales Executive,Technology,0.52865,False
+t-energy,transition,keyword_baseline,1,alum-098,Corporate Services,Procurement Manager,Logistics,,False
+t-energy,transition,keyword_baseline,2,alum-086,Corporate Services,Contracts Manager,Energy,,True
+t-energy,transition,keyword_baseline,3,alum-145,Safety & Quality,Health and Safety Advisor,Energy,,True
+t-energy,transition,keyword_baseline,4,alum-181,Safety & Quality,Health and Safety Advisor,Energy,,True
+t-energy,transition,keyword_baseline,5,alum-194,Corporate Services,Contracts Manager,Energy,,True
+t-energy,transition,hybrid,1,alum-098,Corporate Services,Procurement Manager,Logistics,,False
+t-energy,transition,hybrid,2,alum-086,Corporate Services,Contracts Manager,Energy,,True
+t-energy,transition,hybrid,3,alum-145,Safety & Quality,Health and Safety Advisor,Energy,,True
+t-energy,transition,hybrid,4,alum-181,Safety & Quality,Health and Safety Advisor,Energy,,True
+t-energy,transition,hybrid,5,alum-062,Corporate Services,Contracts Manager,Energy,,True

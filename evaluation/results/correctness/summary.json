@@ -1,0 +1,45 @@
+{
+  "evaluated_at": "2026-11-17T13:05:23+00:00",
+  "model": "BAAI/bge-base-en-v1.5",
+  "similarity_threshold": 0.5,
+  "recommend_threshold": 0.6,
+  "all_checks_passed": true,
+  "A_ranking": {
+    "checks": 46,
+    "identical": 46
+  },
+  "C_exclusion_probes": {
+    "unavailable_probes": 36,
+    "withdrawn_probes": 31,
+    "excluded_mentors_returned": 0,
+    "withdrawn_with_embedding_left": 0,
+    "unavailable_that_would_rank_top5_unfiltered": 36,
+    "control_probes": 36,
+    "control_found_rank1": 29,
+    "control_found_top5": 36
+  },
+  "D_threshold": {
+    "checks": 115,
+    "scores_below_threshold": 0,
+    "non_nested": 0
+  },
+  "E_top_k": {
+    "checks": 115,
+    "over_limit": 0,
+    "not_prefix": 0
+  },
+  "F_recommendations": {
+    "members": 40,
+    "with_results": 40,
+    "self_returned": 0,
+    "excluded_returned": 0,
+    "ineligible_returned": 0,
+    "below_threshold": 0
+  },
+  "B_eligibility": {
+    "distinct_mentors_returned": 133,
+    "ineligible_returned": 0,
+    "eligible_pool": 133,
+    "excluded_pool": 69
+  }
+}
