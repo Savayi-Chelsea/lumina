@@ -1,0 +1,57 @@
+{
+  // GitHub Codespaces / Dev Containers setup for Lumina.
+  // First creation runs scripts/setup.sh (about 10 minutes: npm, Python with
+  // CPU-only PyTorch, containers, demo data and the BGE model download).
+  // Every start re-creates the containers (data stays in named volumes), which
+  // avoids Docker-in-Docker's "RWLayer ... is unexpectedly nil" after a restart.
+  // Then run:  bash scripts/start.sh
+  "name": "Lumina",
+  // Same image GitHub Codespaces uses by default: Node 24, Python 3.14 and
+  // Docker-in-Docker are preinstalled, and the image is cached by Codespaces.
+  "image": "mcr.microsoft.com/devcontainers/universal:6",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
+  "postCreateCommand": "bash scripts/setup.sh",
+  "postStartCommand": "bash scripts/containers.sh && python3 scripts/setup_env.py --quiet",
+  "forwardPorts": [3000, 8000, 8025],
+  "portsAttributes": {
+    "3000": { "label": "Lumina web app", "onAutoForward": "notify" },
+    "8000": { "label": "Matching API", "onAutoForward": "silent" },
+    "8025": { "label": "Mailpit inbox", "onAutoForward": "silent" },
+    "1025": { "label": "Mailpit SMTP", "onAutoForward": "ignore" },
+    "5432": { "label": "PostgreSQL", "onAutoForward": "ignore" },
+    "9092": { "label": "Kafka", "onAutoForward": "ignore" }
+  },
+  // Codespaces asks for these when a codespace is created. Secrets arrive as
+  // environment variables and take precedence over .env, so they are never
+  // written to disk. All are optional: without them, email/password sign-in
+  // works and the job feed uses Himalayas only.
+  "secrets": {
+    "AUTH_SECRET": {
+      "description": "Auth.js session encryption key, at least 32 random characters (openssl rand -hex 32). If omitted, one is generated into .env."
+    },
+    "AUTH_GOOGLE_ID": {
+      "description": "Google OAuth client ID for 'Continue with Google'. Add https://<codespace>-3000.app.github.dev/api/auth/callback/google as an authorized redirect URI.",
+      "documentationUrl": "https://console.cloud.google.com/apis/credentials"
+    },
+    "AUTH_GOOGLE_SECRET": {
+      "description": "Google OAuth client secret matching AUTH_GOOGLE_ID."
+    },
+    "JSEARCH_API_KEY": {
+      "description": "Optional RapidAPI key for JSearch (Google for Jobs), adding on-site Kenyan listings to the job feed. Free plan: 200 requests per month.",
+      "documentationUrl": "https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-python.python",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  }
+}

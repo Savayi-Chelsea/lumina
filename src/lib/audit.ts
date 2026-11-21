@@ -22,6 +22,9 @@ export const AUDIT_ACTIONS = {
   "recap.restore": "Restored a session recap",
   "account.delete": "Deleted their own account",
   "account.export": "Downloaded their data",
+  "user.promote_admin": "Granted administrator access (command line)",
+  "user.demote_admin": "Removed administrator access (command line)",
+  "jobs.refresh": "Refreshed the Kenya job feed",
 } as const;
 export type AuditAction = keyof typeof AUDIT_ACTIONS;
 

@@ -14,7 +14,8 @@
     "test:auth": "vitest run",
     "test:auth:http": "node tests/auth/http-smoke.mjs",
     "test:frontend:browser": "node tests/frontend/browser-smoke.mjs",
-    "test:mentorship:live": "node tests/frontend/mentorship-live.mjs"
+    "test:mentorship:live": "node tests/frontend/mentorship-live.mjs",
+    "demo:accounts": "node --conditions=react-server --no-warnings scripts/demo-accounts.mjs"
   },
   "dependencies": {
     "next": "16.3.7",
