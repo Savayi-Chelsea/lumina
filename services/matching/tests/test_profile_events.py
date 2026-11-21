@@ -1,6 +1,7 @@
 """Outbox relay and re-indexing consumer, with in-memory Kafka fakes."""
 import json
 import os
+import threading
 import unittest
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -103,6 +104,63 @@ class ConsumerTests(unittest.TestCase):
         self.assertIsNone(profile_events.consume_once(object(), consumer, encoder_factory=None))
 
 
+class StartupTests(unittest.TestCase):
+    """The worker must wait for Kafka at startup instead of exiting (e.g. after a reboot)."""
+
+    def test_retries_until_the_broker_answers(self):
+        attempts = []
+
+        def create():
+            attempts.append(1)
+            if len(attempts) < 3:
+                raise ConnectionError("NoBrokersAvailable")
+            return "client"
+        self.assertEqual(profile_events.until_available(create, "Kafka", threading.Event(), first_delay=0.01), (True, "client"))
+        self.assertEqual(len(attempts), 3)
+
+    def test_stopping_during_an_outage_returns_without_a_client(self):
+        stop = threading.Event()
+        stop.set()
+        self.assertEqual(profile_events.until_available(lambda: 1 / 0, "Kafka", stop), (False, None))
+
+    def test_run_survives_a_broker_outage_at_startup(self):
+        stop, calls = threading.Event(), {"topic": 0}
+
+        def topic(_bootstrap):
+            calls["topic"] += 1
+            if calls["topic"] < 3:
+                raise ConnectionError("NoBrokersAvailable")
+
+        class Producer:
+            def __init__(self, **_):
+                pass
+
+            def close(self):
+                calls["producer_closed"] = True
+
+        class Consumer:
+            def __init__(self, *_, **__):
+                pass
+
+            def poll(self, **_):
+                stop.set()  # one empty poll, then shut down
+                return {}
+
+            def close(self):
+                calls["consumer_closed"] = True
+
+        class Conn(FakeConn):
+            closed = False
+
+            def close(self):
+                self.closed = True
+
+        with patch.object(profile_events, "ensure_topic", topic), patch("kafka.KafkaProducer", Producer), patch("kafka.KafkaConsumer", Consumer):
+            profile_events.run(lambda: Conn([]), "127.0.0.1:9", stop, poll_seconds=0.01, retry_seconds=0.01)
+        self.assertEqual(calls["topic"], 3)
+        self.assertTrue(calls.get("consumer_closed") and calls.get("producer_closed"))
+
+
 @unittest.skipUnless(os.getenv("LUMINA_TEST_KAFKA") == "1", "Opt in with LUMINA_TEST_KAFKA=1 and docker compose up -d kafka")
 class LiveKafkaTests(unittest.TestCase):
     def test_round_trip_through_a_real_broker(self):
@@ -115,7 +173,14 @@ class LiveKafkaTests(unittest.TestCase):
         consumer = KafkaConsumer(profile_events.TOPIC, bootstrap_servers=bootstrap, group_id=f"lumina-test-{marker}",
                                  auto_offset_reset="earliest", consumer_timeout_ms=15000)
         self.assertEqual(profile_events.relay_once(conn, producer), 1)
-        reasons = [json.loads(record.value).get("reason") for record in consumer]
+        # The shared topic's history can hold other producers' events, including malformed
+        # ones (the consumer skips those too); only this test's marker matters here.
+        reasons = []
+        for record in consumer:
+            try:
+                reasons.append(json.loads(record.value).get("reason"))
+            except (ValueError, AttributeError):
+                continue
         self.assertIn(marker, reasons)
         consumer.close(); producer.close()
 

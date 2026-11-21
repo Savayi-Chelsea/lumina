@@ -91,11 +91,38 @@ def ensure_topic(bootstrap):
         admin.close()
 
 
-def run(connect, bootstrap, stop=None, poll_seconds=1.0):
+def until_available(create, name, stop, first_delay=1.0, max_delay=30.0):
+    """Calls `create` until it succeeds or `stop` is set, backing off between attempts.
+
+    Lets the worker start before Kafka is reachable (for example right after a reboot):
+    it waits for the broker instead of exiting. Returns (True, value) or (False, None)."""
+    delay = first_delay
+    while not stop.is_set():
+        try:
+            return True, create()
+        except Exception as exc:
+            logger.error("%s unavailable (%s); retrying in %.0f s", name, type(exc).__name__, delay)
+            stop.wait(delay)
+            delay = min(delay * 2, max_delay)
+    return False, None
+
+
+def run(connect, bootstrap, stop=None, poll_seconds=1.0, retry_seconds=1.0):
     """Run relay and consumer until `stop` is set. `connect` returns a new autocommit psycopg connection."""
     from kafka import KafkaConsumer, KafkaProducer
     stop = stop or threading.Event()
-    ensure_topic(bootstrap)
+    if not until_available(lambda: ensure_topic(bootstrap), "Kafka (topic setup)", stop, retry_seconds)[0]:
+        return
+    ok, producer = until_available(lambda: KafkaProducer(bootstrap_servers=bootstrap, acks="all", linger_ms=20,
+                                                         client_id="lumina-outbox-relay"), "Kafka producer", stop, retry_seconds)
+    if not ok:
+        return
+    ok, consumer = until_available(lambda: KafkaConsumer(TOPIC, bootstrap_servers=bootstrap, group_id=GROUP, enable_auto_commit=False,
+                                                         auto_offset_reset="earliest", client_id="lumina-indexer"),
+                                   "Kafka consumer", stop, retry_seconds)
+    if not ok:
+        producer.close()
+        return
     factory = cached_encoder_factory()
 
     def resilient(step, name):
@@ -119,11 +146,8 @@ def run(connect, bootstrap, stop=None, poll_seconds=1.0):
         if conn is not None:
             conn.close()
 
-    producer = KafkaProducer(bootstrap_servers=bootstrap, acks="all", linger_ms=20, client_id="lumina-outbox-relay")
     relay = threading.Thread(target=resilient, args=(lambda conn: relay_once(conn, producer), "Outbox relay"), name="outbox-relay", daemon=True)
     relay.start()
-    consumer = KafkaConsumer(TOPIC, bootstrap_servers=bootstrap, group_id=GROUP, enable_auto_commit=False,
-                             auto_offset_reset="earliest", client_id="lumina-indexer")
     resilient(lambda conn: consume_once(conn, consumer, factory) is not None, "Re-indexing")
     consumer.close()
     relay.join(timeout=10)
