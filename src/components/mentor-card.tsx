@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { MentorMatch } from "@/lib/mentorship-contract";
+import { matchStrength } from "@/lib/match-strength";
 import { Icon } from "./icon";
 
 export function MentorCard({ mentor, rank, searchId }: { mentor: MentorMatch; rank: number; searchId?: string | null }) {
   const requestHref = `/mentorship/request/${mentor.profileId}${searchId ? `?search=${searchId}&rank=${rank}` : ""}`;
   const initials = mentor.name.trim().split(/\s+/).slice(0, 2).map(part => part[0]).join("");
+  const strength = matchStrength(mentor.matchRelevance);
   return <article className="live-mentor-card">
-    <div className="mentor-card-top"><span className="mentor-initials" aria-hidden="true">{initials}</span><div className="relevance"><span>Match relevance</span><strong>{mentor.matchRelevance.toFixed(3)}</strong></div></div>
+    <div className="mentor-card-top"><span className="mentor-initials" aria-hidden="true">{initials}</span><p className={`match-strength match-strength-${strength.level}`}><span className="match-strength-bars" aria-hidden="true"><i /><i /><i /></span>{strength.label}</p></div>
     <div className="mentor-labels"><span className="availability"><Icon name="check" width={14} height={14} />Available for mentorship</span></div>
     <p className="eyebrow">{mentor.department || "Alumni experience"}</p><h3>{mentor.name}</h3>
     <p className="mentor-headline">{mentor.headline || "Professional profile"}</p>

@@ -324,8 +324,9 @@ try {
   releaseSearch();
   await expect(page.getByRole("heading",{ name: "2 mentors to discover", exact: true })).toBeVisible();
   await expect(page.getByRole("article").first()).toContainText("Test Cloud Mentor");
-  await expect(page.getByText("0.730",{ exact: true })).toBeVisible();
-  await expect(page.getByText("Match relevance reflects",{ exact: false })).toContainText("not a probability");
+  await expect(page.getByRole("article").first()).toContainText("Strong match");
+  await expect(page.locator("body")).not.toContainText("0.730");
+  await expect(page.getByText("Strong, good and possible matches",{ exact: false })).toContainText("not a guarantee");
   await screenshot(page,"mentorship-results-desktop");
   mode = "empty"; await page.getByRole("button",{ name: "Find mentors", exact: true }).click();
   await expect(page.getByRole("heading",{ name: "No mentors matched this request yet.", exact: true })).toBeVisible();
