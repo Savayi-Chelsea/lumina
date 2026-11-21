@@ -1,10 +1,17 @@
 """Seed fictional, clearly labelled sample events and opportunities (local only).
 
 Rows use fixed UUIDs and synthetic = TRUE, so reruns update them in place
-(refreshing dates relative to today) and never touch admin-created listings
-or remove registrations. The interface labels every row "Sample listing".
+(refreshing dates relative to today) and never touch admin-created listings.
+
+Each sample event also gets attendees drawn from the synthetic alumni (people
+from the matching department or city first), and each open sample opportunity
+a few applicants, so past and upcoming listings never look empty. Reruns
+replace only synthetic alumni's registrations and applications on sample
+listings; real members' registrations and applications are never touched, and
+upcoming events always keep free places.
 """
 import argparse
+import random
 import sys
 import uuid
 from datetime import date, datetime, time, timedelta, timezone
@@ -48,32 +55,112 @@ OPPORTUNITIES = [
     ("ops-advisor", "Aviation Operations Advisor", "Horizon Aviation Advisory", "Advisory", "hybrid", "Nairobi", "Aviation consulting", 30,
      "Part-time advisory role reviewing turnaround and on-time performance for regional carriers.",
      "Advise a small consultancy on ground handling, turnaround planning and on-time performance improvement for regional airlines. Around four days a month.",
-     "Send a short note describing your operations experience to the advisory lead named in the community newsletter."),
+     "Apply through Lumina with a short note on your turnaround or ground operations experience. The advisory lead contacts shortlisted alumni within two weeks."),
     ("cloud-engineer", "Junior Cloud Support Engineer", "Kijani Cloud Services", "Job", "remote", "Remote · Kenya", "Information technology", 21,
      "Entry-level cloud support role suited to alumni moving into technology.",
      "Support customers running workloads on AWS. Training is provided; experience with Linux, networking or IT support is helpful.",
-     "Apply with your CV and a short cover note explaining your move into cloud technology."),
+     "Apply through Lumina and use the note to explain your move into cloud technology. Shortlisted applicants are asked for a CV."),
     ("cx-trainer", "Customer Experience Trainer", "Safari Hospitality Group", "Contract", "on_site", "Mombasa", "Hospitality", 45,
      "Six-month contract training hotel teams in service recovery.",
      "Design and deliver customer-service and service-recovery training for front-of-house teams across three coastal hotels.",
-     "Share your CV and an outline of a training session you have delivered."),
+     "Apply through Lumina and outline, in your note, a training session you have delivered."),
     ("safety-volunteer", "Aviation Safety Mentor for Students", "Skyward Youth Programme", "Volunteer", "hybrid", "Nairobi", "Education", None,
      "Mentor aviation students preparing for careers in safety and quality.",
      "Meet a small group of students once a month to share real-world safety and quality experience.",
-     "Express interest through the programme coordinator; a short introductory call follows."),
+     "Apply through Lumina to express interest; the programme coordinator follows up with a short introductory call."),
     ("finance-analyst", "Revenue Analyst", "Meridian Logistics", "Job", "on_site", "Nairobi", "Logistics", 14,
      "Revenue and pricing analysis role for a regional logistics company.",
      "Analyse route and customer profitability and support pricing decisions. Airline revenue management experience is valued.",
-     "Apply with your CV and a summary of a pricing or revenue analysis you led."),
+     "Apply through Lumina and summarise, in your note, a pricing or revenue analysis you led."),
     ("hr-intern", "People and Culture Internship", "Tamu Foods", "Internship", "on_site", "Nairobi", "Food and beverage", 10,
      "Three-month internship for early-career alumni interested in HR.",
      "Support recruitment, onboarding and employee engagement projects.",
-     "Send your CV and a short paragraph on why people operations interests you."),
+     "Apply through Lumina with a short paragraph on why people operations interests you."),
     ("closed-role", "Ground Handling Supervisor", "Jambo Ground Services", "Job", "on_site", "Kisumu", "Aviation services", -5,
      "Supervisory role for ramp operations (closed listing for demonstration).",
      "Supervise ramp teams and coordinate aircraft turnarounds.",
      "Applications have closed."),
 ]
+
+
+# Synthetic attendees per sample event: (share of capacity, or a head count when
+# uncapped; preferred former departments; preferred cities).
+ATTENDANCE = {
+    "homecoming": (0.62, [], ["Nairobi"]),
+    "cloud-careers": (0.31, ["ICT / Digital", "Engineering & Maintenance", "Flight Operations"], []),
+    "leadership-circle": (0.8, ["Flight Operations", "Safety & Quality", "Ground Operations"], []),
+    "cv-workshop": (0.58, ["Cabin Services", "Customer Experience", "Ground Operations"], []),
+    "mombasa-mixer": (0.56, [], ["Mombasa"]),
+    "tree-planting": (0.55, [], ["Nairobi"]),
+    "finance-talk": (46, ["Finance", "Commercial"], []),
+    "cargo-reunion": (0.7, ["Cargo", "Ground Operations"], ["Nairobi"]),
+}
+# Synthetic applicants per open sample opportunity: (count, preferred departments).
+APPLICANTS = {
+    "ops-advisor": (6, ["Ground Operations", "Flight Operations"]),
+    "cloud-engineer": (9, ["ICT / Digital", "Engineering & Maintenance"]),
+    "cx-trainer": (5, ["Customer Experience", "Cabin Services"]),
+    "safety-volunteer": (4, ["Safety & Quality"]),
+    "finance-analyst": (7, ["Finance", "Commercial"]),
+    "hr-intern": (3, ["Human Resources", "Corporate Services"]),
+}
+SEED = 20261121
+FREE_PLACES = 2  # upcoming events always keep at least this many places for real members
+NOTES = [
+    "I would welcome the chance to bring my experience to this role.",
+    "This matches the work I have been doing since leaving KQ. Happy to share more detail.",
+    "I have led similar work before and would be glad to talk it through.",
+    "",
+    "Interested. My profile has the details of my recent roles.",
+]
+
+
+def ranked_people(rng, people, departments, cities):
+    """Shuffle, then put people from the preferred departments or cities first."""
+    order = people[:]
+    rng.shuffle(order)
+    return sorted(order, key=lambda p: (p[1] not in departments if departments else False) + (p[2] not in cities if cities else False))
+
+
+def seed_attendance(conn, today):
+    people = conn.execute("""SELECT u.id::text, p.former_kq_department, p.location FROM users u JOIN profiles p ON p.user_id = u.id
+        WHERE u.email LIKE '%%@synthetic.lumina.local' AND u.role = 'alumni' AND u.account_status = 'active' AND u.alumni_verified
+        ORDER BY u.email""").fetchall()
+    if not people:
+        return 0, 0
+    ids = [p[0] for p in people]
+    now = datetime.now(timezone.utc)
+    registrations = applications = 0
+    for key, (share, departments, cities) in ATTENDANCE.items():
+        event_id = str(uuid.uuid5(NAMESPACE, f"event:{key}"))
+        row = conn.execute("SELECT starts_at, capacity FROM events WHERE id = %s AND synthetic", (event_id,)).fetchone()
+        if not row:
+            continue
+        starts_at, capacity = row
+        conn.execute("DELETE FROM event_registrations WHERE event_id = %s AND user_id = ANY(%s::uuid[])", (event_id, ids))
+        real = conn.execute("SELECT count(*) FROM event_registrations WHERE event_id = %s", (event_id,)).fetchone()[0]
+        target = round(capacity * share) if capacity else int(share)
+        if capacity:
+            target = min(target, capacity - real - (FREE_PLACES if starts_at > now else 0))
+        rng = random.Random(f"{SEED}:{key}")
+        for uid, _, _ in ranked_people(rng, people, departments, cities)[:max(0, target)]:
+            latest = min(starts_at - timedelta(hours=2), now - timedelta(minutes=30))
+            registered = latest - timedelta(days=rng.uniform(0, 21), minutes=rng.randint(0, 1439))
+            conn.execute("INSERT INTO event_registrations (event_id, user_id, registered_at) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
+                         (event_id, uid, registered))
+            registrations += 1
+    for key, (count, departments) in APPLICANTS.items():
+        opportunity_id = str(uuid.uuid5(NAMESPACE, f"opportunity:{key}"))
+        if not conn.execute("SELECT 1 FROM opportunities WHERE id = %s AND synthetic", (opportunity_id,)).fetchone():
+            continue
+        conn.execute("DELETE FROM opportunity_applications WHERE opportunity_id = %s AND user_id = ANY(%s::uuid[])", (opportunity_id, ids))
+        rng = random.Random(f"{SEED}:apply:{key}")
+        for uid, _, _ in ranked_people(rng, people, departments, [])[:count]:
+            applied = now - timedelta(days=rng.uniform(0.2, 12))
+            conn.execute("""INSERT INTO opportunity_applications (opportunity_id, user_id, note, created_at)
+                VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING""", (opportunity_id, uid, rng.choice(NOTES) or None, applied))
+            applications += 1
+    return registrations, applications
 
 
 def event_rows(today):
@@ -108,9 +195,12 @@ def seed(apply=False):
                       work_mode=EXCLUDED.work_mode, location=EXCLUDED.location, industry=EXCLUDED.industry, summary=EXCLUDED.summary,
                       description=EXCLUDED.description, how_to_apply=EXCLUDED.how_to_apply, closes_on=EXCLUDED.closes_on, updated_at=CURRENT_TIMESTAMP
                     WHERE opportunities.synthetic""", row)
+            attendance = seed_attendance(conn, today)
         counts = conn.execute("SELECT (SELECT count(*) FROM events WHERE synthetic), (SELECT count(*) FROM opportunities WHERE synthetic)").fetchone()
     print(f"{'Seeded' if apply else 'Preview'}: {len(EVENTS)} sample events and {len(OPPORTUNITIES)} sample opportunities defined; "
           f"database now has {counts[0]} sample events and {counts[1]} sample opportunities")
+    if apply:
+        print(f"  {attendance[0]} synthetic event registrations and {attendance[1]} synthetic applications")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadEnvConfig } from "@next/env";
 import { Pool, type PoolClient } from "pg";
-import { adminEvents, cancelRegistration, eventAttendees, getEvent, getOpportunity, listEvents, listOpportunities, registerForEvent, saveEvent, saveOpportunity, setStatus } from "@/lib/community";
+import { adminEvents, adminOpportunities, applicationFor, applyToOpportunity, cancelRegistration, eventAttendees, eventGoers, getEvent, getOpportunity, listEvents, listOpportunities, opportunityApplicants, registerForEvent, saveEvent, saveOpportunity, setStatus, withdrawApplication } from "@/lib/community";
 
 vi.mock("server-only", () => ({}));
 const shared = vi.hoisted(() => ({ conn: undefined as PoolClient | undefined, pool: undefined as import("pg").Pool | undefined }));
@@ -28,6 +28,7 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     (SELECT jsonb_agg(to_jsonb(t) ORDER BY t.id) FROM public.events t) AS events,
     (SELECT jsonb_agg(to_jsonb(t) ORDER BY t.event_id, t.user_id) FROM public.event_registrations t) AS registrations,
     (SELECT jsonb_agg(to_jsonb(t) ORDER BY t.id) FROM public.opportunities t) AS opportunities,
+    (SELECT jsonb_agg(to_jsonb(t) ORDER BY t.opportunity_id, t.user_id) FROM public.opportunity_applications t) AS applications,
     (SELECT count(*) FROM public.users) AS users`)).rows);
 
   beforeAll(async () => {
@@ -41,11 +42,11 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     });
     shared.conn = await pool.connect();
     before = await snapshot();
-    for (const table of ["users", "profiles", "events", "event_registrations", "opportunities", "audit_log"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
+    for (const table of ["users", "profiles", "events", "event_registrations", "opportunities", "opportunity_applications", "audit_log"]) await shared.conn.query(`CREATE TEMP TABLE ${table} (LIKE public.${table} INCLUDING ALL)`);
   });
 
   beforeEach(async () => {
-    await shared.conn!.query("DELETE FROM pg_temp.event_registrations; DELETE FROM pg_temp.events; DELETE FROM pg_temp.opportunities; DELETE FROM pg_temp.profiles; DELETE FROM pg_temp.users");
+    await shared.conn!.query("DELETE FROM pg_temp.opportunity_applications; DELETE FROM pg_temp.event_registrations; DELETE FROM pg_temp.events; DELETE FROM pg_temp.opportunities; DELETE FROM pg_temp.profiles; DELETE FROM pg_temp.users");
     admin = (await shared.conn!.query("INSERT INTO pg_temp.users(email, role, account_status, alumni_verified) VALUES ('admin@example.test','admin','active',TRUE) RETURNING id")).rows[0].id;
     alumni = (await shared.conn!.query("INSERT INTO pg_temp.users(email, account_status, alumni_verified) SELECT 'alum' || n || '@example.test', 'active', TRUE FROM generate_series(1,4) n RETURNING id")).rows.map(row => row.id);
     await shared.conn!.query("INSERT INTO pg_temp.profiles(user_id, full_name) VALUES ($1, 'Amina Otieno')", [alumni[0]]);
@@ -130,6 +131,47 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("events and opportunit
     const closed = (await saveOpportunity(opportunityInput({ title: "Closed again", closes_on: "2000-01-01" }), "published", admin))!;
     expect(await getOpportunity(closed)).toBeNull();
     expect((await getOpportunity(closed, true))?.title).toBe("Closed again");
+  });
+
+  it("names only discoverable attendees in who's going, never the viewer", async () => {
+    const id = (await saveEvent(eventInput(), "published", admin))!;
+    await shared.conn!.query("INSERT INTO pg_temp.profiles(user_id, full_name, show_in_directory) VALUES ($1, 'Hidden Member', FALSE), ($2, 'Baraka Kip', TRUE)", [alumni[1], alumni[2]]);
+    for (const person of alumni) expect(await registerForEvent(id, person)).toBe("registered");
+    expect((await eventGoers(id, alumni[3])).map(goer => goer.full_name).sort()).toEqual(["Amina Otieno", "Baraka Kip"]);
+    expect((await eventGoers(id, alumni[0])).map(goer => goer.full_name)).toEqual(["Baraka Kip"]);
+    expect(await eventGoers("not-a-uuid", alumni[0])).toEqual([]);
+  });
+
+  it("applies through Lumina once, lists applicants for admins and withdraws while open", async () => {
+    const id = (await saveOpportunity(opportunityInput(), "published", admin))!;
+    expect(await applyToOpportunity(id, alumni[0], "I led cloud migrations.")).toBe("applied");
+    expect(await applyToOpportunity(id, alumni[0], "Again")).toBe("already");
+    expect(await applyToOpportunity(id, alumni[1], null)).toBe("applied");
+    expect(await applicationFor(id, alumni[0])).toMatchObject({ note: "I led cloud migrations." });
+    expect(await applicationFor(id, alumni[2])).toBeNull();
+    expect((await listOpportunities({ type: null, q: "" }, 60, alumni[0]))[0].applied).toBe(true);
+    expect((await listOpportunities({ type: null, q: "" }, 60, alumni[2]))[0].applied).toBe(false);
+    expect((await listOpportunities({ type: null, q: "Cloud" }, 60, null))[0].applied).toBe(false);
+    expect((await adminOpportunities()).find(item => item.id === id)?.applicant_count).toBe(2);
+    const applicants = await opportunityApplicants(id);
+    expect(applicants.map(person => person.full_name).sort()).toEqual(["Amina Otieno", null].sort());
+    expect(applicants.every(person => person.synthetic === false)).toBe(true);
+    expect(await withdrawApplication(id, alumni[1])).toBe("withdrawn");
+    expect(await withdrawApplication(id, alumni[1])).toBe("not_applied");
+    expect(await opportunityApplicants(id)).toHaveLength(1);
+  });
+
+  it("refuses applications to drafts and closed listings, and keeps them once closed", async () => {
+    const draft = (await saveOpportunity(opportunityInput({ title: "Draft" }), "draft", admin))!;
+    const closed = (await saveOpportunity(opportunityInput({ title: "Closed", closes_on: "2000-01-01" }), "published", admin))!;
+    expect(await applyToOpportunity(draft, alumni[0], null)).toBe("closed");
+    expect(await applyToOpportunity(closed, alumni[0], null)).toBe("closed");
+    expect(await applyToOpportunity("nope", alumni[0], null)).toBe("closed");
+    const open = (await saveOpportunity(opportunityInput(), "published", admin))!;
+    expect(await applyToOpportunity(open, alumni[0], null)).toBe("applied");
+    expect(await setStatus("opportunities", open, "archived", admin)).toBe(true);
+    expect(await withdrawApplication(open, alumni[0])).toBe("not_applied");
+    expect(await opportunityApplicants(open)).toHaveLength(1);
   });
 
   it("updates listings in place and changes publication state", async () => {

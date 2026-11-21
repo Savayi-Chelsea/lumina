@@ -1,13 +1,20 @@
 import "server-only";
 import { database } from "@/lib/db";
 import { AUDIT_INSERT } from "@/lib/audit";
+import { profileImageSql } from "@/lib/profile-image-sql";
+import { profileImage } from "@/lib/profile-image";
+import { discoverableUser } from "@/lib/social";
 import { uuidPattern, type EventInput, type OpportunityInput, type Publication } from "@/lib/community-input";
 
 export type CommunityEvent = EventInput & {
   id: string; status: Publication; synthetic: boolean;
   registration_count: number; registered: boolean; updated_at: string;
 };
-export type Opportunity = OpportunityInput & { id: string; status: Publication; synthetic: boolean; created_at: string };
+export type Opportunity = OpportunityInput & { id: string; status: Publication; synthetic: boolean; created_at: string; applied?: boolean; applicant_count?: number };
+export type Application = { note: string | null; created_at: string };
+export type Applicant = { profile_id: string | null; full_name: string | null; email: string; headline: string | null; current_job_title: string | null;
+  current_organization: string | null; note: string | null; created_at: string; synthetic: boolean };
+export const APPLICATION_NOTE_MAX = 1000;
 export type Attendee = { full_name: string | null; email: string; registered_at: string };
 
 const eventFields = `e.id, e.title, e.summary, e.description, e.category, e.format, e.location,
@@ -63,6 +70,21 @@ export async function registerForEvent(eventId: string, userId: string): Promise
   }
 }
 
+export type EventGoer = { profile_id: string; full_name: string; image: string | null };
+
+/**
+ * A few of the members attending, for the "who's going" row. Only members who
+ * appear in the directory are named; everyone else counts in the total only.
+ */
+export async function eventGoers(eventId: string, viewerId: string, limit = 6) {
+  if (!uuidPattern.test(eventId)) return [];
+  return (await database().query<EventGoer>(`SELECT p.id AS profile_id, p.full_name, ${profileImageSql("p", "u")} AS image
+    FROM event_registrations r JOIN users u ON u.id = r.user_id JOIN profiles p ON p.user_id = u.id
+    WHERE r.event_id = $1 AND u.id <> $2 AND ${discoverableUser("u", "p")} AND p.show_in_directory
+    ORDER BY (${profileImageSql("p", "u")} IS NULL), r.registered_at, p.id LIMIT $3`, [eventId, viewerId, limit])).rows
+    .map(row => ({ ...row, image: profileImage(row.image) }));
+}
+
 export async function cancelRegistration(eventId: string, userId: string): Promise<RegistrationOutcome> {
   if (!uuidPattern.test(eventId)) return "closed";
   const result = await database().query(
@@ -70,8 +92,8 @@ export async function cancelRegistration(eventId: string, userId: string): Promi
   return result.rowCount ? "cancelled" : "not_registered";
 }
 
-export async function listOpportunities(filters: { type: string | null; q: string }, limit = 60) {
-  const values: unknown[] = [];
+export async function listOpportunities(filters: { type: string | null; q: string }, limit = 60, userId: string | null = null) {
+  const values: unknown[] = [userId];
   const conditions = [openOpportunity];
   if (filters.type) { values.push(filters.type); conditions.push(`o.opportunity_type = $${values.length}`); }
   if (filters.q) {
@@ -80,7 +102,9 @@ export async function listOpportunities(filters: { type: string | null; q: strin
     conditions.push(`(o.title ILIKE ${p} OR o.organization ILIKE ${p} OR o.summary ILIKE ${p} OR o.industry ILIKE ${p} OR o.location ILIKE ${p})`);
   }
   values.push(limit);
-  return (await database().query<Opportunity>(`SELECT ${opportunityFields} FROM opportunities o WHERE ${conditions.join(" AND ")} ORDER BY o.closes_on ASC NULLS LAST, o.created_at DESC, o.id LIMIT $${values.length}`, values)).rows;
+  return (await database().query<Opportunity>(`SELECT ${opportunityFields},
+      EXISTS (SELECT 1 FROM opportunity_applications a WHERE a.opportunity_id = o.id AND a.user_id = $1::uuid) AS applied
+    FROM opportunities o WHERE ${conditions.join(" AND ")} ORDER BY o.closes_on ASC NULLS LAST, o.created_at DESC, o.id LIMIT $${values.length}`, values)).rows;
 }
 
 export async function getOpportunity(id: string, admin = false) {
@@ -89,7 +113,42 @@ export async function getOpportunity(id: string, admin = false) {
   return (await database().query<Opportunity>(`SELECT ${opportunityFields} FROM opportunities o WHERE o.id = $1 AND ${visibility}`, [id])).rows[0] || null;
 }
 
+export type ApplicationOutcome = "applied" | "already" | "closed" | "withdrawn" | "not_applied";
+
+/** The member's own application to a listing, if any. */
+export async function applicationFor(opportunityId: string, userId: string) {
+  if (!uuidPattern.test(opportunityId)) return null;
+  return (await database().query<Application>("SELECT note, created_at FROM opportunity_applications WHERE opportunity_id = $1 AND user_id = $2",
+    [opportunityId, userId])).rows[0] || null;
+}
+
+/** Applies to an open, published listing; one application per member per listing. */
+export async function applyToOpportunity(opportunityId: string, userId: string, note: string | null): Promise<ApplicationOutcome> {
+  if (!uuidPattern.test(opportunityId)) return "closed";
+  const row = (await database().query<{ open: boolean; inserted: boolean }>(`WITH target AS (SELECT o.id FROM opportunities o WHERE o.id = $1 AND ${openOpportunity}),
+    inserted AS (INSERT INTO opportunity_applications (opportunity_id, user_id, note) SELECT id, $2, $3 FROM target ON CONFLICT DO NOTHING RETURNING 1)
+    SELECT EXISTS (SELECT 1 FROM target) AS open, EXISTS (SELECT 1 FROM inserted) AS inserted`, [opportunityId, userId, note])).rows[0];
+  return !row.open ? "closed" : row.inserted ? "applied" : "already";
+}
+
+/** Withdraws the member's application while the listing is still open. */
+export async function withdrawApplication(opportunityId: string, userId: string): Promise<ApplicationOutcome> {
+  if (!uuidPattern.test(opportunityId)) return "closed";
+  const result = await database().query(`DELETE FROM opportunity_applications a USING opportunities o
+    WHERE a.opportunity_id = o.id AND a.opportunity_id = $1 AND a.user_id = $2 AND ${openOpportunity}`, [opportunityId, userId]);
+  return result.rowCount ? "withdrawn" : "not_applied";
+}
+
 // ---------- Administration ----------
+
+/** Applicants for the admin listing page: name, email and profile, newest first. */
+export async function opportunityApplicants(opportunityId: string) {
+  if (!uuidPattern.test(opportunityId)) return [];
+  return (await database().query<Applicant>(`SELECT p.id AS profile_id, p.full_name, u.email, p.headline, p.current_job_title, p.current_organization,
+      a.note, a.created_at, (u.email LIKE '%@synthetic.lumina.local') AS synthetic
+    FROM opportunity_applications a JOIN users u ON u.id = a.user_id LEFT JOIN profiles p ON p.user_id = u.id
+    WHERE a.opportunity_id = $1 ORDER BY a.created_at DESC`, [opportunityId])).rows;
+}
 
 export async function adminEvents() {
   return (await database().query<CommunityEvent>(`SELECT ${eventFields} FROM events e ORDER BY (e.status = 'archived'), e.starts_at DESC`, [null])).rows;
@@ -117,7 +176,9 @@ export async function saveEvent(input: EventInput, status: Publication, adminId:
 }
 
 export async function adminOpportunities() {
-  return (await database().query<Opportunity>(`SELECT ${opportunityFields} FROM opportunities o ORDER BY (o.status = 'archived'), o.created_at DESC`)).rows;
+  return (await database().query<Opportunity>(`SELECT ${opportunityFields},
+      (SELECT count(*)::int FROM opportunity_applications a WHERE a.opportunity_id = o.id) AS applicant_count
+    FROM opportunities o ORDER BY (o.status = 'archived'), o.created_at DESC`)).rows;
 }
 
 export async function saveOpportunity(input: OpportunityInput, status: Publication, adminId: string, id?: string) {

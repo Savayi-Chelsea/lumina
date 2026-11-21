@@ -79,7 +79,7 @@ export function OpportunityForm({ initial = {}, published = false }: { initial?:
       <Text name="summary" label="Short summary" values={values} max={300} hint="Shown on listing cards. Up to 300 characters." />
       <Text name="closes_on" label="Closing date" type="date" values={values} required={false} hint="Leave blank if open until filled. Listings disappear after this date." />
       <Area name="description" label="Description" values={values} max={5000} />
-      <Area name="how_to_apply" label="How to apply" values={values} max={1000} />
+      <Area name="how_to_apply" label="How to apply (shown above the Apply through Lumina button)" values={values} max={1000} />
     </div>
     <Actions pending={pending} back="/admin/opportunities" published={published} />
   </form>;

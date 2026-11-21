@@ -12,6 +12,7 @@ export function placesLeft(event: Pick<CommunityEvent, "capacity" | "registratio
 export function EventCard({ event, index = 0 }: { event: CommunityEvent; index?: number }) {
   const { day, month } = eventDay(event.starts_at);
   const left = placesLeft(event);
+  const past = new Date(event.ends_at) < new Date();
   return <article className="event-card live-event-card">
     <div className={`event-art event-art-${index % 3}`} aria-hidden="true"><span className="event-art-circle" /><span className="event-date-badge"><strong>{day}</strong>{month}</span><Icon name={categoryIcon[event.category] || "calendar"} width={44} height={44} /></div>
     <div className="event-body">
@@ -21,7 +22,8 @@ export function EventCard({ event, index = 0 }: { event: CommunityEvent; index?:
       <p className="location">{event.location}</p>
       <p className="event-summary">{event.summary}</p>
       <div className="event-card-footer">
-        {event.registered ? <span className="availability"><Icon name="check" width={12} height={12} />You&apos;re attending</span>
+        {past ? <span className="small muted">{event.registered ? "You attended · " : ""}{event.registration_count} attended</span>
+          : event.registered ? <span className="availability"><Icon name="check" width={12} height={12} />You&apos;re attending</span>
           : left === 0 ? <span className="badge">Fully booked</span>
           : <span className="small muted">{event.registration_count} attending{left !== null ? ` · ${left} places left` : ""}</span>}
       </div>
@@ -40,6 +42,7 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
       <p className="location">{opportunity.location}</p>
       <p className="opportunity-summary">{opportunity.summary}</p>
       <div className="event-card-footer">
+        {opportunity.applied && <span className="availability"><Icon name="check" width={12} height={12} />Applied</span>}
         <span className="small muted">{opportunity.closes_on ? `Closes ${formatDate(opportunity.closes_on)}` : "Open until filled"}</span>
       </div>
       <Link className="text-link" href={`/opportunities/${opportunity.id}`} aria-label={`View opportunity: ${opportunity.title}`}>View details<Icon name="arrow" /></Link>

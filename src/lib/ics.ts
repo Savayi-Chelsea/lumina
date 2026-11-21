@@ -1,10 +1,14 @@
 /**
- * Minimal iCalendar (RFC 5545) event for a booked mentoring session: one
- * VEVENT in UTC, escaped text, lines folded at 75 octets, CRLF line endings.
+ * Minimal iCalendar (RFC 5545) event for a booked mentoring session or a
+ * community event: one VEVENT in UTC, escaped text, lines folded at 75 octets,
+ * CRLF line endings. REQUEST/CANCEL are emailed invitations; PUBLISH is a plain
+ * "Add to calendar" download.
  */
 export type CalendarEvent = {
   uid: string; start: Date; end: Date; summary: string; description: string; location?: string | null;
-  method: "REQUEST" | "CANCEL"; sequence?: number; organizer?: string | null;
+  method: "REQUEST" | "CANCEL" | "PUBLISH"; sequence?: number; organizer?: string | null;
+  /** Reminder text, shown 30 minutes before the start (not on cancellations). */
+  alarm?: string; url?: string | null; product?: string;
 };
 
 const stamp = (date: Date) => date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
@@ -25,13 +29,14 @@ export function fold(line: string) {
 
 export function buildIcs(event: CalendarEvent) {
   const lines = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Lumina//Mentoring sessions//EN", "CALSCALE:GREGORIAN", `METHOD:${event.method}`,
+    "BEGIN:VCALENDAR", "VERSION:2.0", `PRODID:-//Lumina//${event.product ?? "Mentoring sessions"}//EN`, "CALSCALE:GREGORIAN", `METHOD:${event.method}`,
     "BEGIN:VEVENT", `UID:${event.uid}@lumina`, `DTSTAMP:${stamp(new Date())}`, `DTSTART:${stamp(event.start)}`, `DTEND:${stamp(event.end)}`,
     `SEQUENCE:${event.sequence ?? 0}`, `STATUS:${event.method === "CANCEL" ? "CANCELLED" : "CONFIRMED"}`,
     `SUMMARY:${escapeText(event.summary)}`, `DESCRIPTION:${escapeText(event.description)}`,
     ...(event.location ? [`LOCATION:${escapeText(event.location)}`] : []),
+    ...(event.url ? [`URL:${event.url}`] : []),
     ...(event.organizer ? [`ORGANIZER:mailto:${event.organizer}`] : []),
-    ...(event.method === "REQUEST" ? ["BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", "DESCRIPTION:Mentoring session in 30 minutes", "END:VALARM"] : []),
+    ...(event.method !== "CANCEL" ? ["BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", `DESCRIPTION:${escapeText(event.alarm ?? "Mentoring session in 30 minutes")}`, "END:VALARM"] : []),
     "END:VEVENT", "END:VCALENDAR",
   ];
   return lines.map(fold).join("\r\n") + "\r\n";
