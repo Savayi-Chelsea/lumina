@@ -9,7 +9,7 @@ import { verifyPassword } from "@/lib/passwords";
 import { signInThrottle, type SignInThrottle } from "@/lib/sign-in-throttle";
 
 type UserStore = {
-  linkGoogleUser(subject: string, email: string, image?: string | null): Promise<LuminaUser>;
+  linkGoogleUser(subject: string, email: string, image?: string | null, name?: string | null): Promise<LuminaUser>;
   findLuminaUser(id: string): Promise<LuminaUser | null>;
   findPasswordAccount(email: string): Promise<PasswordAccount | null>;
   googleEmailConflict(subject: string, email: string): Promise<boolean>;
@@ -71,7 +71,8 @@ export function createAuthConfig(store: UserStore, throttle: SignInThrottle = si
             if (profile?.email_verified !== true
               || typeof profile.sub !== "string" || profile.sub !== account.providerAccountId
               || typeof profile.email !== "string" || !profile.email || profile.email.length > 255) return null;
-            const linked = await store.linkGoogleUser(profile.sub, profile.email, googleProfileImage(profile.picture));
+            const linked = await store.linkGoogleUser(profile.sub, profile.email, googleProfileImage(profile.picture),
+              typeof profile.name === "string" ? profile.name : null);
             token.luminaUserId = linked.id;
             token.sub = linked.id;
             token.name = typeof profile.name === "string" ? profile.name : null;

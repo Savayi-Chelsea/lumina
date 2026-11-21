@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadEnvConfig } from "@next/env";
 import { Pool, type PoolClient } from "pg";
-import { findLuminaUser, findPasswordAccount, googleEmailConflict, IdentityLinkRequired, linkGoogleUser } from "@/lib/lumina-users";
+import { draftProfileName, findLuminaUser, findPasswordAccount, googleEmailConflict, IdentityLinkRequired, linkGoogleUser } from "@/lib/lumina-users";
 import { createAuthConfig } from "@/lib/auth-config";
 
 vi.mock("server-only", () => ({}));
@@ -34,9 +34,10 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("Google identity SQL o
     shared.conn = await pool.connect();
     publicUsersBefore = JSON.stringify((await shared.conn.query("SELECT to_jsonb(u) AS row FROM public.users u ORDER BY id")).rows);
     await shared.conn.query("CREATE TEMP TABLE users (LIKE public.users INCLUDING ALL)");
+    await shared.conn.query("CREATE TEMP TABLE profiles (LIKE public.profiles INCLUDING ALL)");
   });
 
-  beforeEach(async () => { await shared.conn!.query("DELETE FROM pg_temp.users"); });
+  beforeEach(async () => { await shared.conn!.query("DELETE FROM pg_temp.profiles"); await shared.conn!.query("DELETE FROM pg_temp.users"); });
 
   afterAll(async () => {
     if (shared.conn) {
@@ -55,6 +56,24 @@ describe.skipIf(process.env.LUMINA_TEST_DATABASE !== "1")("Google identity SQL o
     const result = await shared.conn!.query("SELECT password_hash, email_verified, google_subject FROM pg_temp.users WHERE id=$1", [user.id]);
     expect(result.rows[0]).toEqual({ password_hash: null, email_verified: true, google_subject: subject });
     expect(await findLuminaUser(user.id)).toEqual(user);
+  });
+
+  it("starts a new Google account with a name-only draft profile, like email registration", async () => {
+    const user = await linkGoogleUser(subject, email, null, "  Wanjiru   Kamau ");
+    const profiles = await shared.conn!.query("SELECT user_id, full_name, profile_completed, former_kq_department, headline FROM pg_temp.profiles");
+    expect(profiles.rows).toEqual([{ user_id: user.id, full_name: "Wanjiru Kamau", profile_completed: false, former_kq_department: null, headline: null }]);
+    // A later sign-in never overwrites what the member has written since.
+    await shared.conn!.query("UPDATE pg_temp.profiles SET full_name='Wanjiru A. Kamau' WHERE user_id=$1", [user.id]);
+    await linkGoogleUser(subject, email, null, "Different Google Name");
+    expect((await shared.conn!.query("SELECT full_name FROM pg_temp.profiles")).rows).toEqual([{ full_name: "Wanjiru A. Kamau" }]);
+  });
+
+  it("creates no draft profile without a usable Google name", async () => {
+    await linkGoogleUser(subject, email, null, "   ");
+    expect((await shared.conn!.query("SELECT count(*)::int AS n FROM pg_temp.profiles")).rows[0].n).toBe(0);
+    expect(draftProfileName("x".repeat(151))).toBeNull();
+    expect(draftProfileName("Amina\u200b Otieno")).toBe("Amina Otieno");
+    expect(draftProfileName(42)).toBeNull();
   });
 
   it("reuses the same UUID and preserves existing password, role, status, email and verification", async () => {
