@@ -23,7 +23,7 @@ Current functionality includes:
 - FastAPI matching service with semantic mentor search
 - Email/password and Google sign-in sharing one Lumina session model
 - Emailed, single-use password reset (local Mailpit inbox)
-- Events with RSVP and capacity, and an Opportunities board, both admin-managed
+- Events with RSVP, capacity, "who's going" and Add to calendar (Google, Outlook.com, .ics), and an Opportunities board with Apply through Lumina, both admin-managed
 - Admin user management (suspend and reinstate)
 - 200 synthetic alumni with work histories
 - Reproducible matching evaluation (P@5, R@5, F1@5, MRR) against a keyword baseline
@@ -35,6 +35,8 @@ Current functionality includes:
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
 - GitHub Actions CI
+- Kenya job feed: real, daily-refreshed job listings open to applicants in Kenya, with "For you" recommendations by former department (Opportunities > Jobs in Kenya)
+- One-command setup for Linux, macOS and GitHub Codespaces (`.devcontainer/`, `scripts/setup.sh`, `scripts/start.sh`)
 
 ## Technology Stack
 
@@ -237,6 +239,27 @@ Current tests cover:
 - live consent and availability filtering
 - cosine ranking, tie ordering, thresholds, top-k, and no eligible results
 
+## Evaluation (Chapter 4)
+
+The complete evaluation lives in [`evaluation/`](evaluation/): the written report
+([`EVALUATION_REPORT.md`](evaluation/EVALUATION_REPORT.md)), quantitative findings for the
+abstract ([`ABSTRACT_FINDINGS.md`](evaluation/ABSTRACT_FINDINGS.md)), per-query CSVs, latency
+samples, test results and figures. [`evaluation/README.md`](evaluation/README.md) lists the
+commands to reproduce every number:
+
+```bash
+.venv/bin/python scripts/evaluate_matching.py        # semantic vs keyword vs hybrid, CIs, significance, threshold
+.venv/bin/python scripts/evaluate_correctness.py     # ranking, consent, threshold, top-k, recommendations
+node --no-warnings scripts/evaluate_explanations.mjs # "Why this match" grounding
+.venv/bin/python scripts/evaluate_event_pipeline.py  # outbox -> Kafka -> worker -> search, with outages
+node --no-warnings scripts/evaluate_performance.mjs  # latency, idle and under concurrent matching
+bash scripts/evaluate_test_suites.sh                 # every automated suite, machine-readable results
+.venv/bin/python scripts/evaluation_charts.py && node scripts/render_charts.mjs   # figures
+```
+
+Usability testing is prepared (protocol, tasks, SUS questionnaire, scorer) in
+`evaluation/usability/` but has not been run; no usability results are reported.
+
 ## DevOps / Cloud
 
 - Git
@@ -303,6 +326,88 @@ lumina/
 ├── package.json
 ├── requirements.txt
 └── README.md
+```
+
+## Quick start: Linux, macOS and GitHub Codespaces
+
+The sections after this one describe each step on Windows (PowerShell). On Linux,
+macOS or in a codespace, two commands do everything:
+
+```bash
+bash scripts/setup.sh   # .env, npm ci, .venv (CPU-only PyTorch), containers, demo data, Playwright Chromium
+bash scripts/start.sh   # containers + matching API + Kafka worker + email worker + web app; Ctrl+C stops all
+```
+
+`setup.sh` is safe to re-run: it keeps your `.env` values and only seeds an empty
+database. `start.sh` rebuilds the web app when sources changed (`--dev` runs
+`next dev` instead) and prefixes each process's log lines.
+
+**GitHub Codespaces.** The repository includes `.devcontainer/devcontainer.json`
+(4 cores, 16 GB, the standard `universal` image with Node 24, Python 3.14 and
+Docker). Creating a codespace runs `setup.sh` (about 10 minutes, including the BGE
+model download). Each start runs `scripts/containers.sh`, which recreates the
+containers. Docker-in-Docker can lose a container's writable layer across a
+codespace restart ("RWLayer of container … is unexpectedly nil"); the data lives in
+named volumes, so recreating containers fixes this without losing anything. Run
+`bash scripts/containers.sh` by hand if that error appears.
+
+Keep secrets as [Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces)
+(`AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, optional `JSEARCH_API_KEY`),
+not in committed files. They arrive as environment variables, which take
+precedence over `.env` for Next.js, the Python scripts and Docker Compose.
+`python3 scripts/setup_env.py` (run by `setup.sh`) creates or updates `.env`
+without overwriting real values, and inside Codespaces configures port forwarding:
+
+- `SERVER_ACTIONS_ALLOWED_ORIGINS=localhost:3000`: the Codespaces proxy rewrites a
+  same-site `Origin` header to `http://localhost:3000` while forwarding the public
+  host in `x-forwarded-host`, so without this Next.js rejects every form
+  submission (sign-in, profile edits) with "Invalid Server Actions request".
+- `AUTH_TRUST_HOST=true` and no fixed `AUTH_URL`: Auth.js builds its callback URL
+  from the forwarded host, so both `https://<codespace>-3000.app.github.dev` and
+  VS Code's `http://localhost:3000` forwarding work.
+
+### Demo accounts and administrators
+
+Seeded alumni cannot sign in. For demonstrations, list sign-in accounts in a
+gitignored `.demo-accounts.json` and create (or restore) them with one command:
+
+```bash
+cat > .demo-accounts.json <<'EOF'
+[
+  { "email": "member@example.com", "password": "a long passphrase", "name": "Member Name", "role": "alumni" },
+  { "email": "admin@example.com", "password": "another passphrase", "name": "Admin Name", "role": "admin" }
+]
+EOF
+npm run demo:accounts
+```
+
+Passwords are hashed with the app's own Argon2id code. Alumni accounts become
+active and verified with a name-only draft profile. Existing profiles,
+connections and messages are kept. The command only targets the local `lumina`
+database.
+
+To give demo accounts a lived-in network, run `seed_demo_activity.py` after
+`demo:accounts` (it previews without `--apply`, and reruns add only what is missing):
+
+```bash
+.venv/bin/python scripts/seed_demo_activity.py --member member@example.com --mentor mentor@example.com --apply
+```
+
+- `--member`: accepts the member's own pending invitations (with "accepted your
+  request" notifications), adds connections up to `--connections` (default 110),
+  leaves five incoming invitations and starts eight message threads (three unread).
+- `--mentor`: completes a fictional cloud-architect mentor profile (only while it is
+  still a draft), with skills, experience, matching consent and topics, and queues it
+  for re-indexing so it appears in mentor search. It also adds about 48 connections,
+  two accepted mentorships and one pending request. The member and the mentor are not
+  linked, so a mentorship request between them can be shown live.
+
+To make any account that signed up through the app (Google or email) an
+administrator, use the following commands. Each change is written to the audit log.
+
+```bash
+.venv/bin/python scripts/manage_admin.py promote you@example.com
+.venv/bin/python scripts/manage_admin.py list
 ```
 
 ## Prerequisites
@@ -542,6 +647,17 @@ email control only and never sets `alumni_verified`.
    the provider's basic `openid`, `email`, and `profile` scopes.
 7. For a future hosted environment, register its exact HTTPS origin and
    `/api/auth/callback/google` URI and update `AUTH_URL`. No deployment is included here.
+8. In GitHub Codespaces, also register the forwarded address. `python3 scripts/setup_env.py`
+   prints both URIs for your codespace:
+   `https://<codespace-name>-3000.app.github.dev/api/auth/callback/google` and
+   `http://localhost:3000/api/auth/callback/google`. Without the first one, Google
+   answers `redirect_uri_mismatch` when the app is opened at the `app.github.dev` address.
+
+A first Google sign-in creates a pending, unverified Lumina account with a
+name-only draft profile from the Google display name, the same starting point as
+email registration. The member then verifies against the alumni registry
+(`/verify`) and completes their profile. An existing account with the same email
+is never linked or overwritten.
 
 Google's configuration requirements are documented in the
 [Google OpenID Connect guide](https://developers.google.com/identity/openid-connect/openid-connect)
@@ -662,6 +778,9 @@ docker compose up -d                                   # PostgreSQL + Mailpit
 .venv/Scripts/python.exe scripts/apply_migration.py 006 --apply   # profiles, connections, messaging, notifications, outbox
 .venv/Scripts/python.exe scripts/apply_migration.py 007 --apply   # session recaps and reactions
 .venv/Scripts/python.exe scripts/apply_migration.py 008 --apply   # match tracking, privacy, sessions, audit log, email
+.venv/Scripts/python.exe scripts/apply_migration.py 009 --apply   # Kenya job feed
+.venv/Scripts/python.exe scripts/apply_migration.py 010 --apply   # JobWebKenya job source
+.venv/Scripts/python.exe scripts/apply_migration.py 011 --apply   # applications to community opportunities
 .venv/Scripts/python.exe scripts/generate_synthetic_data.py
 .venv/Scripts/python.exe scripts/seed_database.py
 .venv/Scripts/python.exe scripts/index_profile_embeddings.py
@@ -693,6 +812,15 @@ tables. Without `--apply` it previews. Both are idempotent and also included in
   Registration is serialised per event with a row lock, so capacity is never
   exceeded, even under concurrent requests (covered by a multi-connection test).
   Registration closes when the event starts.
+- **Who's going** shows a few attendees' photos and "You, Amina Otieno and 41 others
+  are attending" (or "attended" for past events). Only members listed in the directory
+  are named; everyone else is counted.
+- After reserving a place, **Add to your calendar** offers Google Calendar and
+  Outlook.com links and an `.ics` download (`/api/events/[id]/ics`, for Apple Calendar
+  and desktop Outlook) with a 30-minute reminder and a link back to the event.
+- `seed_community.py --apply` fills the sample events with synthetic attendees, from
+  the matching department or city first. Upcoming events always keep free places,
+  and real members' registrations are never touched.
 - Home shows the next three events, with "You're attending" on reserved ones.
 - Times are entered and shown in East Africa Time.
 
@@ -700,8 +828,14 @@ tables. Without `--apply` it previews. Both are idempotent and also included in
 
 - `/opportunities` lists published listings that have not passed their closing
   date, with a type filter (Job, Contract, Advisory, Volunteer, Internship) and search.
-- `/opportunities/[id]` shows the description and plain-text "How to apply".
-  No external links are stored or rendered.
+- `/opportunities/[id]` shows the description and plain-text "How to apply", then
+  **Apply through Lumina**: an optional note (up to 1,000 characters) sent with the
+  member's name, email and Lumina profile. Members see "You applied on …" and can
+  withdraw while the listing is open. Cards show "Applied" on listings they applied to.
+  No external links are stored or rendered (migration 011, `opportunity_applications`).
+- Admins see the applicant count on `/admin/opportunities` and each applicant's
+  name, email, current role, note and profile link on the listing's edit page.
+  `seed_community.py --apply` adds a few synthetic applicants to each open sample listing.
 
 ### Administration
 
@@ -779,6 +913,9 @@ semantic matching outperforms keyword matching. An off-topic control query retur
 no results. These are synthetic, rule-labelled results, not a measure of
 performance on real Kenya Airways alumni.
 
+The extended Chapter 4 evaluation (confidence intervals, significance tests, threshold
+analysis, correctness, event pipeline, latency) is in [`evaluation/`](evaluation/README.md).
+
 ## Social network and event-driven matching
 
 ### Profiles
@@ -793,7 +930,7 @@ editors under `/profile/edit`:
 | --- | --- |
 | `/profile/edit` | Name, headline, current role, location, About, Kenya Airways chapter, banner, open-to-opportunities |
 | `/profile/edit/experience` | Add, edit and delete roles (month precision, "I currently work here") |
-| `/profile/edit/skills` | Add (up to 30, reusing existing skill names case-insensitively) and remove skills |
+| `/profile/edit/skills` | Add (up to 30, reusing existing skill names case-insensitively) and remove skills. A searchable dropdown lists 740+ skills across all fields A to Z (`src/lib/skill-catalog.ts`, plus skills already on two or more profiles); typing filters it, with names that start with the text first. Members can still add their own |
 | `/profile/edit/mentorship` | Matching consent, availability and up to 10 topics |
 | `/profile/edit/photo` | Upload a photo (cropped and resized to 400 × 400 JPEG in the browser), or remove it |
 
@@ -821,6 +958,15 @@ see that profile, with `private` caching, `nosniff` and a `default-src 'none'` C
   notification per sender) and mentorship replies. The header shows unread counts for
   messages and notifications (inside the account menu on narrow phones).
 
+### Match strength instead of a raw score
+
+Mentor cards show **Strong match**, **Good match** or **Possible match** instead of the
+cosine similarity (scores cluster between 0.50 and 0.70, so a third-decimal difference
+looked meaningful but is not). The bands come from the matching evaluation's 110 semantic
+results (`evaluation/results/matching/per_query_rankings.csv`): every result at 0.60 or
+above was relevant, 73% between 0.55 and 0.60, and 52% between the 0.50 threshold and
+0.55 (`src/lib/match-strength.ts`). Exact scores are still logged for evaluation.
+
 ### Grounded match explanations
 
 Each mentor result shows "Why this match", built only from overlaps between the
@@ -842,7 +988,8 @@ Profile, skills, experience and mentorship-settings changes insert a row into
    database work succeeds.
 
 A crash replays events rather than losing them, and source hashes make replays harmless.
-If Kafka or PostgreSQL restarts, the worker reconnects on its own.
+If Kafka or PostgreSQL restarts, the worker reconnects on its own, and if it starts
+before Kafka is reachable it waits (with back-off) instead of exiting.
 
 ```powershell
 docker compose up -d kafka
@@ -956,6 +1103,53 @@ cannot happen without the other.
 Reminders go to both people 24 hours before a session; the weekly digest goes on Monday
 mornings (Nairobi) to members who opted in. The `email_deliveries` ledger ensures nothing
 is sent twice, and a failed send is retried on the next pass.
+
+## Kenya job feed
+
+**Opportunities › Jobs in Kenya** (`/opportunities/jobs`) shows real job
+listings next to the community's own opportunities, LinkedIn-style. Each card
+shows the logo, role, company, location or remote eligibility, type and salary
+when given, when it was posted, and the source. **Apply** opens the original
+listing in a new tab. Filters cover 13 career areas, remote or on-site, and free-text
+search. **For you** ranks first the areas people from the member's former Kenya
+Airways department most often move into (`DEPARTMENT_TOPICS` in
+`src/lib/job-sources.ts`). Home shows two listings below the community opportunities.
+
+| Source | Key | What it adds |
+| --- | --- | --- |
+| [Himalayas](https://himalayas.app/api) | none | Remote roles whose location and time-zone restrictions admit applicants in Kenya (UTC+3). On by default; `JOB_FEED_HIMALAYAS=off` disables it. |
+| [JobWebKenya](https://jobwebkenya.com) | none | On-site jobs at employers in Kenya, from the board's public RSS feed (10 feed pages a day, about the last 30 hours of postings). Each card shows title, company, town when stated, date and a short plain-text excerpt; **Apply** opens the JobWebKenya listing, credited on every card. Topics are inferred from job titles for **For you**. Open calls ("Submit CVs") are skipped. On by default; `JOB_FEED_JOBWEBKENYA=off` disables it. |
+| JSearch (Google for Jobs, RapidAPI) | `JSEARCH_API_KEY` | On-site listings in Kenya collected from LinkedIn, BrighterMonday, Fuzu and company sites. Free plan: 200 requests a month; Lumina uses 3 a day. Not yet exercised against the live API (no key during development); check it after adding a key with **Refresh now**. |
+
+How it works (`src/lib/job-feed.ts`, migration `009_job_feed.sql`):
+
+- **Refresh schedule.** Listings are fetched at most once a day per source:
+  - one request per career area for Himalayas (about 13) and 10 feed pages for JobWebKenya
+  - a 15-second timeout and a 4 MB limit on each request
+  - a fixed generic `User-Agent`, with nothing about the user
+  - an advisory lock, so only one refresh runs at a time
+
+  A page view never waits for a provider. A stale feed refreshes after the
+  response (`after()`), and a failed attempt is retried after an hour. An
+  administrator's **Refresh now** also runs in the background and returns at once.
+- **Validation.** Provider data is untrusted and is cached in `external_jobs` as
+  plain, bounded text. HTML is never stored or rendered, and links must be https.
+  Apply links are `rel="noopener noreferrer nofollow"`.
+- **Expiry.** Expired listings are removed on every refresh. Listings a source
+  stops returning are removed after three days, but only after a complete refresh,
+  so one failed request cannot empty a career area.
+- **Ordering.** Every company's newest listing comes before any company's second.
+- **Himalayas terms.** Himalayas is credited with a visible link, every Apply uses
+  its `applicationLink`, results are cached, and expired jobs are removed.
+- **Administration.** Administrators see per-source status and can force a refresh
+  under **Administration › Opportunities**; the refresh is written to the audit log.
+  **System health** reports the feed. Each attempt is recorded in `job_feed_runs`.
+
+Existing databases need the migrations: `.venv/bin/python scripts/apply_migration.py 009 --apply`, then `010 --apply`
+(allows the JobWebKenya source; constraint change only).
+Tests: `tests/auth/job-feed.test.ts` (normalisation, sanitising, filters, provider
+configuration) and `tests/auth/job-feed.database.test.ts` (storage, expiry, partial
+failures, schedule, locking, ranking; needs `LUMINA_TEST_DATABASE=1`).
 
 ## Data Ethics
 
