@@ -11,9 +11,9 @@ export default async function VerifyPage() {
   return <>
     <p className="eyebrow">Your alumni verification</p>
     <h1>One more step to verify your journey</h1>
-    <p>Google authentication succeeded. Check your former-KQ details against the prototype registry, then complete your professional profile.</p>
-    <section className="card notice"><h2>Fictional prototype registry</h2>
-      <p>This demonstration uses synthetic records, not real Kenya Airways employee data or an authorized KQ registry. A successful check demonstrates the verification workflow.</p>
+    <p>You&apos;re signed in. Confirm your Kenya Airways service details, then complete your professional profile.</p>
+    <section className="card notice"><h2>Why we verify</h2>
+      <p>Lumina is for former Kenya Airways colleagues. Your details are checked against the alumni registry and are never shown on your profile.</p>
       <p>Verification details stay separate from your public profile. Changing your profile does not change the registry.</p>
     </section>
     {assistance?.resolution_outcome === "closed_unresolved" && <p className="card notice" role="status">Your assistance request was closed unresolved. Your account is still available. You can correct your details, retry, or request assistance again.</p>}

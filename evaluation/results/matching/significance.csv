@@ -1,0 +1,13 @@
+scope,a,b,metric,n_queries,n_nonzero_differences,a_better,b_better,mean_difference,statistic,p_value
+transition,semantic,keyword_baseline,f1_at_5,10,9,6,3,0.1249,11.0,0.2031
+transition,semantic,keyword_baseline,reciprocal_rank,10,5,3,2,0.1083,5.0,0.625
+transition,semantic,hybrid,f1_at_5,10,4,3,1,0.0319,3.0,0.625
+transition,semantic,hybrid,reciprocal_rank,10,3,2,1,0.0917,1.0,0.5
+transition,hybrid,keyword_baseline,f1_at_5,10,8,6,2,0.093,10.0,0.3125
+transition,hybrid,keyword_baseline,reciprocal_rank,10,5,3,2,0.0167,7.0,1.0
+all,semantic,keyword_baseline,f1_at_5,22,9,6,3,0.0568,11.0,0.1731
+all,semantic,keyword_baseline,reciprocal_rank,22,5,3,2,0.0492,5.0,0.5002
+all,semantic,hybrid,f1_at_5,22,4,3,1,0.0145,3.0,0.4652
+all,semantic,hybrid,reciprocal_rank,22,3,2,1,0.0417,1.0,0.2763
+all,hybrid,keyword_baseline,f1_at_5,22,8,6,2,0.0423,10.0,0.2626
+all,hybrid,keyword_baseline,reciprocal_rank,22,5,3,2,0.0076,7.0,0.8923

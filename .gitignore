@@ -44,3 +44,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local process logs (scripts/start.sh)
+/.logs/
+
+# local demo sign-in accounts (scripts/demo-accounts.mjs); contains passwords
+/.demo-accounts.json

@@ -1,0 +1,14 @@
+phase,concurrent_searchers,kind,requests,errors,error_rate,successful,mean_ms,median_ms,p95_ms,p99_ms,min_ms,max_ms
+idle,0,matching (service),110,0,0,110,92.9,89.1,119.3,129.2,81.5,139.5
+idle,0,matching (via app),110,0,0,110,109.1,104.7,151.2,159.1,92.7,174.3
+idle,0,page,100,0,0,100,16.4,15,26.6,39,8.7,41.1
+idle,0,home (with recommendations),20,0,0,20,116.7,115.5,124.6,133.9,108.8,133.9
+load,1,matching (via app),56,0,0,56,153.4,142.3,224.7,257.9,93.2,257.9
+load,1,page,100,0,0,100,25.2,23,41.8,69.6,9.6,71.5
+load,1,home (with recommendations),20,0,0,20,197.6,203.2,250.7,255.2,138.8,255.2
+load,4,matching (via app),117,0,0,117,496.7,514.3,589.5,608.9,138.8,628.9
+load,4,page,100,0,0,100,22.5,21.7,35.1,39.1,10.6,42.9
+load,4,home (with recommendations),20,0,0,20,501.4,504,586.2,609.6,400.9,609.6
+load,8,matching (via app),196,0,0,196,942.1,958.1,1051.5,1102.8,164.4,1113.7
+load,8,page,100,0,0,100,21.6,20.4,36.3,40.3,10.3,46.1
+load,8,home (with recommendations),20,0,0,20,923.9,907.8,997.4,1045.2,819.9,1045.2

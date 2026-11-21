@@ -6,6 +6,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from psycopg.conninfo import make_conninfo
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -14,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[3]
 class SearchSettings(BaseModel):
     top_k: int = Field(default=5, ge=1, le=50)
     similarity_threshold: float = Field(default=0.5, ge=-1, le=1, allow_inf_nan=False)
+    ranking: Literal["semantic", "hybrid"] = "semantic"
 
 
 @lru_cache(maxsize=1)
@@ -22,6 +25,7 @@ def get_settings():
     return SearchSettings(
         top_k=os.getenv("MATCHING_TOP_K", "5"),
         similarity_threshold=os.getenv("MATCHING_SIMILARITY_THRESHOLD", "0.5"),
+        ranking=os.getenv("MATCHING_RANKING", "semantic"),
     )
 
 

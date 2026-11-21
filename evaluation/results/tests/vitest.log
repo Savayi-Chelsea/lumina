@@ -1,0 +1,50 @@
+
+ RUN  v4.1.11 /workspaces/lumina
+
+(node:25561) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ tests/auth/password-auth.database.test.ts (5 tests) 811ms
+     ✓ authorizes correct passwords and refuses wrong, unknown, Google-only, fixture and suspended accounts  369ms
+ ✓ tests/auth/engagement.database.test.ts (8 tests) 806ms
+ ✓ tests/auth/passwords.test.ts (20 tests) 1055ms
+(node:25621) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ tests/auth/frontend.database.test.ts (11 tests) 516ms
+ ✓ tests/auth/password-reset.database.test.ts (4 tests) 531ms
+ ✓ tests/auth/social.database.test.ts (7 tests) 382ms
+ ✓ tests/auth/recaps.database.test.ts (13 tests) 367ms
+ ✓ tests/auth/community.database.test.ts (6 tests) 356ms
+ ✓ tests/auth/job-feed.database.test.ts (6 tests) 368ms
+ ✓ tests/auth/verification.database.test.ts (4 tests) 120ms
+ ✓ tests/auth/network.database.test.ts (12 tests) 196ms
+ ✓ tests/auth/admin-users.database.test.ts (4 tests) 83ms
+ ✓ tests/auth/mentorship-route.test.ts (31 tests) 79ms
+ ✓ tests/auth/pages.test.tsx (18 tests) 136ms
+ ✓ tests/auth/mentorship.database.test.ts (2 tests) 70ms
+ ✓ tests/auth/mentor-search.test.ts (11 tests) 85ms
+ ✓ tests/auth/lumina-users.database.test.ts (9 tests) 114ms
+ ✓ tests/auth/charts.test.ts (9 tests) 58ms
+ ✓ tests/auth/community-input.test.ts (16 tests) 56ms
+ ✓ tests/auth/discovery.test.tsx (6 tests) 59ms
+ ✓ tests/auth/auth-actions.test.ts (14 tests) 50ms
+ ✓ tests/auth/verification-actions.test.ts (9 tests) 53ms
+ ✓ tests/auth/frontend.test.ts (8 tests) 43ms
+ ✓ tests/auth/network.test.tsx (17 tests) 32ms
+ ✓ tests/auth/job-feed.test.ts (15 tests) 45ms
+ ✓ tests/auth/password-actions.test.ts (9 tests) 38ms
+ ✓ tests/auth/verification-pages.test.tsx (5 tests) 38ms
+ ✓ tests/auth/mentorship-pages.test.tsx (4 tests) 28ms
+ ✓ tests/auth/account-card.test.tsx (6 tests) 27ms
+ ✓ tests/auth/auth-config.test.ts (15 tests) 16ms
+ ✓ tests/auth/lumina-users.test.ts (6 tests) 14ms
+ ✓ tests/auth/session.test.ts (6 tests) 10ms
+ ✓ tests/auth/match-explanation.test.ts (4 tests) 7ms
+ ✓ tests/auth/ics.test.ts (3 tests) 9ms
+ ✓ tests/auth/auth-environment.test.ts (2 tests) 4ms
+
+ Test Files  35 passed (35)
+      Tests  325 passed (325)
+   Start at  19:16:03
+   Duration  5.86s (transform 1.45s, setup 0ms, import 4.12s, tests 6.66s, environment 5ms)
+
+JSON report written to /workspaces/lumina/evaluation/results/tests/vitest.json

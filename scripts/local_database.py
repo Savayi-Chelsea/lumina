@@ -1,5 +1,6 @@
 """Local-only prototype tooling. Never print connection secrets or row contents."""
 import hashlib
+import re
 import os
 from pathlib import Path
 
@@ -8,6 +9,11 @@ from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def is_evaluation_database(name):
+    """Separate local databases used only for evaluation datasets, e.g. lumina_eval_500."""
+    return bool(name) and re.fullmatch(r"lumina_eval_[a-z0-9_]{1,40}", name) is not None
 
 
 def local_dsn():
@@ -25,8 +31,8 @@ def local_dsn():
         raise ValueError("Only loopback-hosted local development is permitted")
     if info.get("hostaddr") and info["hostaddr"] not in {"127.0.0.1", "::1"}:
         raise ValueError("Remote hostaddr is not permitted")
-    if info.get("dbname") != "lumina":
-        raise ValueError("Only the local lumina database is permitted")
+    if info.get("dbname") != "lumina" and not is_evaluation_database(info.get("dbname")):
+        raise ValueError("Only the local lumina database (or a local lumina_eval_* evaluation copy) is permitted")
     return dsn
 
 

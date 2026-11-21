@@ -1,0 +1,533 @@
+synthetic_id,organization,job_title,start_year,end_year,is_current,description
+ALUM-001,Kenya Airways,Safety Officer,2008,2016,False,Safety Officer in Safety & Quality.
+ALUM-001,Harambee Bank,Compliance Manager,2016,2019,False,Applied safety & quality experience as Compliance Manager.
+ALUM-001,East Africa Logistics,Safety Officer,2019,,True,Current role in consulting.
+ALUM-002,Kenya Airways,Flight Attendant,2013,2017,False,Flight Attendant in Cabin Services.
+ALUM-002,Safari Hospitality Group,Guest Experience Manager,2017,2019,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-002,Regional Air Services,Flight Attendant,2019,,True,Current role in consulting.
+ALUM-003,Kenya Airways,Legal Officer,2008,2019,False,Legal Officer in Corporate Services.
+ALUM-003,Baobab Advisory,Legal Counsel,2019,2022,False,Applied corporate services experience as Legal Counsel.
+ALUM-003,East Africa Logistics,Legal Officer,2022,,True,Current role in finance.
+ALUM-004,Kenya Airways,Legal Officer,2013,2018,False,Legal Officer in Corporate Services.
+ALUM-004,East Africa Logistics,Procurement Manager,2018,2021,False,Applied corporate services experience as Procurement Manager.
+ALUM-004,CloudWorks Africa,Legal Officer,2021,,True,Current role in telecommunications.
+ALUM-005,Kenya Airways,Financial Analyst,2009,2024,False,Financial Analyst in Finance.
+ALUM-005,East Africa Logistics,Finance Manager,2024,2025,False,Applied finance experience as Finance Manager.
+ALUM-005,Global Aviation Services,Accountant,2025,,True,Current role in technology.
+ALUM-006,Kenya Airways,Service Quality Analyst,2011,2016,False,Service Quality Analyst in Customer Experience.
+ALUM-006,Nairobi Digital Services,Service Design Lead,2016,2019,False,Applied customer experience experience as Service Design Lead.
+ALUM-006,Global Aviation Services,Service Quality Analyst,2019,,True,Current role in aviation.
+ALUM-007,Kenya Airways,Ramp Supervisor,2008,2024,False,Ramp Supervisor in Ground Operations.
+ALUM-007,East Africa Logistics,Operations Lead,2024,2025,False,Applied ground operations experience as Operations Lead.
+ALUM-007,Regional Air Services,Station Coordinator,2025,,True,Current role in technology.
+ALUM-008,Kenya Airways,Administration Officer,2019,2024,False,Administration Officer in Corporate Services.
+ALUM-008,Skyward Aviation School,Operations Administrator,2024,2025,False,Applied corporate services experience as Operations Administrator.
+ALUM-008,Aero Systems Ltd,Procurement Officer,2025,,True,Current role in consulting.
+ALUM-009,Kenya Airways,Flight Attendant,2014,2016,False,Flight Attendant in Cabin Services.
+ALUM-009,Safari Hospitality Group,Guest Experience Manager,2016,2018,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-009,Regional Air Services,Purser,2018,,True,Current role in consulting.
+ALUM-010,Kenya Airways,Compliance Analyst,2006,2016,False,Compliance Analyst in Safety & Quality.
+ALUM-010,Global Aviation Services,Safety Manager,2016,2018,False,Applied safety & quality experience as Safety Manager.
+ALUM-010,SkyTech Solutions,Quality Assurance Officer,2018,,True,Current role in telecommunications.
+ALUM-011,Kenya Airways,Quality Assurance Officer,2017,2020,False,Quality Assurance Officer in Safety & Quality.
+ALUM-011,Mkopo Fintech,Compliance Manager,2020,2023,False,Applied safety & quality experience as Compliance Manager.
+ALUM-011,SkyTech Solutions,Compliance Analyst,2023,,True,Current role in consulting.
+ALUM-012,Kenya Airways,Cabin Crew Supervisor,2008,2011,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-012,Regional Air Services,Purser,2011,2014,False,Applied cabin services experience as Purser.
+ALUM-012,East Africa Logistics,Cabin Crew Supervisor,2014,,True,Current role in consulting.
+ALUM-013,Kenya Airways,Customer Service Agent,2008,2015,False,Customer Service Agent in Customer Experience.
+ALUM-013,Safiri Telecom,Customer Experience Manager,2015,2016,False,Applied customer experience experience as Customer Experience Manager.
+ALUM-013,Global Aviation Services,Service Quality Analyst,2016,,True,Current role in logistics.
+ALUM-014,Kenya Airways,Systems Administrator,2014,2023,False,Systems Administrator in ICT / Digital.
+ALUM-014,CloudWorks Africa,Data Engineer,2023,2024,False,Applied ict / digital experience as Data Engineer.
+ALUM-014,SkyTech Solutions,Systems Administrator,2024,,True,Current role in aviation.
+ALUM-015,Kenya Airways,Captain,2009,2025,False,Captain in Flight Operations.
+ALUM-015,Regional Air Services,First Officer,2025,,True,Current role in technology.
+ALUM-016,Kenya Airways,Flight Attendant,2011,2019,False,Flight Attendant in Cabin Services.
+ALUM-016,Coastline Resorts,Guest Experience Manager,2019,2022,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-016,East Africa Logistics,Purser,2022,,True,Current role in aviation.
+ALUM-017,Kenya Airways,Systems Administrator,2007,2021,False,Systems Administrator in ICT / Digital.
+ALUM-017,Safiri Telecom,Data Engineer,2021,2023,False,Applied ict / digital experience as Data Engineer.
+ALUM-017,CloudWorks Africa,Network Engineer,2023,,True,Current role in aviation.
+ALUM-018,Kenya Airways,Compliance Analyst,2007,2021,False,Compliance Analyst in Safety & Quality.
+ALUM-018,Independent Consultant,Safety Officer,2021,,True,Current role in aviation.
+ALUM-019,Kenya Airways,Ramp Supervisor,2016,2025,False,Ramp Supervisor in Ground Operations.
+ALUM-019,Nairobi Digital Services,Ground Operations Officer,2025,,True,Current role in technology.
+ALUM-020,Kenya Airways,First Officer,2005,2022,False,First Officer in Flight Operations.
+ALUM-020,Equator Cargo Airlines,Flight Operations Manager,2022,2023,False,Applied flight operations experience as Flight Operations Manager.
+ALUM-020,East Africa Logistics,First Officer,2023,,True,Current role in consulting.
+ALUM-021,Kenya Airways,Purser,2014,2016,False,Purser in Cabin Services.
+ALUM-021,Global Aviation Services,Purser,2016,,True,Current role in finance.
+ALUM-022,Kenya Airways,Accountant,2012,2018,False,Accountant in Finance.
+ALUM-022,Baobab Advisory,Audit Associate,2018,2020,False,Applied finance experience as Audit Associate.
+ALUM-022,East Africa Logistics,Accountant,2020,,True,Current role in aviation.
+ALUM-023,Kenya Airways,Maintenance Planner,2009,2015,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-023,Rift Valley Aviation,Licensed Aircraft Engineer,2015,2018,False,Applied engineering & maintenance experience as Licensed Aircraft Engineer.
+ALUM-023,Nairobi Digital Services,Technical Engineer,2018,,True,Current role in consulting.
+ALUM-024,Kenya Airways,Safety Officer,2019,2020,False,Safety Officer in Safety & Quality.
+ALUM-024,Tamu Industrial,Health and Safety Advisor,2020,2022,False,Applied safety & quality experience as Health and Safety Advisor.
+ALUM-024,Nairobi Digital Services,Quality Assurance Officer,2022,,True,Current role in consulting.
+ALUM-025,Kenya Airways,Compliance Analyst,2009,2011,False,Compliance Analyst in Safety & Quality.
+ALUM-025,East Africa Engineering Works,Quality Assurance Lead,2011,2013,False,Applied safety & quality experience as Quality Assurance Lead.
+ALUM-025,Nairobi Digital Services,Quality Assurance Officer,2013,,True,Current role in aviation.
+ALUM-026,Kenya Airways,Quality Assurance Officer,2013,2025,False,Quality Assurance Officer in Safety & Quality.
+ALUM-026,East Africa Logistics,Safety Officer,2025,,True,Current role in aviation.
+ALUM-027,Kenya Airways,Marketing Officer,2005,2015,False,Marketing Officer in Commercial.
+ALUM-027,Coastline Resorts,Revenue Manager,2015,2017,False,Applied commercial experience as Revenue Manager.
+ALUM-027,Global Aviation Services,Sales Executive,2017,,True,Current role in technology.
+ALUM-028,Kenya Airways,Customer Experience Officer,2017,2020,False,Customer Experience Officer in Customer Experience.
+ALUM-028,Coastline Resorts,Guest Relations Manager,2020,2021,False,Applied customer experience experience as Guest Relations Manager.
+ALUM-028,Global Aviation Services,Customer Service Agent,2021,,True,Current role in logistics.
+ALUM-029,Kenya Airways,Procurement Officer,2008,2015,False,Procurement Officer in Corporate Services.
+ALUM-029,Baobab Advisory,Legal Counsel,2015,2016,False,Applied corporate services experience as Legal Counsel.
+ALUM-029,CloudWorks Africa,Legal Officer,2016,,True,Current role in technology.
+ALUM-030,Kenya Airways,Talent Acquisition Specialist,2015,2024,False,Talent Acquisition Specialist in Human Resources.
+ALUM-030,Global Aviation Services,HR Business Partner,2024,,True,Current role in aviation.
+ALUM-031,Kenya Airways,Revenue Analyst,2010,2022,False,Revenue Analyst in Commercial.
+ALUM-031,Meridian Logistics,Business Development Manager,2022,2024,False,Applied commercial experience as Business Development Manager.
+ALUM-031,East Africa Logistics,Marketing Officer,2024,,True,Current role in logistics.
+ALUM-032,Kenya Airways,Flight Operations Officer,2010,2017,False,Flight Operations Officer in Flight Operations.
+ALUM-032,Global Aviation Services,Captain,2017,,True,Current role in telecommunications.
+ALUM-033,Kenya Airways,Quality Assurance Officer,2013,2016,False,Quality Assurance Officer in Safety & Quality.
+ALUM-033,Independent Consultant,Compliance Analyst,2016,,True,Current role in telecommunications.
+ALUM-034,Kenya Airways,Customer Service Agent,2011,2024,False,Customer Service Agent in Customer Experience.
+ALUM-034,Global Aviation Services,Service Quality Analyst,2024,,True,Current role in logistics.
+ALUM-035,Kenya Airways,Customer Experience Officer,2009,2020,False,Customer Experience Officer in Customer Experience.
+ALUM-035,Coastline Resorts,Guest Relations Manager,2020,2023,False,Applied customer experience experience as Guest Relations Manager.
+ALUM-035,Nairobi Digital Services,Customer Service Agent,2023,,True,Current role in technology.
+ALUM-036,Kenya Airways,First Officer,2012,2019,False,First Officer in Flight Operations.
+ALUM-036,Savannah Air Charters,Captain,2019,2022,False,Applied flight operations experience as Captain.
+ALUM-036,Independent Consultant,Flight Operations Officer,2022,,True,Current role in logistics.
+ALUM-037,Kenya Airways,Compliance Analyst,2008,2014,False,Compliance Analyst in Safety & Quality.
+ALUM-037,Mkopo Fintech,Compliance Manager,2014,2017,False,Applied safety & quality experience as Compliance Manager.
+ALUM-037,CloudWorks Africa,Safety Officer,2017,,True,Current role in aviation.
+ALUM-038,Kenya Airways,Compliance Analyst,2018,2023,False,Compliance Analyst in Safety & Quality.
+ALUM-038,Rift Valley Aviation,Safety Manager,2023,2024,False,Applied safety & quality experience as Safety Manager.
+ALUM-038,Regional Air Services,Safety Officer,2024,,True,Current role in logistics.
+ALUM-039,Kenya Airways,Customer Experience Officer,2006,2016,False,Customer Experience Officer in Customer Experience.
+ALUM-039,Harambee Bank,Contact Centre Manager,2016,2019,False,Applied customer experience experience as Contact Centre Manager.
+ALUM-039,Global Aviation Services,Customer Experience Officer,2019,,True,Current role in consulting.
+ALUM-040,Kenya Airways,Network Engineer,2006,2020,False,Network Engineer in ICT / Digital.
+ALUM-040,Nairobi Digital Services,DevOps Engineer,2020,2022,False,Applied ict / digital experience as DevOps Engineer.
+ALUM-040,Independent Consultant,Network Engineer,2022,,True,Current role in aviation.
+ALUM-041,Kenya Airways,Marketing Officer,2012,2013,False,Marketing Officer in Commercial.
+ALUM-041,Safiri Telecom,Marketing Manager,2013,2016,False,Applied commercial experience as Marketing Manager.
+ALUM-041,Independent Consultant,Revenue Analyst,2016,,True,Current role in consulting.
+ALUM-042,Kenya Airways,Cloud Engineer,2011,2017,False,Cloud Engineer in ICT / Digital.
+ALUM-042,Nairobi Digital Services,DevOps Engineer,2017,2020,False,Applied ict / digital experience as DevOps Engineer.
+ALUM-042,Regional Air Services,Systems Administrator,2020,,True,Current role in technology.
+ALUM-043,Kenya Airways,Marketing Officer,2007,2022,False,Marketing Officer in Commercial.
+ALUM-043,Safari Hospitality Group,Revenue Manager,2022,2024,False,Applied commercial experience as Revenue Manager.
+ALUM-043,Independent Consultant,Revenue Analyst,2024,,True,Current role in finance.
+ALUM-044,Kenya Airways,Talent Acquisition Specialist,2018,2019,False,Talent Acquisition Specialist in Human Resources.
+ALUM-044,Harambee Bank,Talent Acquisition Lead,2019,2022,False,Applied human resources experience as Talent Acquisition Lead.
+ALUM-044,SkyTech Solutions,HR Business Partner,2022,,True,Current role in finance.
+ALUM-045,Kenya Airways,First Officer,2008,2013,False,First Officer in Flight Operations.
+ALUM-045,Savannah Air Charters,Captain,2013,2015,False,Applied flight operations experience as Captain.
+ALUM-045,CloudWorks Africa,First Officer,2015,,True,Current role in logistics.
+ALUM-046,Kenya Airways,Marketing Officer,2006,2025,False,Marketing Officer in Commercial.
+ALUM-046,Independent Consultant,Revenue Analyst,2025,,True,Current role in logistics.
+ALUM-047,Kenya Airways,Purser,2017,2018,False,Purser in Cabin Services.
+ALUM-047,Global Aviation Services,Cabin Crew Supervisor,2018,,True,Current role in aviation.
+ALUM-048,Kenya Airways,Ramp Supervisor,2015,2023,False,Ramp Supervisor in Ground Operations.
+ALUM-048,Jambo Ground Services,Airport Operations Manager,2023,2024,False,Applied ground operations experience as Airport Operations Manager.
+ALUM-048,Nairobi Digital Services,Ground Operations Officer,2024,,True,Current role in consulting.
+ALUM-049,Kenya Airways,Station Coordinator,2018,2019,False,Station Coordinator in Ground Operations.
+ALUM-049,Jambo Ground Services,Airport Operations Manager,2019,2022,False,Applied ground operations experience as Airport Operations Manager.
+ALUM-049,CloudWorks Africa,Ramp Supervisor,2022,,True,Current role in logistics.
+ALUM-050,Kenya Airways,Captain,2008,2020,False,Captain in Flight Operations.
+ALUM-050,Horizon Flight Academy,Flight Instructor,2020,2022,False,Applied flight operations experience as Flight Instructor.
+ALUM-050,Nairobi Digital Services,Captain,2022,,True,Current role in consulting.
+ALUM-051,Kenya Airways,First Officer,2015,2022,False,First Officer in Flight Operations.
+ALUM-051,Equator Cargo Airlines,Flight Operations Manager,2022,,True,Current role in aviation.
+ALUM-052,Kenya Airways,Cabin Crew Supervisor,2002,2017,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-052,Horizon Flight Academy,Cabin Crew Trainer,2017,,True,Current role in education.
+ALUM-053,Kenya Airways,Maintenance Planner,1996,2010,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-053,Aero Systems Ltd,Licensed Aircraft Engineer,2010,2012,False,Applied engineering & maintenance experience as Licensed Aircraft Engineer.
+ALUM-053,East Africa Engineering Works,Maintenance Manager,2012,,True,Current role in manufacturing.
+ALUM-054,Kenya Airways,Network Engineer,2009,2021,False,Network Engineer in ICT / Digital.
+ALUM-054,East Africa Logistics,IT Manager,2021,,True,Current role in logistics.
+ALUM-055,Kenya Airways,Finance Officer,2003,2009,False,Finance Officer in Finance.
+ALUM-055,Baobab Advisory,Audit Associate,2009,2012,False,Applied finance experience as Audit Associate.
+ALUM-055,Mkopo Fintech,Financial Analyst,2012,,True,Current role in finance.
+ALUM-056,Kenya Airways,HR Business Partner,1996,2000,False,HR Business Partner in Human Resources.
+ALUM-056,Mkopo Fintech,Talent Acquisition Lead,2000,2003,False,Applied human resources experience as Talent Acquisition Lead.
+ALUM-056,Independent Consultant,Leadership Coach,2003,,True,Current role in consulting.
+ALUM-057,Kenya Airways,Ramp Supervisor,2006,2023,False,Ramp Supervisor in Ground Operations.
+ALUM-057,Global Aviation Services,Airport Operations Manager,2023,2024,False,Applied ground operations experience as Airport Operations Manager.
+ALUM-057,Tamu Industrial,Fleet Operations Supervisor,2024,,True,Current role in transport.
+ALUM-058,Kenya Airways,Cargo Operations Supervisor,2007,2011,False,Cargo Operations Supervisor in Cargo.
+ALUM-058,Tamu Foods,Supply Chain Analyst,2011,2014,False,Applied cargo experience as Supply Chain Analyst.
+ALUM-058,Meridian Logistics,Customs and Compliance Officer,2014,,True,Current role in logistics.
+ALUM-059,Kenya Airways,Customer Service Agent,2013,2020,False,Customer Service Agent in Customer Experience.
+ALUM-059,Nairobi Digital Services,Service Design Lead,2020,,True,Current role in technology.
+ALUM-060,Kenya Airways,Revenue Analyst,2012,2019,False,Revenue Analyst in Commercial.
+ALUM-060,Bandari Freight,Business Development Manager,2019,2020,False,Applied commercial experience as Business Development Manager.
+ALUM-060,Safiri Telecom,Marketing Manager,2020,,True,Current role in telecommunications.
+ALUM-061,Kenya Airways,Compliance Analyst,1997,2011,False,Compliance Analyst in Safety & Quality.
+ALUM-061,Tamu Industrial,Quality Assurance Lead,2011,,True,Current role in manufacturing.
+ALUM-062,Kenya Airways,Procurement Officer,2014,2020,False,Procurement Officer in Corporate Services.
+ALUM-062,Skyward Aviation School,Operations Administrator,2020,2021,False,Applied corporate services experience as Operations Administrator.
+ALUM-062,Tamu Industrial,Contracts Manager,2021,,True,Current role in energy.
+ALUM-063,Kenya Airways,First Officer,2016,2020,False,First Officer in Flight Operations.
+ALUM-063,Global Aviation Services,Flight Operations Manager,2020,2023,False,Applied flight operations experience as Flight Operations Manager.
+ALUM-063,Horizon Flight Academy,Flight Instructor,2023,,True,Current role in education.
+ALUM-064,Kenya Airways,Purser,1998,2013,False,Purser in Cabin Services.
+ALUM-064,Coastline Resorts,Guest Experience Manager,2013,,True,Current role in hospitality.
+ALUM-065,Kenya Airways,Maintenance Planner,2010,2014,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-065,AeroAssure Advisory,Engineering Consultant,2014,2017,False,Applied engineering & maintenance experience as Engineering Consultant.
+ALUM-065,East Africa Engineering Works,Maintenance Manager,2017,,True,Current role in manufacturing.
+ALUM-066,Kenya Airways,Network Engineer,2001,2015,False,Network Engineer in ICT / Digital.
+ALUM-066,Mkopo Fintech,Cybersecurity Analyst,2016,,True,Current role in finance.
+ALUM-067,Kenya Airways,Finance Officer,2004,2010,False,Finance Officer in Finance.
+ALUM-067,Coastline Resorts,Revenue Accountant,2010,2012,False,Applied finance experience as Revenue Accountant.
+ALUM-067,Baobab Advisory,Audit Associate,2012,,True,Current role in consulting.
+ALUM-068,Kenya Airways,HR Officer,2001,2012,False,HR Officer in Human Resources.
+ALUM-068,Tamu Foods,People and Culture Manager,2014,,True,Current role in food and beverage.
+ALUM-069,Kenya Airways,Ground Operations Officer,2006,2023,False,Ground Operations Officer in Ground Operations.
+ALUM-069,Jambo Ground Services,Station Manager,2023,,True,Current role in aviation.
+ALUM-070,Kenya Airways,Logistics Coordinator,2007,2010,False,Logistics Coordinator in Cargo.
+ALUM-070,East Africa Logistics,Logistics Manager,2011,,True,Current role in logistics.
+ALUM-071,Kenya Airways,Customer Service Agent,2002,2022,False,Customer Service Agent in Customer Experience.
+ALUM-071,Harambee Bank,Contact Centre Manager,2023,,True,Current role in finance.
+ALUM-072,Kenya Airways,Marketing Officer,2007,2016,False,Marketing Officer in Commercial.
+ALUM-072,Meridian Logistics,Business Development Manager,2016,,True,Current role in logistics.
+ALUM-073,Kenya Airways,Compliance Analyst,1996,2007,False,Compliance Analyst in Safety & Quality.
+ALUM-073,Mkopo Fintech,Compliance Manager,2009,,True,Current role in finance.
+ALUM-074,Kenya Airways,Procurement Officer,2012,2020,False,Procurement Officer in Corporate Services.
+ALUM-074,East Africa Logistics,Procurement Manager,2020,,True,Current role in logistics.
+ALUM-075,Kenya Airways,Flight Operations Officer,2002,2016,False,Flight Operations Officer in Flight Operations.
+ALUM-075,Regional Air Services,Captain,2016,2018,False,Applied flight operations experience as Captain.
+ALUM-075,AeroAssure Advisory,Aviation Safety Consultant,2018,,True,Current role in consulting.
+ALUM-076,Kenya Airways,Flight Attendant,2005,2019,False,Flight Attendant in Cabin Services.
+ALUM-076,Nairobi Digital Services,Customer Success Lead,2019,,True,Current role in technology.
+ALUM-077,Kenya Airways,Technical Engineer,1999,2004,False,Technical Engineer in Engineering & Maintenance.
+ALUM-077,East Africa Engineering Works,Maintenance Manager,2005,,True,Current role in manufacturing.
+ALUM-078,Kenya Airways,Systems Administrator,2000,2015,False,Systems Administrator in ICT / Digital.
+ALUM-078,Mkopo Fintech,Cybersecurity Analyst,2015,2017,False,Applied ict / digital experience as Cybersecurity Analyst.
+ALUM-078,Nairobi Digital Services,DevOps Engineer,2017,,True,Current role in technology.
+ALUM-079,Kenya Airways,Financial Analyst,2016,2019,False,Financial Analyst in Finance.
+ALUM-079,Baobab Advisory,Audit Associate,2020,,True,Current role in consulting.
+ALUM-080,Kenya Airways,HR Officer,1998,2013,False,HR Officer in Human Resources.
+ALUM-080,Mkopo Fintech,Talent Acquisition Lead,2013,,True,Current role in finance.
+ALUM-081,Kenya Airways,Station Coordinator,1998,2003,False,Station Coordinator in Ground Operations.
+ALUM-081,Safiri Mobility,Fleet Operations Supervisor,2003,2006,False,Applied ground operations experience as Fleet Operations Supervisor.
+ALUM-081,Jambo Ground Services,Airport Operations Manager,2006,,True,Current role in aviation.
+ALUM-082,Kenya Airways,Logistics Coordinator,2006,2014,False,Logistics Coordinator in Cargo.
+ALUM-082,Equator Cargo Airlines,Freight Operations Lead,2014,,True,Current role in aviation.
+ALUM-083,Kenya Airways,Customer Service Agent,2004,2017,False,Customer Service Agent in Customer Experience.
+ALUM-083,Mkopo Fintech,Contact Centre Manager,2017,2018,False,Applied customer experience experience as Contact Centre Manager.
+ALUM-083,Mkopo Fintech,Service Design Lead,2018,,True,Current role in technology.
+ALUM-084,Kenya Airways,Sales Executive,2005,2022,False,Sales Executive in Commercial.
+ALUM-084,Safiri Telecom,Marketing Manager,2022,2023,False,Applied commercial experience as Marketing Manager.
+ALUM-084,Bandari Freight,Business Development Manager,2023,,True,Current role in logistics.
+ALUM-085,Kenya Airways,Quality Assurance Officer,2008,2022,False,Quality Assurance Officer in Safety & Quality.
+ALUM-085,Mkopo Fintech,Compliance Manager,2022,2024,False,Applied safety & quality experience as Compliance Manager.
+ALUM-085,East Africa Engineering Works,Quality Assurance Lead,2024,,True,Current role in manufacturing.
+ALUM-086,Kenya Airways,Legal Officer,2016,2019,False,Legal Officer in Corporate Services.
+ALUM-086,East Africa Logistics,Procurement Manager,2019,2022,False,Applied corporate services experience as Procurement Manager.
+ALUM-086,Tamu Industrial,Contracts Manager,2022,,True,Current role in energy.
+ALUM-087,Kenya Airways,Captain,2000,2013,False,Captain in Flight Operations.
+ALUM-087,Independent Consultant,Aviation Safety Consultant,2013,2015,False,Applied flight operations experience as Aviation Safety Consultant.
+ALUM-087,Savannah Air Charters,Captain,2015,,True,Current role in aviation.
+ALUM-088,Kenya Airways,Purser,1997,2005,False,Purser in Cabin Services.
+ALUM-088,Kijani Cloud Services,Customer Success Lead,2005,2008,False,Applied cabin services experience as Customer Success Lead.
+ALUM-088,Safari Hospitality Group,Guest Experience Manager,2008,,True,Current role in hospitality.
+ALUM-089,Kenya Airways,Maintenance Planner,2000,2003,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-089,Independent Consultant,Engineering Consultant,2003,,True,Current role in consulting.
+ALUM-090,Kenya Airways,Network Engineer,1998,2017,False,Network Engineer in ICT / Digital.
+ALUM-090,Kijani Cloud Services,Cloud Engineer,2017,2020,False,Applied ict / digital experience as Cloud Engineer.
+ALUM-090,Harambee Bank,Cybersecurity Analyst,2020,,True,Current role in finance.
+ALUM-091,Kenya Airways,Accountant,2001,2012,False,Accountant in Finance.
+ALUM-091,Coastline Resorts,Revenue Accountant,2012,2015,False,Applied finance experience as Revenue Accountant.
+ALUM-091,Independent Consultant,Audit Associate,2015,,True,Current role in consulting.
+ALUM-092,Kenya Airways,HR Officer,2004,2022,False,HR Officer in Human Resources.
+ALUM-092,Mkopo Fintech,Talent Acquisition Lead,2023,,True,Current role in finance.
+ALUM-093,Kenya Airways,Ground Operations Officer,1997,2008,False,Ground Operations Officer in Ground Operations.
+ALUM-093,East Africa Logistics,Operations Lead,2008,2011,False,Applied ground operations experience as Operations Lead.
+ALUM-093,Global Aviation Services,Airport Operations Manager,2011,,True,Current role in aviation.
+ALUM-094,Kenya Airways,Cargo Officer,2015,2021,False,Cargo Officer in Cargo.
+ALUM-094,Tamu Foods,Supply Chain Analyst,2021,,True,Current role in food and beverage.
+ALUM-095,Kenya Airways,Customer Experience Officer,1997,2015,False,Customer Experience Officer in Customer Experience.
+ALUM-095,Nairobi Digital Services,Service Design Lead,2015,2016,False,Applied customer experience experience as Service Design Lead.
+ALUM-095,Coastline Resorts,Guest Relations Manager,2016,,True,Current role in hospitality.
+ALUM-096,Kenya Airways,Sales Executive,2003,2013,False,Sales Executive in Commercial.
+ALUM-096,Bandari Freight,Business Development Manager,2013,2015,False,Applied commercial experience as Business Development Manager.
+ALUM-096,Safari Hospitality Group,Revenue Manager,2015,,True,Current role in hospitality.
+ALUM-097,Kenya Airways,Quality Assurance Officer,2013,2023,False,Quality Assurance Officer in Safety & Quality.
+ALUM-097,East Africa Engineering Works,Quality Assurance Lead,2023,2024,False,Applied safety & quality experience as Quality Assurance Lead.
+ALUM-097,Harambee Bank,Compliance Manager,2024,,True,Current role in finance.
+ALUM-098,Kenya Airways,Procurement Officer,2002,2018,False,Procurement Officer in Corporate Services.
+ALUM-098,Kenya Geothermal Partners,Contracts Manager,2018,2020,False,Applied corporate services experience as Contracts Manager.
+ALUM-098,East Africa Logistics,Procurement Manager,2020,,True,Current role in logistics.
+ALUM-099,Kenya Airways,Captain,1999,2006,False,Captain in Flight Operations.
+ALUM-099,AeroAssure Advisory,Aviation Safety Consultant,2006,,True,Current role in consulting.
+ALUM-100,Kenya Airways,Purser,2007,2018,False,Purser in Cabin Services.
+ALUM-100,Safari Hospitality Group,Guest Experience Manager,2018,2021,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-100,Nairobi Digital Services,Customer Success Lead,2021,,True,Current role in technology.
+ALUM-101,Kenya Airways,Technical Engineer,2011,2022,False,Technical Engineer in Engineering & Maintenance.
+ALUM-101,East Africa Engineering Works,Maintenance Manager,2022,2024,False,Applied engineering & maintenance experience as Maintenance Manager.
+ALUM-101,Independent Consultant,Engineering Consultant,2024,,True,Current role in consulting.
+ALUM-102,Kenya Airways,Cloud Engineer,1999,2012,False,Cloud Engineer in ICT / Digital.
+ALUM-102,Nairobi Digital Services,DevOps Engineer,2012,2014,False,Applied ict / digital experience as DevOps Engineer.
+ALUM-102,Kijani Cloud Services,Cloud Engineer,2014,,True,Current role in technology.
+ALUM-103,Kenya Airways,Financial Analyst,1997,2015,False,Financial Analyst in Finance.
+ALUM-103,Safari Hospitality Group,Revenue Accountant,2015,,True,Current role in hospitality.
+ALUM-104,Kenya Airways,Talent Acquisition Specialist,2000,2012,False,Talent Acquisition Specialist in Human Resources.
+ALUM-104,Independent Consultant,Leadership Coach,2012,2015,False,Applied human resources experience as Leadership Coach.
+ALUM-104,Safiri Telecom,HR Business Partner,2015,,True,Current role in technology.
+ALUM-105,Kenya Airways,Station Coordinator,1998,2018,False,Station Coordinator in Ground Operations.
+ALUM-105,Jambo Ground Services,Airport Operations Manager,2019,,True,Current role in aviation.
+ALUM-106,Kenya Airways,Cargo Officer,2007,2011,False,Cargo Officer in Cargo.
+ALUM-106,East Africa Logistics,Logistics Manager,2011,,True,Current role in logistics.
+ALUM-107,Kenya Airways,Service Quality Analyst,2005,2010,False,Service Quality Analyst in Customer Experience.
+ALUM-107,Mkopo Fintech,Service Design Lead,2010,2012,False,Applied customer experience experience as Service Design Lead.
+ALUM-107,Safari Hospitality Group,Guest Relations Manager,2012,,True,Current role in hospitality.
+ALUM-108,Kenya Airways,Revenue Analyst,1997,2017,False,Revenue Analyst in Commercial.
+ALUM-108,Nairobi Digital Services,Marketing Manager,2017,2019,False,Applied commercial experience as Marketing Manager.
+ALUM-108,Coastline Resorts,Revenue Manager,2019,,True,Current role in hospitality.
+ALUM-109,Kenya Airways,Compliance Analyst,2003,2011,False,Compliance Analyst in Safety & Quality.
+ALUM-109,Global Aviation Services,Safety Manager,2011,,True,Current role in aviation.
+ALUM-110,Kenya Airways,Procurement Officer,2012,2018,False,Procurement Officer in Corporate Services.
+ALUM-110,Baobab Advisory,Legal Counsel,2018,2020,False,Applied corporate services experience as Legal Counsel.
+ALUM-110,Horizon Flight Academy,Operations Administrator,2020,,True,Current role in education.
+ALUM-111,Kenya Airways,Captain,2007,2011,False,Captain in Flight Operations.
+ALUM-111,Equator Cargo Airlines,Flight Operations Manager,2011,2013,False,Applied flight operations experience as Flight Operations Manager.
+ALUM-111,Savannah Air Charters,Captain,2013,,True,Current role in aviation.
+ALUM-112,Kenya Airways,Cabin Crew Supervisor,2006,2014,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-112,Regional Air Services,Purser,2014,2017,False,Applied cabin services experience as Purser.
+ALUM-112,Safari Hospitality Group,Guest Experience Manager,2017,,True,Current role in hospitality.
+ALUM-113,Kenya Airways,Technical Engineer,2015,2022,False,Technical Engineer in Engineering & Maintenance.
+ALUM-113,Aero Systems Ltd,Licensed Aircraft Engineer,2022,2023,False,Applied engineering & maintenance experience as Licensed Aircraft Engineer.
+ALUM-113,Independent Consultant,Engineering Consultant,2023,,True,Current role in consulting.
+ALUM-114,Kenya Airways,Network Engineer,2006,2023,False,Network Engineer in ICT / Digital.
+ALUM-114,SkyTech Solutions,DevOps Engineer,2023,2024,False,Applied ict / digital experience as DevOps Engineer.
+ALUM-114,Kijani Cloud Services,Cloud Engineer,2024,,True,Current role in technology.
+ALUM-115,Kenya Airways,Accountant,2001,2007,False,Accountant in Finance.
+ALUM-115,East Africa Logistics,Finance Manager,2007,2010,False,Applied finance experience as Finance Manager.
+ALUM-115,Safari Hospitality Group,Revenue Accountant,2010,,True,Current role in hospitality.
+ALUM-116,Kenya Airways,Talent Acquisition Specialist,2008,2013,False,Talent Acquisition Specialist in Human Resources.
+ALUM-116,Baobab Advisory,Leadership Coach,2013,2015,False,Applied human resources experience as Leadership Coach.
+ALUM-116,Mkopo Fintech,Talent Acquisition Lead,2015,,True,Current role in finance.
+ALUM-117,Kenya Airways,Ramp Supervisor,1997,2019,False,Ramp Supervisor in Ground Operations.
+ALUM-117,East Africa Logistics,Operations Lead,2019,,True,Current role in logistics.
+ALUM-118,Kenya Airways,Cargo Operations Supervisor,2012,2020,False,Cargo Operations Supervisor in Cargo.
+ALUM-118,Jambo Ground Services,Freight Operations Lead,2020,2022,False,Applied cargo experience as Freight Operations Lead.
+ALUM-118,Bandari Freight,Customs and Compliance Officer,2022,,True,Current role in logistics.
+ALUM-119,Kenya Airways,Customer Experience Officer,2012,2021,False,Customer Experience Officer in Customer Experience.
+ALUM-119,Safiri Telecom,Customer Experience Manager,2021,2023,False,Applied customer experience experience as Customer Experience Manager.
+ALUM-119,Mkopo Fintech,Contact Centre Manager,2023,,True,Current role in finance.
+ALUM-120,Kenya Airways,Sales Executive,2015,2021,False,Sales Executive in Commercial.
+ALUM-120,Coastline Resorts,Revenue Manager,2022,,True,Current role in hospitality.
+ALUM-121,Kenya Airways,Safety Officer,2015,2020,False,Safety Officer in Safety & Quality.
+ALUM-121,Mkopo Fintech,Compliance Manager,2020,2022,False,Applied safety & quality experience as Compliance Manager.
+ALUM-121,Rift Valley Aviation,Safety Manager,2022,,True,Current role in aviation.
+ALUM-122,Kenya Airways,Procurement Officer,1999,2008,False,Procurement Officer in Corporate Services.
+ALUM-122,Skyward Aviation School,Operations Administrator,2008,,True,Current role in education.
+ALUM-123,Kenya Airways,Captain,1998,2001,False,Captain in Flight Operations.
+ALUM-123,Equator Cargo Airlines,Flight Operations Manager,2001,2004,False,Applied flight operations experience as Flight Operations Manager.
+ALUM-123,AeroAssure Advisory,Aviation Safety Consultant,2004,,True,Current role in consulting.
+ALUM-124,Kenya Airways,Purser,2016,2019,False,Purser in Cabin Services.
+ALUM-124,Safari Hospitality Group,Guest Experience Manager,2019,2020,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-124,Skyward Aviation School,Cabin Crew Trainer,2020,,True,Current role in education.
+ALUM-125,Kenya Airways,Aircraft Maintenance Engineer,2007,2024,False,Aircraft Maintenance Engineer in Engineering & Maintenance.
+ALUM-125,East Africa Engineering Works,Maintenance Manager,2025,,True,Current role in manufacturing.
+ALUM-126,Kenya Airways,Systems Administrator,2012,2022,False,Systems Administrator in ICT / Digital.
+ALUM-126,CloudWorks Africa,Cloud Engineer,2022,2024,False,Applied ict / digital experience as Cloud Engineer.
+ALUM-126,Meridian Logistics,IT Manager,2024,,True,Current role in logistics.
+ALUM-127,Kenya Airways,Accountant,1996,2005,False,Accountant in Finance.
+ALUM-127,Baobab Advisory,Audit Associate,2005,,True,Current role in consulting.
+ALUM-128,Kenya Airways,Talent Acquisition Specialist,2014,2023,False,Talent Acquisition Specialist in Human Resources.
+ALUM-128,Tamu Foods,People and Culture Manager,2023,2024,False,Applied human resources experience as People and Culture Manager.
+ALUM-128,Safiri Telecom,HR Business Partner,2024,,True,Current role in technology.
+ALUM-129,Kenya Airways,Ramp Supervisor,2013,2024,False,Ramp Supervisor in Ground Operations.
+ALUM-129,Safiri Mobility,Fleet Operations Supervisor,2025,,True,Current role in transport.
+ALUM-130,Kenya Airways,Logistics Coordinator,1998,2008,False,Logistics Coordinator in Cargo.
+ALUM-130,Jambo Ground Services,Freight Operations Lead,2009,,True,Current role in aviation.
+ALUM-131,Kenya Airways,Service Quality Analyst,1999,2004,False,Service Quality Analyst in Customer Experience.
+ALUM-131,Safiri Telecom,Customer Experience Manager,2006,,True,Current role in telecommunications.
+ALUM-132,Kenya Airways,Revenue Analyst,1997,2013,False,Revenue Analyst in Commercial.
+ALUM-132,Regional Air Services,Pricing Analyst,2013,,True,Current role in aviation.
+ALUM-133,Kenya Airways,Quality Assurance Officer,2000,2016,False,Quality Assurance Officer in Safety & Quality.
+ALUM-133,East Africa Engineering Works,Quality Assurance Lead,2016,2019,False,Applied safety & quality experience as Quality Assurance Lead.
+ALUM-133,Mkopo Fintech,Compliance Manager,2019,,True,Current role in finance.
+ALUM-134,Kenya Airways,Administration Officer,2008,2012,False,Administration Officer in Corporate Services.
+ALUM-134,Independent Consultant,Legal Counsel,2012,2015,False,Applied corporate services experience as Legal Counsel.
+ALUM-134,Horizon Flight Academy,Operations Administrator,2015,,True,Current role in education.
+ALUM-135,Kenya Airways,First Officer,2013,2017,False,First Officer in Flight Operations.
+ALUM-135,Equator Cargo Airlines,Flight Operations Manager,2017,2019,False,Applied flight operations experience as Flight Operations Manager.
+ALUM-135,Skyward Aviation School,Flight Instructor,2019,,True,Current role in education.
+ALUM-136,Kenya Airways,Cabin Crew Supervisor,2002,2011,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-136,Coastline Resorts,Guest Experience Manager,2011,2013,False,Applied cabin services experience as Guest Experience Manager.
+ALUM-136,Horizon Flight Academy,Cabin Crew Trainer,2013,,True,Current role in education.
+ALUM-137,Kenya Airways,Maintenance Planner,1997,2009,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-137,AeroAssure Advisory,Engineering Consultant,2009,2011,False,Applied engineering & maintenance experience as Engineering Consultant.
+ALUM-137,Rift Valley Aviation,Licensed Aircraft Engineer,2011,,True,Current role in aviation.
+ALUM-138,Kenya Airways,Network Engineer,1997,2002,False,Network Engineer in ICT / Digital.
+ALUM-138,Nairobi Digital Services,DevOps Engineer,2002,2005,False,Applied ict / digital experience as DevOps Engineer.
+ALUM-138,CloudWorks Africa,Cloud Engineer,2005,,True,Current role in technology.
+ALUM-139,Kenya Airways,Financial Analyst,1997,2011,False,Financial Analyst in Finance.
+ALUM-139,Mkopo Fintech,Financial Analyst,2011,2013,False,Applied finance experience as Financial Analyst.
+ALUM-139,Independent Consultant,Audit Associate,2013,,True,Current role in consulting.
+ALUM-140,Kenya Airways,Talent Acquisition Specialist,2013,2017,False,Talent Acquisition Specialist in Human Resources.
+ALUM-140,SkyTech Solutions,HR Business Partner,2017,2019,False,Applied human resources experience as HR Business Partner.
+ALUM-140,Mkopo Fintech,Talent Acquisition Lead,2019,,True,Current role in finance.
+ALUM-141,Kenya Airways,Station Coordinator,2004,2010,False,Station Coordinator in Ground Operations.
+ALUM-141,Meridian Logistics,Operations Lead,2010,2013,False,Applied ground operations experience as Operations Lead.
+ALUM-141,Safiri Mobility,Fleet Operations Supervisor,2013,,True,Current role in transport.
+ALUM-142,Kenya Airways,Logistics Coordinator,2011,2019,False,Logistics Coordinator in Cargo.
+ALUM-142,East Africa Logistics,Logistics Manager,2020,,True,Current role in logistics.
+ALUM-143,Kenya Airways,Customer Experience Officer,2007,2023,False,Customer Experience Officer in Customer Experience.
+ALUM-143,Safari Hospitality Group,Guest Relations Manager,2023,,True,Current role in hospitality.
+ALUM-144,Kenya Airways,Marketing Officer,2010,2015,False,Marketing Officer in Commercial.
+ALUM-144,Coastline Resorts,Revenue Manager,2015,2017,False,Applied commercial experience as Revenue Manager.
+ALUM-144,Bandari Freight,Business Development Manager,2017,,True,Current role in logistics.
+ALUM-145,Kenya Airways,Quality Assurance Officer,2006,2011,False,Quality Assurance Officer in Safety & Quality.
+ALUM-145,Tamu Industrial,Health and Safety Advisor,2011,,True,Current role in energy.
+ALUM-146,Kenya Airways,Procurement Officer,2006,2016,False,Procurement Officer in Corporate Services.
+ALUM-146,East Africa Logistics,Procurement Manager,2016,,True,Current role in logistics.
+ALUM-147,Kenya Airways,Flight Operations Officer,2001,2016,False,Flight Operations Officer in Flight Operations.
+ALUM-147,Skyward Aviation School,Flight Instructor,2016,2018,False,Applied flight operations experience as Flight Instructor.
+ALUM-147,Regional Air Services,Captain,2018,,True,Current role in aviation.
+ALUM-148,Kenya Airways,Flight Attendant,2011,2014,False,Flight Attendant in Cabin Services.
+ALUM-148,Kijani Cloud Services,Customer Success Lead,2014,2015,False,Applied cabin services experience as Customer Success Lead.
+ALUM-148,Skyward Aviation School,Cabin Crew Trainer,2015,,True,Current role in education.
+ALUM-149,Kenya Airways,Maintenance Planner,1997,2006,False,Maintenance Planner in Engineering & Maintenance.
+ALUM-149,Rift Valley Aviation,Licensed Aircraft Engineer,2006,2008,False,Applied engineering & maintenance experience as Licensed Aircraft Engineer.
+ALUM-149,AeroTech MRO,Reliability Engineer,2008,,True,Current role in aviation.
+ALUM-150,Kenya Airways,Software Engineer,1998,2001,False,Software Engineer in ICT / Digital.
+ALUM-150,CloudWorks Africa,Cloud Engineer,2002,,True,Current role in technology.
+ALUM-151,Kenya Airways,Accountant,2011,2015,False,Accountant in Finance.
+ALUM-151,Harambee Bank,Financial Analyst,2015,2017,False,Applied finance experience as Financial Analyst.
+ALUM-151,Meridian Logistics,Finance Manager,2017,,True,Current role in logistics.
+ALUM-152,Kenya Airways,Talent Acquisition Specialist,2000,2022,False,Talent Acquisition Specialist in Human Resources.
+ALUM-152,Mkopo Fintech,Talent Acquisition Lead,2022,2024,False,Applied human resources experience as Talent Acquisition Lead.
+ALUM-152,Independent Consultant,Leadership Coach,2024,,True,Current role in consulting.
+ALUM-153,Kenya Airways,Station Coordinator,2002,2011,False,Station Coordinator in Ground Operations.
+ALUM-153,Jambo Ground Services,Station Manager,2011,2012,False,Applied ground operations experience as Station Manager.
+ALUM-153,Global Aviation Services,Airport Operations Manager,2012,,True,Current role in aviation.
+ALUM-154,Kenya Airways,Cargo Officer,2011,2014,False,Cargo Officer in Cargo.
+ALUM-154,Bandari Freight,Customs and Compliance Officer,2014,2017,False,Applied cargo experience as Customs and Compliance Officer.
+ALUM-154,Tamu Industrial,Supply Chain Analyst,2017,,True,Current role in food and beverage.
+ALUM-155,Kenya Airways,Customer Experience Officer,2008,2018,False,Customer Experience Officer in Customer Experience.
+ALUM-155,Nairobi Digital Services,Service Design Lead,2018,2020,False,Applied customer experience experience as Service Design Lead.
+ALUM-155,Coastline Resorts,Guest Relations Manager,2020,,True,Current role in hospitality.
+ALUM-156,Kenya Airways,Sales Executive,2008,2015,False,Sales Executive in Commercial.
+ALUM-156,Meridian Logistics,Business Development Manager,2015,,True,Current role in logistics.
+ALUM-157,Kenya Airways,Safety Officer,2016,2020,False,Safety Officer in Safety & Quality.
+ALUM-157,Rift Valley Aviation,Safety Manager,2020,,True,Current role in aviation.
+ALUM-158,Kenya Airways,Legal Officer,1996,2008,False,Legal Officer in Corporate Services.
+ALUM-158,Skyward Aviation School,Operations Administrator,2008,2011,False,Applied corporate services experience as Operations Administrator.
+ALUM-158,East Africa Logistics,Procurement Manager,2011,,True,Current role in logistics.
+ALUM-159,Kenya Airways,First Officer,2009,2023,False,First Officer in Flight Operations.
+ALUM-159,Horizon Flight Academy,Flight Instructor,2023,2024,False,Applied flight operations experience as Flight Instructor.
+ALUM-159,Global Aviation Services,Flight Operations Manager,2024,,True,Current role in aviation.
+ALUM-160,Kenya Airways,Flight Attendant,2007,2016,False,Flight Attendant in Cabin Services.
+ALUM-160,Skyward Aviation School,Cabin Crew Trainer,2016,2019,False,Applied cabin services experience as Cabin Crew Trainer.
+ALUM-160,Regional Air Services,Purser,2019,,True,Current role in aviation.
+ALUM-161,Kenya Airways,Technical Engineer,2011,2018,False,Technical Engineer in Engineering & Maintenance.
+ALUM-161,Independent Consultant,Engineering Consultant,2018,,True,Current role in consulting.
+ALUM-162,Kenya Airways,Software Engineer,2011,2015,False,Software Engineer in ICT / Digital.
+ALUM-162,East Africa Logistics,IT Manager,2015,2017,False,Applied ict / digital experience as IT Manager.
+ALUM-162,CloudWorks Africa,Cloud Engineer,2017,,True,Current role in technology.
+ALUM-163,Kenya Airways,Accountant,2013,2016,False,Accountant in Finance.
+ALUM-163,Coastline Resorts,Revenue Accountant,2016,2019,False,Applied finance experience as Revenue Accountant.
+ALUM-163,Independent Consultant,Audit Associate,2019,,True,Current role in consulting.
+ALUM-164,Kenya Airways,HR Business Partner,2001,2007,False,HR Business Partner in Human Resources.
+ALUM-164,SkyTech Solutions,HR Business Partner,2009,,True,Current role in technology.
+ALUM-165,Kenya Airways,Station Coordinator,2005,2011,False,Station Coordinator in Ground Operations.
+ALUM-165,Global Aviation Services,Airport Operations Manager,2011,2013,False,Applied ground operations experience as Airport Operations Manager.
+ALUM-165,Meridian Logistics,Operations Lead,2013,,True,Current role in logistics.
+ALUM-166,Kenya Airways,Cargo Operations Supervisor,2002,2021,False,Cargo Operations Supervisor in Cargo.
+ALUM-166,Tamu Foods,Supply Chain Analyst,2022,,True,Current role in food and beverage.
+ALUM-167,Kenya Airways,Customer Service Agent,2005,2012,False,Customer Service Agent in Customer Experience.
+ALUM-167,Harambee Bank,Customer Experience Manager,2012,2014,False,Applied customer experience experience as Customer Experience Manager.
+ALUM-167,Mkopo Fintech,Contact Centre Manager,2014,,True,Current role in finance.
+ALUM-168,Kenya Airways,Marketing Officer,2008,2011,False,Marketing Officer in Commercial.
+ALUM-168,Bandari Freight,Business Development Manager,2011,2013,False,Applied commercial experience as Business Development Manager.
+ALUM-168,Gulf Horizon Airways,Pricing Analyst,2013,,True,Current role in aviation.
+ALUM-169,Kenya Airways,Quality Assurance Officer,1996,2017,False,Quality Assurance Officer in Safety & Quality.
+ALUM-169,Global Aviation Services,Safety Manager,2018,,True,Current role in aviation.
+ALUM-170,Kenya Airways,Legal Officer,1996,2018,False,Legal Officer in Corporate Services.
+ALUM-170,Independent Consultant,Legal Counsel,2020,,True,Current role in consulting.
+ALUM-171,Kenya Airways,First Officer,2013,2019,False,First Officer in Flight Operations.
+ALUM-171,Savannah Air Charters,Captain,2019,2021,False,Applied flight operations experience as Captain.
+ALUM-171,Skyward Aviation School,Flight Instructor,2021,,True,Current role in education.
+ALUM-172,Kenya Airways,Cabin Crew Supervisor,2013,2016,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-172,Horizon Flight Academy,Cabin Crew Trainer,2016,2019,False,Applied cabin services experience as Cabin Crew Trainer.
+ALUM-172,Nairobi Digital Services,Customer Success Lead,2019,,True,Current role in technology.
+ALUM-173,Kenya Airways,Aircraft Maintenance Engineer,1998,2004,False,Aircraft Maintenance Engineer in Engineering & Maintenance.
+ALUM-173,Rift Valley Aviation,Licensed Aircraft Engineer,2004,2005,False,Applied engineering & maintenance experience as Licensed Aircraft Engineer.
+ALUM-173,Independent Consultant,Engineering Consultant,2005,,True,Current role in consulting.
+ALUM-174,Kenya Airways,Systems Administrator,2016,2022,False,Systems Administrator in ICT / Digital.
+ALUM-174,Kijani Cloud Services,Cloud Engineer,2022,2024,False,Applied ict / digital experience as Cloud Engineer.
+ALUM-174,Nairobi Digital Services,DevOps Engineer,2024,,True,Current role in technology.
+ALUM-175,Kenya Airways,Accountant,2010,2020,False,Accountant in Finance.
+ALUM-175,East Africa Logistics,Finance Manager,2022,,True,Current role in logistics.
+ALUM-176,Kenya Airways,HR Business Partner,2005,2010,False,HR Business Partner in Human Resources.
+ALUM-176,Safiri Telecom,HR Business Partner,2010,2013,False,Applied human resources experience as HR Business Partner.
+ALUM-176,Baobab Advisory,Leadership Coach,2013,,True,Current role in consulting.
+ALUM-177,Kenya Airways,Station Coordinator,1998,2018,False,Station Coordinator in Ground Operations.
+ALUM-177,Meridian Logistics,Operations Lead,2018,2021,False,Applied ground operations experience as Operations Lead.
+ALUM-177,Safiri Mobility,Fleet Operations Supervisor,2021,,True,Current role in transport.
+ALUM-178,Kenya Airways,Logistics Coordinator,1998,2008,False,Logistics Coordinator in Cargo.
+ALUM-178,Tamu Foods,Supply Chain Analyst,2008,2010,False,Applied cargo experience as Supply Chain Analyst.
+ALUM-178,Meridian Logistics,Customs and Compliance Officer,2010,,True,Current role in logistics.
+ALUM-179,Kenya Airways,Service Quality Analyst,2015,2019,False,Service Quality Analyst in Customer Experience.
+ALUM-179,Harambee Bank,Customer Experience Manager,2020,,True,Current role in telecommunications.
+ALUM-180,Kenya Airways,Marketing Officer,2005,2018,False,Marketing Officer in Commercial.
+ALUM-180,Coastline Resorts,Revenue Manager,2018,2020,False,Applied commercial experience as Revenue Manager.
+ALUM-180,Safiri Telecom,Marketing Manager,2020,,True,Current role in telecommunications.
+ALUM-181,Kenya Airways,Safety Officer,2014,2023,False,Safety Officer in Safety & Quality.
+ALUM-181,East Africa Engineering Works,Quality Assurance Lead,2023,2024,False,Applied safety & quality experience as Quality Assurance Lead.
+ALUM-181,Tamu Industrial,Health and Safety Advisor,2024,,True,Current role in energy.
+ALUM-182,Kenya Airways,Administration Officer,1996,2002,False,Administration Officer in Corporate Services.
+ALUM-182,Horizon Flight Academy,Operations Administrator,2002,,True,Current role in education.
+ALUM-183,Kenya Airways,Flight Operations Officer,2016,2024,False,Flight Operations Officer in Flight Operations.
+ALUM-183,Savannah Air Charters,Captain,2024,2025,False,Applied flight operations experience as Captain.
+ALUM-183,Skyward Aviation School,Flight Instructor,2025,,True,Current role in education.
+ALUM-184,Kenya Airways,Cabin Crew Supervisor,1999,2013,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-184,Skyward Aviation School,Cabin Crew Trainer,2013,2014,False,Applied cabin services experience as Cabin Crew Trainer.
+ALUM-184,Kijani Cloud Services,Customer Success Lead,2014,,True,Current role in technology.
+ALUM-185,Kenya Airways,Technical Engineer,2014,2022,False,Technical Engineer in Engineering & Maintenance.
+ALUM-185,AeroTech MRO,Reliability Engineer,2022,2024,False,Applied engineering & maintenance experience as Reliability Engineer.
+ALUM-185,Rift Valley Aviation,Licensed Aircraft Engineer,2024,,True,Current role in aviation.
+ALUM-186,Kenya Airways,Network Engineer,2012,2020,False,Network Engineer in ICT / Digital.
+ALUM-186,East Africa Logistics,IT Manager,2020,,True,Current role in logistics.
+ALUM-187,Kenya Airways,Financial Analyst,2008,2016,False,Financial Analyst in Finance.
+ALUM-187,Mkopo Fintech,Financial Analyst,2016,2019,False,Applied finance experience as Financial Analyst.
+ALUM-187,Independent Consultant,Audit Associate,2019,,True,Current role in consulting.
+ALUM-188,Kenya Airways,Talent Acquisition Specialist,2016,2021,False,Talent Acquisition Specialist in Human Resources.
+ALUM-188,Tamu Foods,People and Culture Manager,2021,2024,False,Applied human resources experience as People and Culture Manager.
+ALUM-188,SkyTech Solutions,HR Business Partner,2024,,True,Current role in technology.
+ALUM-189,Kenya Airways,Ramp Supervisor,2016,2021,False,Ramp Supervisor in Ground Operations.
+ALUM-189,Global Aviation Services,Airport Operations Manager,2023,,True,Current role in aviation.
+ALUM-190,Kenya Airways,Cargo Operations Supervisor,2010,2019,False,Cargo Operations Supervisor in Cargo.
+ALUM-190,Meridian Logistics,Logistics Manager,2019,2022,False,Applied cargo experience as Logistics Manager.
+ALUM-190,Tamu Industrial,Supply Chain Analyst,2022,,True,Current role in food and beverage.
+ALUM-191,Kenya Airways,Service Quality Analyst,2003,2014,False,Service Quality Analyst in Customer Experience.
+ALUM-191,Safari Hospitality Group,Guest Relations Manager,2014,2016,False,Applied customer experience experience as Guest Relations Manager.
+ALUM-191,Mkopo Fintech,Contact Centre Manager,2016,,True,Current role in finance.
+ALUM-192,Kenya Airways,Marketing Officer,2010,2018,False,Marketing Officer in Commercial.
+ALUM-192,Regional Air Services,Pricing Analyst,2018,2020,False,Applied commercial experience as Pricing Analyst.
+ALUM-192,Meridian Logistics,Business Development Manager,2020,,True,Current role in logistics.
+ALUM-193,Kenya Airways,Quality Assurance Officer,2001,2020,False,Quality Assurance Officer in Safety & Quality.
+ALUM-193,Global Aviation Services,Safety Manager,2020,,True,Current role in aviation.
+ALUM-194,Kenya Airways,Legal Officer,2008,2019,False,Legal Officer in Corporate Services.
+ALUM-194,Horizon Flight Academy,Operations Administrator,2019,2022,False,Applied corporate services experience as Operations Administrator.
+ALUM-194,Tamu Industrial,Contracts Manager,2022,,True,Current role in energy.
+ALUM-195,Kenya Airways,Flight Operations Officer,1996,2010,False,Flight Operations Officer in Flight Operations.
+ALUM-195,Global Aviation Services,Flight Operations Manager,2012,,True,Current role in aviation.
+ALUM-196,Kenya Airways,Cabin Crew Supervisor,2004,2016,False,Cabin Crew Supervisor in Cabin Services.
+ALUM-196,Regional Air Services,Purser,2016,2018,False,Applied cabin services experience as Purser.
+ALUM-196,Kijani Cloud Services,Customer Success Lead,2018,,True,Current role in technology.
+ALUM-197,Kenya Airways,Aircraft Maintenance Engineer,1998,2019,False,Aircraft Maintenance Engineer in Engineering & Maintenance.
+ALUM-197,Global Aviation Services,Reliability Engineer,2019,2022,False,Applied engineering & maintenance experience as Reliability Engineer.
+ALUM-197,AeroAssure Advisory,Engineering Consultant,2022,,True,Current role in consulting.
+ALUM-198,Kenya Airways,Software Engineer,2006,2018,False,Software Engineer in ICT / Digital.
+ALUM-198,Mkopo Fintech,Cybersecurity Analyst,2018,,True,Current role in finance.
+ALUM-199,Kenya Airways,Finance Officer,1998,2016,False,Finance Officer in Finance.
+ALUM-199,East Africa Logistics,Finance Manager,2016,,True,Current role in logistics.
+ALUM-200,Kenya Airways,Talent Acquisition Specialist,2008,2017,False,Talent Acquisition Specialist in Human Resources.
+ALUM-200,SkyTech Solutions,HR Business Partner,2017,2019,False,Applied human resources experience as HR Business Partner.
+ALUM-200,Mkopo Fintech,Talent Acquisition Lead,2019,,True,Current role in finance.

@@ -2,6 +2,7 @@ import { currentSession } from "@/lib/session";
 import { applicationOrigin, matchesApplicationOrigin } from "@/lib/application-origin";
 import { canDiscoverMentors, MentorQueryError, validateMentorQuery } from "@/lib/mentorship-contract";
 import { limitedJson, MatchingQueryRejected, searchMentors } from "@/lib/mentor-search";
+import { logSearch } from "@/lib/match-tracking";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,7 +31,9 @@ export async function POST(request: Request) {
       return failure("INVALID_QUERY", error instanceof MentorQueryError ? error.message : "Check your request and keep it to 500 characters or fewer.", 400);
     }
     const results = await searchMentors(query);
-    return Response.json({ results }, { headers });
+    // Only what was shown is recorded (mentor and rank), never the search text.
+    const searchId = await logSearch(session.user.id, "search", results.map(result => ({ profileId: result.profileId, score: result.matchRelevance })));
+    return Response.json({ results, searchId }, { headers });
   } catch (error) {
     if (error instanceof MatchingQueryRejected) return failure("INVALID_QUERY", "Please shorten or rephrase your request and try again.", 400);
     return failure("SERVICE_UNAVAILABLE", "Mentor discovery is temporarily unavailable. Please try again shortly.", 503);

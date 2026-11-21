@@ -15,7 +15,14 @@ export class IdentityLinkRequired extends Error {
   constructor() { super("Existing account requires explicit identity linking"); }
 }
 
-export async function linkGoogleUser(subject: string, email: string, image?: string | null): Promise<LuminaUser> {
+/** Google's display name as a draft profile name: trimmed, single-spaced, within the column limit. */
+export function draftProfileName(name: unknown): string | null {
+  if (typeof name !== "string") return null;
+  const clean = name.normalize("NFC").replace(/[\p{Cc}\p{Cf}]/gu, "").trim().replace(/\s+/g, " ");
+  return clean && clean.length <= 150 ? clean : null;
+}
+
+export async function linkGoogleUser(subject: string, email: string, image?: string | null, name?: string | null): Promise<LuminaUser> {
   const conn = await database().connect();
   try {
     await conn.query("BEGIN");
@@ -29,6 +36,12 @@ export async function linkGoogleUser(subject: string, email: string, image?: str
          VALUES ($1, NULL, 'alumni', 'pending', TRUE, $2, FALSE)
          ON CONFLICT DO NOTHING RETURNING ${USER_FIELDS}`, [email, subject]);
       user = inserted.rows[0];
+      // Same starting point as email/password registration: a name-only draft
+      // profile that never asserts Kenya Airways employment.
+      const fullName = draftProfileName(name);
+      if (user && fullName) await conn.query(
+        "INSERT INTO profiles (user_id, full_name, profile_completed) VALUES ($1, $2, FALSE) ON CONFLICT (user_id) DO NOTHING",
+        [user.id, fullName]);
       if (!user) {
         // A simultaneous sign-in may have inserted this same stable Google subject.
         const concurrent = await conn.query<LuminaUser>(

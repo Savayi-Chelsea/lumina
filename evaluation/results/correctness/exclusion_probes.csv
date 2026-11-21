@@ -1,0 +1,104 @@
+group,mentor,has_embedding,returned_at_rank,rank_if_unfiltered
+consenting but unavailable,alum-189,True,,1
+consenting but unavailable,alum-179,True,,1
+consenting but unavailable,alum-124,True,,1
+consenting but unavailable,alum-125,True,,1
+consenting but unavailable,alum-068,True,,1
+consenting but unavailable,alum-157,True,,1
+consenting but unavailable,alum-063,True,,1
+consenting but unavailable,alum-144,True,,1
+consenting but unavailable,alum-066,True,,1
+consenting but unavailable,alum-011,True,,1
+consenting but unavailable,alum-049,True,,1
+consenting but unavailable,alum-197,True,,1
+consenting but unavailable,alum-149,True,,1
+consenting but unavailable,alum-057,True,,1
+consenting but unavailable,alum-178,True,,1
+consenting but unavailable,alum-091,True,,1
+consenting but unavailable,alum-096,True,,1
+consenting but unavailable,alum-073,True,,1
+consenting but unavailable,alum-018,True,,2
+consenting but unavailable,alum-043,True,,1
+consenting but unavailable,alum-128,True,,1
+consenting but unavailable,alum-067,True,,3
+consenting but unavailable,alum-118,True,,1
+consenting but unavailable,alum-056,True,,1
+consenting but unavailable,alum-095,True,,1
+consenting but unavailable,alum-191,True,,1
+consenting but unavailable,alum-034,True,,1
+consenting but unavailable,alum-141,True,,1
+consenting but unavailable,alum-148,True,,1
+consenting but unavailable,alum-161,True,,1
+consenting but unavailable,alum-082,True,,1
+consenting but unavailable,alum-132,True,,1
+consenting but unavailable,alum-013,True,,1
+consenting but unavailable,alum-156,True,,1
+consenting but unavailable,alum-090,True,,1
+consenting but unavailable,alum-015,True,,1
+consent withdrawn / never given,alum-012,False,,
+consent withdrawn / never given,alum-119,False,,
+consent withdrawn / never given,alum-076,False,,
+consent withdrawn / never given,alum-040,False,,
+consent withdrawn / never given,alum-146,False,,
+consent withdrawn / never given,alum-165,False,,
+consent withdrawn / never given,alum-074,False,,
+consent withdrawn / never given,alum-055,False,,
+consent withdrawn / never given,alum-151,False,,
+consent withdrawn / never given,alum-041,False,,
+consent withdrawn / never given,alum-042,False,,
+consent withdrawn / never given,alum-138,False,,
+consent withdrawn / never given,alum-037,False,,
+consent withdrawn / never given,alum-150,False,,
+consent withdrawn / never given,alum-143,False,,
+consent withdrawn / never given,alum-020,False,,
+consent withdrawn / never given,alum-053,False,,
+consent withdrawn / never given,alum-089,False,,
+consent withdrawn / never given,alum-111,False,,
+consent withdrawn / never given,alum-115,False,,
+consent withdrawn / never given,alum-114,False,,
+consent withdrawn / never given,alum-196,False,,
+consent withdrawn / never given,alum-113,False,,
+consent withdrawn / never given,alum-054,False,,
+consent withdrawn / never given,alum-033,False,,
+consent withdrawn / never given,alum-129,False,,
+consent withdrawn / never given,alum-180,False,,
+consent withdrawn / never given,alum-048,False,,
+consent withdrawn / never given,alum-164,False,,
+consent withdrawn / never given,alum-184,False,,
+consent withdrawn / never given,alum-029,False,,
+eligible (control),alum-061,True,1,1
+eligible (control),alum-200,True,1,1
+eligible (control),alum-188,True,1,1
+eligible (control),alum-060,True,1,1
+eligible (control),alum-163,True,3,3
+eligible (control),alum-100,True,1,1
+eligible (control),alum-192,True,1,1
+eligible (control),alum-009,True,2,2
+eligible (control),alum-092,True,1,1
+eligible (control),alum-010,True,3,3
+eligible (control),alum-031,True,1,1
+eligible (control),alum-069,True,1,1
+eligible (control),alum-199,True,1,1
+eligible (control),alum-001,True,1,1
+eligible (control),alum-117,True,1,1
+eligible (control),alum-155,True,1,1
+eligible (control),alum-198,True,1,1
+eligible (control),alum-083,True,1,1
+eligible (control),alum-107,True,1,1
+eligible (control),alum-086,True,1,1
+eligible (control),alum-173,True,2,2
+eligible (control),alum-183,True,1,1
+eligible (control),alum-147,True,1,1
+eligible (control),alum-133,True,1,1
+eligible (control),alum-025,True,2,2
+eligible (control),alum-021,True,1,1
+eligible (control),alum-193,True,3,3
+eligible (control),alum-169,True,1,1
+eligible (control),alum-024,True,2,2
+eligible (control),alum-185,True,1,1
+eligible (control),alum-008,True,1,1
+eligible (control),alum-108,True,1,1
+eligible (control),alum-058,True,1,1
+eligible (control),alum-045,True,1,1
+eligible (control),alum-094,True,1,1
+eligible (control),alum-065,True,1,1

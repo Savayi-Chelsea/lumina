@@ -132,7 +132,7 @@ try {
     (synthetic_staff_number,surname,former_kq_department,kq_start_year,kq_end_year)
     VALUES($1,'SmokeSurname','ICT / Digital',2008,2016) RETURNING id`, [staffNumber])).rows[0].id;
   html = await (await request("/verify")).text();
-  assert.ok(html.includes("Fictional prototype registry") && !html.includes("SmokeSurname"));
+  assert.ok(html.includes("Why we verify") && !html.includes("SmokeSurname") && !html.includes("Fictional"));
   let data = formData(html, "Verify alumni details");
   for (const [name,value] of Object.entries({ staff_number: staffNumber, surname: "Incorrect", department: "ICT / Digital", start_year: "2008", end_year: "2016" })) data.set(name,value);
   response = await request("/verify", { method: "POST", headers: { Origin: base }, body: data });

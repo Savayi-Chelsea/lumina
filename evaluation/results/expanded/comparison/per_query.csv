@@ -1,0 +1,136 @@
+query_id,set,system,relevant_200,relevant_500,precision_at_5_200,precision_at_5_500,precision_at_5_change,normalised_recall_at_5_200,normalised_recall_at_5_500,normalised_recall_at_5_change,f1_at_5_200,f1_at_5_500,f1_at_5_change,reciprocal_rank_200,reciprocal_rank_500,reciprocal_rank_change
+cloud,domain,Semantic,9,27,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3125,-0.4018,1.0,1.0,0.0
+cloud,domain,Keyword (TF-IDF),9,27,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3125,-0.4018,1.0,1.0,0.0
+cloud,domain,Hybrid (BGE + BM25),9,27,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3125,-0.4018,1.0,1.0,0.0
+pilot,domain,Semantic,15,26,1.0,1.0,0.0,1.0,1.0,0.0,0.5,0.3226,-0.1774,1.0,1.0,0.0
+pilot,domain,Keyword (TF-IDF),15,26,1.0,1.0,0.0,1.0,1.0,0.0,0.5,0.3226,-0.1774,1.0,1.0,0.0
+pilot,domain,Hybrid (BGE + BM25),15,26,1.0,1.0,0.0,1.0,1.0,0.0,0.5,0.3226,-0.1774,1.0,1.0,0.0
+finance,domain,Semantic,10,33,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2632,-0.4035,1.0,1.0,0.0
+finance,domain,Keyword (TF-IDF),10,33,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2632,-0.4035,1.0,1.0,0.0
+finance,domain,Hybrid (BGE + BM25),10,33,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2632,-0.4035,1.0,1.0,0.0
+cabin-hospitality,domain,Semantic,13,31,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2778,-0.2778,1.0,1.0,0.0
+cabin-hospitality,domain,Keyword (TF-IDF),13,31,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2778,-0.2778,1.0,1.0,0.0
+cabin-hospitality,domain,Hybrid (BGE + BM25),13,31,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2778,-0.2778,1.0,1.0,0.0
+cargo,domain,Semantic,9,30,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.2857,-0.4286,1.0,1.0,0.0
+cargo,domain,Keyword (TF-IDF),9,30,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.2857,-0.4286,1.0,1.0,0.0
+cargo,domain,Hybrid (BGE + BM25),9,30,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.2857,-0.4286,1.0,1.0,0.0
+maintenance,domain,Semantic,7,23,1.0,1.0,0.0,1.0,1.0,0.0,0.8333,0.3571,-0.4762,1.0,1.0,0.0
+maintenance,domain,Keyword (TF-IDF),7,23,1.0,1.0,0.0,1.0,1.0,0.0,0.8333,0.3571,-0.4762,1.0,1.0,0.0
+maintenance,domain,Hybrid (BGE + BM25),7,23,1.0,1.0,0.0,1.0,1.0,0.0,0.8333,0.3571,-0.4762,1.0,1.0,0.0
+hr,domain,Semantic,11,28,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.303,-0.322,1.0,1.0,0.0
+hr,domain,Keyword (TF-IDF),11,28,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.303,-0.322,1.0,1.0,0.0
+hr,domain,Hybrid (BGE + BM25),11,28,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.303,-0.322,1.0,1.0,0.0
+safety,domain,Semantic,16,38,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2326,-0.2436,1.0,1.0,0.0
+safety,domain,Keyword (TF-IDF),16,38,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2326,-0.2436,1.0,1.0,0.0
+safety,domain,Hybrid (BGE + BM25),16,38,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2326,-0.2436,1.0,1.0,0.0
+ground,domain,Semantic,9,25,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3333,-0.381,1.0,1.0,0.0
+ground,domain,Keyword (TF-IDF),9,25,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3333,-0.381,1.0,1.0,0.0
+ground,domain,Hybrid (BGE + BM25),9,25,1.0,1.0,0.0,1.0,1.0,0.0,0.7143,0.3333,-0.381,1.0,1.0,0.0
+commercial,domain,Semantic,10,38,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2326,-0.4341,1.0,1.0,0.0
+commercial,domain,Keyword (TF-IDF),10,38,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2326,-0.4341,1.0,1.0,0.0
+commercial,domain,Hybrid (BGE + BM25),10,38,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.2326,-0.4341,1.0,1.0,0.0
+procurement,domain,Semantic,13,34,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2564,-0.2991,1.0,1.0,0.0
+procurement,domain,Keyword (TF-IDF),13,34,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2564,-0.2991,1.0,1.0,0.0
+procurement,domain,Hybrid (BGE + BM25),13,34,1.0,1.0,0.0,1.0,1.0,0.0,0.5556,0.2564,-0.2991,1.0,1.0,0.0
+service-quality,domain,Semantic,11,29,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.2941,-0.3309,1.0,1.0,0.0
+service-quality,domain,Keyword (TF-IDF),11,29,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.2941,-0.3309,1.0,1.0,0.0
+service-quality,domain,Hybrid (BGE + BM25),11,29,1.0,1.0,0.0,1.0,1.0,0.0,0.625,0.2941,-0.3309,1.0,1.0,0.0
+s-kubernetes,skill,Semantic,5,9,0.8,0.6,-0.2,0.8,0.6,-0.2,0.8,0.4286,-0.3714,1.0,1.0,0.0
+s-kubernetes,skill,Keyword (TF-IDF),5,9,1.0,1.0,0.0,1.0,1.0,0.0,1.0,0.7143,-0.2857,1.0,1.0,0.0
+s-kubernetes,skill,Hybrid (BGE + BM25),5,9,1.0,1.0,0.0,1.0,1.0,0.0,1.0,0.7143,-0.2857,1.0,1.0,0.0
+s-ifrs,skill,Semantic,10,24,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.3448,-0.3218,1.0,1.0,0.0
+s-ifrs,skill,Keyword (TF-IDF),10,24,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.3448,-0.3218,1.0,1.0,0.0
+s-ifrs,skill,Hybrid (BGE + BM25),10,24,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.3448,-0.3218,1.0,1.0,0.0
+s-sql-bi,skill,Semantic,3,7,0.2,0.8,0.6,0.3333,0.8,0.4667,0.25,0.6667,0.4167,1.0,1.0,0.0
+s-sql-bi,skill,Keyword (TF-IDF),3,7,0.6,1.0,0.4,1.0,1.0,0.0,0.75,0.8333,0.0833,1.0,1.0,0.0
+s-sql-bi,skill,Hybrid (BGE + BM25),3,7,0.2,1.0,0.8,0.3333,1.0,0.6667,0.25,0.8333,0.5833,1.0,1.0,0.0
+s-iso,skill,Semantic,6,18,0.6,0.8,0.2,0.6,0.8,0.2,0.5455,0.3478,-0.1976,1.0,1.0,0.0
+s-iso,skill,Keyword (TF-IDF),6,18,1.0,1.0,0.0,1.0,1.0,0.0,0.9091,0.4348,-0.4743,1.0,1.0,0.0
+s-iso,skill,Hybrid (BGE + BM25),6,18,0.8,1.0,0.2,0.8,1.0,0.2,0.7273,0.4348,-0.2925,1.0,1.0,0.0
+s-revenue,skill,Semantic,6,14,0.8,0.8,0.0,0.8,0.8,0.0,0.7273,0.4211,-0.3062,1.0,1.0,0.0
+s-revenue,skill,Keyword (TF-IDF),6,14,1.0,1.0,0.0,1.0,1.0,0.0,0.9091,0.5263,-0.3828,1.0,1.0,0.0
+s-revenue,skill,Hybrid (BGE + BM25),6,14,0.8,1.0,0.2,0.8,1.0,0.2,0.7273,0.5263,-0.201,1.0,1.0,0.0
+s-customs,skill,Semantic,8,11,1.0,1.0,0.0,1.0,1.0,0.0,0.7692,0.625,-0.1442,1.0,1.0,0.0
+s-customs,skill,Keyword (TF-IDF),8,11,1.0,1.0,0.0,1.0,1.0,0.0,0.7692,0.625,-0.1442,1.0,1.0,0.0
+s-customs,skill,Hybrid (BGE + BM25),8,11,1.0,1.0,0.0,1.0,1.0,0.0,0.7692,0.625,-0.1442,1.0,1.0,0.0
+t-instructor,transition,Semantic,9,10,0.6,0.6,0.0,0.6,0.6,0.0,0.4286,0.4,-0.0286,1.0,1.0,0.0
+t-instructor,transition,Keyword (TF-IDF),9,10,0.2,0.4,0.2,0.2,0.4,0.2,0.1429,0.2667,0.1238,0.3333,1.0,0.6667
+t-instructor,transition,Hybrid (BGE + BM25),9,10,0.4,0.6,0.2,0.4,0.6,0.2,0.2857,0.4,0.1143,0.5,0.3333,-0.1667
+t-banking,transition,Semantic,13,17,0.0,0.8,0.8,0.0,0.8,0.8,0.0,0.3636,0.3636,0.0,1.0,1.0
+t-banking,transition,Keyword (TF-IDF),13,17,0.6,0.2,-0.4,0.6,0.2,-0.4,0.3333,0.0909,-0.2424,0.3333,0.3333,0.0
+t-banking,transition,Hybrid (BGE + BM25),13,17,0.0,0.6,0.6,0.0,0.6,0.6,0.0,0.2727,0.2727,0.0,1.0,1.0
+t-hospitality,transition,Semantic,8,21,1.0,1.0,0.0,1.0,1.0,0.0,0.7692,0.3846,-0.3846,1.0,1.0,0.0
+t-hospitality,transition,Keyword (TF-IDF),8,21,0.4,1.0,0.6,0.4,1.0,0.6,0.3077,0.3846,0.0769,1.0,1.0,0.0
+t-hospitality,transition,Hybrid (BGE + BM25),8,21,0.8,1.0,0.2,0.8,1.0,0.2,0.6154,0.3846,-0.2308,1.0,1.0,0.0
+t-security,transition,Semantic,2,11,0.4,0.6,0.2,1.0,0.6,-0.4,0.5714,0.375,-0.1964,1.0,1.0,0.0
+t-security,transition,Keyword (TF-IDF),2,11,0.2,0.4,0.2,0.5,0.4,-0.1,0.2857,0.25,-0.0357,1.0,1.0,0.0
+t-security,transition,Hybrid (BGE + BM25),2,11,0.4,0.6,0.2,1.0,0.6,-0.4,0.5714,0.375,-0.1964,1.0,1.0,0.0
+t-coaching,transition,Semantic,16,34,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2564,-0.2198,1.0,1.0,0.0
+t-coaching,transition,Keyword (TF-IDF),16,34,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2564,-0.2198,1.0,1.0,0.0
+t-coaching,transition,Hybrid (BGE + BM25),16,34,1.0,1.0,0.0,1.0,1.0,0.0,0.4762,0.2564,-0.2198,1.0,1.0,0.0
+t-consulting,transition,Semantic,23,43,1.0,0.8,-0.2,1.0,0.8,-0.2,0.3571,0.1667,-0.1905,1.0,1.0,0.0
+t-consulting,transition,Keyword (TF-IDF),23,43,0.8,0.8,0.0,0.8,0.8,0.0,0.2857,0.1667,-0.119,0.5,1.0,0.5
+t-consulting,transition,Hybrid (BGE + BM25),23,43,1.0,1.0,0.0,1.0,1.0,0.0,0.3571,0.2083,-0.1488,1.0,1.0,0.0
+t-telecom,transition,Semantic,5,22,0.4,0.8,0.4,0.4,0.8,0.4,0.4,0.2963,-0.1037,1.0,1.0,0.0
+t-telecom,transition,Keyword (TF-IDF),5,22,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+t-telecom,transition,Hybrid (BGE + BM25),5,22,0.4,0.2,-0.2,0.4,0.2,-0.2,0.4,0.0741,-0.3259,0.5,0.5,0.0
+t-data,transition,Semantic,7,19,0.4,1.0,0.6,0.4,1.0,0.6,0.3333,0.4167,0.0833,0.25,1.0,0.75
+t-data,transition,Keyword (TF-IDF),7,19,0.6,1.0,0.4,0.6,1.0,0.4,0.5,0.4167,-0.0833,1.0,1.0,0.0
+t-data,transition,Hybrid (BGE + BM25),7,19,0.4,1.0,0.6,0.4,1.0,0.6,0.3333,0.4167,0.0833,0.3333,1.0,0.6667
+t-manufacturing,transition,Semantic,4,9,0.8,1.0,0.2,1.0,1.0,0.0,0.8889,0.7143,-0.1746,1.0,1.0,0.0
+t-manufacturing,transition,Keyword (TF-IDF),4,9,0.4,0.6,0.2,0.5,0.6,0.1,0.4444,0.4286,-0.0159,1.0,0.5,-0.5
+t-manufacturing,transition,Hybrid (BGE + BM25),4,9,0.6,1.0,0.4,0.75,1.0,0.25,0.6667,0.7143,0.0476,1.0,1.0,0.0
+t-energy,transition,Semantic,5,17,0.6,1.0,0.4,0.6,1.0,0.4,0.6,0.4545,-0.1455,0.5,1.0,0.5
+t-energy,transition,Keyword (TF-IDF),5,17,0.8,1.0,0.2,0.8,1.0,0.2,0.8,0.4545,-0.3455,0.5,1.0,0.5
+t-energy,transition,Hybrid (BGE + BM25),5,17,0.8,1.0,0.2,0.8,1.0,0.2,0.8,0.4545,-0.3455,0.5,1.0,0.5
+t-developer,transition,Semantic,0,8,,0.8,,,0.8,,,0.6154,,,1.0,
+t-developer,transition,Keyword (TF-IDF),0,8,,0.6,,,0.6,,,0.4615,,,1.0,
+t-developer,transition,Hybrid (BGE + BM25),0,8,,0.8,,,0.8,,,0.6154,,,1.0,
+t-renewables,transition,Semantic,5,17,0.0,1.0,1.0,0.0,1.0,1.0,0.0,0.4545,0.4545,0.0,1.0,1.0
+t-renewables,transition,Keyword (TF-IDF),5,17,0.0,1.0,1.0,0.0,1.0,1.0,0.0,0.4545,0.4545,0.0,1.0,1.0
+t-renewables,transition,Hybrid (BGE + BM25),5,17,0.0,1.0,1.0,0.0,1.0,1.0,0.0,0.4545,0.4545,0.0,1.0,1.0
+t-product,transition,Semantic,0,5,,1.0,,,1.0,,,1.0,,,1.0,
+t-product,transition,Keyword (TF-IDF),0,5,,1.0,,,1.0,,,1.0,,,1.0,
+t-product,transition,Hybrid (BGE + BM25),0,5,,1.0,,,1.0,,,1.0,,,1.0,
+t-ngo,transition,Semantic,0,2,,0.4,,,1.0,,,0.5714,,,1.0,
+t-ngo,transition,Keyword (TF-IDF),0,2,,0.0,,,0.0,,,0.0,,,0.0,
+t-ngo,transition,Hybrid (BGE + BM25),0,2,,0.4,,,1.0,,,0.5714,,,1.0,
+t-healthcare,transition,Semantic,0,4,,0.8,,,1.0,,,0.8889,,,1.0,
+t-healthcare,transition,Keyword (TF-IDF),0,4,,0.2,,,0.25,,,0.2222,,,1.0,
+t-healthcare,transition,Hybrid (BGE + BM25),0,4,,0.2,,,0.25,,,0.2222,,,1.0,
+l-first-manager,leadership,Semantic,3,67,0.0,0.2,0.2,0.0,0.2,0.2,0.0,0.0278,0.0278,0.0,0.3333,0.3333
+l-first-manager,leadership,Keyword (TF-IDF),3,67,0.4,1.0,0.6,0.6667,1.0,0.3333,0.5,0.1389,-0.3611,1.0,1.0,0.0
+l-first-manager,leadership,Hybrid (BGE + BM25),3,67,0.2,0.6,0.4,0.3333,0.6,0.2667,0.25,0.0833,-0.1667,0.2,1.0,0.8
+l-executive,leadership,Semantic,0,36,,0.6,,,0.6,,,0.1463,,,1.0,
+l-executive,leadership,Keyword (TF-IDF),0,36,,0.8,,,0.8,,,0.1951,,,1.0,
+l-executive,leadership,Hybrid (BGE + BM25),0,36,,0.6,,,0.6,,,0.1463,,,1.0,
+l-change,leadership,Semantic,4,39,0.2,0.2,0.0,0.25,0.2,-0.05,0.2222,0.0455,-0.1768,0.25,0.2,-0.05
+l-change,leadership,Keyword (TF-IDF),4,39,0.8,1.0,0.2,1.0,1.0,0.0,0.8889,0.2273,-0.6616,1.0,1.0,0.0
+l-change,leadership,Hybrid (BGE + BM25),4,39,0.6,0.4,-0.2,0.75,0.4,-0.35,0.6667,0.0909,-0.5758,1.0,1.0,0.0
+l-strategy,leadership,Semantic,0,52,,0.6,,,0.6,,,0.1053,,,1.0,
+l-strategy,leadership,Keyword (TF-IDF),0,52,,0.6,,,0.6,,,0.1053,,,1.0,
+l-strategy,leadership,Hybrid (BGE + BM25),0,52,,0.6,,,0.6,,,0.1053,,,1.0,
+l-operations,leadership,Semantic,10,17,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.4545,-0.2121,1.0,1.0,0.0
+l-operations,leadership,Keyword (TF-IDF),10,17,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.4545,-0.2121,1.0,1.0,0.0
+l-operations,leadership,Hybrid (BGE + BM25),10,17,1.0,1.0,0.0,1.0,1.0,0.0,0.6667,0.4545,-0.2121,1.0,1.0,0.0
+i-tourism,industry,Semantic,0,5,,0.6,,,0.6,,,0.6,,,1.0,
+i-tourism,industry,Keyword (TF-IDF),0,5,,1.0,,,1.0,,,1.0,,,1.0,
+i-tourism,industry,Hybrid (BGE + BM25),0,5,,0.8,,,0.8,,,0.8,,,1.0,
+i-government,industry,Semantic,0,9,,1.0,,,1.0,,,0.7143,,,1.0,
+i-government,industry,Keyword (TF-IDF),0,9,,1.0,,,1.0,,,0.7143,,,1.0,
+i-government,industry,Hybrid (BGE + BM25),0,9,,1.0,,,1.0,,,0.7143,,,1.0,
+i-agriculture,industry,Semantic,0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+i-agriculture,industry,Keyword (TF-IDF),0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+i-agriculture,industry,Hybrid (BGE + BM25),0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+i-real-estate,industry,Semantic,0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+i-real-estate,industry,Keyword (TF-IDF),0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+i-real-estate,industry,Hybrid (BGE + BM25),0,6,,1.0,,,1.0,,,0.9091,,,1.0,
+b-next-step,broad,Semantic,0,96,,0.2,,,0.2,,,0.0198,,,0.2,
+b-next-step,broad,Keyword (TF-IDF),0,96,,0.6,,,0.6,,,0.0594,,,1.0,
+b-next-step,broad,Hybrid (BGE + BM25),0,96,,0.8,,,0.8,,,0.0792,,,0.5,
+b-business,broad,Semantic,0,17,,0.6,,,0.6,,,0.2727,,,1.0,
+b-business,broad,Keyword (TF-IDF),0,17,,1.0,,,1.0,,,0.4545,,,1.0,
+b-business,broad,Hybrid (BGE + BM25),0,17,,0.8,,,0.8,,,0.3636,,,1.0,
+b-cv,broad,Semantic,6,45,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+b-cv,broad,Keyword (TF-IDF),6,45,0.0,0.2,0.2,0.0,0.2,0.2,0.0,0.04,0.04,0.0,0.5,0.5
+b-cv,broad,Hybrid (BGE + BM25),6,45,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0

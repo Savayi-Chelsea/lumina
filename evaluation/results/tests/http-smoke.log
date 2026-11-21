@@ -1,0 +1,19 @@
+
+> lumina@0.1.0 test:auth:http
+> node tests/auth/http-smoke.mjs
+
+PASS unauthenticated account redirects to sign in
+PASS unauthenticated session is null
+PASS authenticated account renders Google information and account menu
+PASS session uses PostgreSQL role/status/verification and exposes no OAuth tokens
+PASS home page responds to authenticated session
+PASS non-admin cannot access administration despite forged JWT role
+PASS unresolved check permits retry and creates no routine admin work
+PASS explicit assistance creates an open exception
+PASS real verification action claims, activates and resolves assistance automatically
+PASS verified alumni dashboard and profile editor
+PASS database-authorized admin dashboard and verification requests
+PASS admin closes unresolved safely, user reopens, and admin associates a confirmed registry record
+PASS Auth.js sign out clears the session and protects the account again
+PASS suspended accounts cannot use an existing session
+PASS temporary fixture removed; all existing user values preserved

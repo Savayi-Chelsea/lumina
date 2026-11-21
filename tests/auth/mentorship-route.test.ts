@@ -22,7 +22,7 @@ describe("authenticated mentorship proxy", () => {
   });
   it("returns results with no-store and uses the validated query", async () => {
     const response = await POST(request({ query: " AWS  and DevOps " }));
-    expect(response.status).toBe(200); expect(await response.json()).toEqual({ results: [] });
+    expect(response.status).toBe(200); expect(await response.json()).toEqual({ results: [], searchId: null }); // search logging has no database in this test
     expect(response.headers.get("cache-control")).toContain("no-store"); expect(mocks.search).toHaveBeenCalledWith("AWS and DevOps");
   });
   it("validates payload, raw size, content type and origin on the server", async () => {

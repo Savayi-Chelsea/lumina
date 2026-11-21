@@ -1,6 +1,7 @@
 import "server-only";
 import { discoverableMentors } from "@/lib/mentor-profiles";
 import { profileIdPattern, validateMentorQuery, type MentorMatch } from "@/lib/mentorship-contract";
+import { explainMatch } from "@/lib/match-explanation";
 
 type ServiceMatch = {
   profile_id: string; headline: string | null; former_kq_role: string | null;
@@ -39,6 +40,8 @@ export function parseServiceResults(value: unknown): ServiceMatch[] {
     || !Array.isArray(data.results) || data.results.length > Number(data.top_k)) throw new MatchingUnavailable();
   const ids = new Set<string>();
   const threshold = data.similarity_threshold as number;
+  // Hybrid ranking re-orders by keyword fusion, so scores need not descend.
+  const ordered = data.ranking !== "hybrid";
   let previousScore = Infinity;
   return data.results.map((value: unknown) => {
     if (!value || typeof value !== "object") throw new MatchingUnavailable();
@@ -49,7 +52,7 @@ export function parseServiceResults(value: unknown): ServiceMatch[] {
       || !Array.isArray(row.relevant_skills) || row.relevant_skills.length > 100 || row.relevant_skills.some(skill => typeof skill !== "string" || skill.length > 100)
       || typeof row.similarity_score !== "number" || !Number.isFinite(row.similarity_score)
       || row.similarity_score < threshold || row.similarity_score < -1 || row.similarity_score > 1
-      || row.similarity_score > previousScore) throw new MatchingUnavailable();
+      || (ordered && row.similarity_score > previousScore)) throw new MatchingUnavailable();
     ids.add(row.profile_id.toLowerCase()); previousScore = row.similarity_score;
     // Construct an allowlist rather than forwarding unknown response fields.
     return {
@@ -61,19 +64,24 @@ export function parseServiceResults(value: unknown): ServiceMatch[] {
   });
 }
 
+/** POSTs JSON to the internal matching service at a fixed path; never follows redirects. */
+export async function callMatching(path: "mentors/search" | "mentors/recommend", body: unknown) {
+  const configured = process.env.MATCHING_SERVICE_URL;
+  if (!configured) throw new MatchingUnavailable();
+  const base = new URL(configured.endsWith("/") ? configured : `${configured}/`);
+  if (!["http:", "https:"].includes(base.protocol) || base.username || base.password || base.search || base.hash) throw new MatchingUnavailable();
+  const timeout = Number(process.env.MATCHING_SERVICE_TIMEOUT_MS || "60000");
+  if (!Number.isInteger(timeout) || timeout < 1000 || timeout > 120000) throw new MatchingUnavailable();
+  return fetch(new URL(path, base), {
+    method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(body), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(timeout),
+  });
+}
+
 export async function searchMentors(rawQuery: unknown): Promise<MentorMatch[]> {
   const query = validateMentorQuery(rawQuery);
   try {
-    const configured = process.env.MATCHING_SERVICE_URL;
-    if (!configured) throw new MatchingUnavailable();
-    const base = new URL(configured.endsWith("/") ? configured : `${configured}/`);
-    if (!["http:", "https:"].includes(base.protocol) || base.username || base.password || base.search || base.hash) throw new MatchingUnavailable();
-    const timeout = Number(process.env.MATCHING_SERVICE_TIMEOUT_MS || "60000");
-    if (!Number.isInteger(timeout) || timeout < 1000 || timeout > 120000) throw new MatchingUnavailable();
-    const response = await fetch(new URL("mentors/search", base), {
-      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ query }), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(timeout),
-    });
+    const response = await callMatching("mentors/search", { query });
     if (response.status === 422) throw new MatchingQueryRejected();
     if (!response.ok || !response.headers.get("content-type")?.includes("application/json")) throw new MatchingUnavailable();
     const ranked = parseServiceResults(await limitedJson(response.body, 256 * 1024));
@@ -88,6 +96,7 @@ export async function searchMentors(rawQuery: unknown): Promise<MentorMatch[]> {
         currentPosition: match.current_job_title, organization: match.current_organization,
         skills: match.relevant_skills, matchRelevance: match.similarity_score,
         availableForMentorship: true as const, synthetic: profile.synthetic,
+        reasons: explainMatch(query, profile),
       }];
     });
   } catch (error) {

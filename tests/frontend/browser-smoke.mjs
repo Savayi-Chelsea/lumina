@@ -24,13 +24,18 @@ const output = "artifacts/frontend";
 const subject = `browser-${randomUUID()}`;
 let server, browser, fixtureId, originalData;
 const passwordEmail = `${subject}@password.example.test`;
+const adminEventTitle = `Browser workshop ${subject.slice(-8)}`;
 const failures = [];
 const screenshots = [];
 const networkUsers = [];
+const recapTopic = `Browser recap ${randomUUID().slice(0, 8)}: platform engineering first steps`;
 let networkSkillId;
 const snapshot = async () => {
   const result = {};
-  for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_embeddings", "profile_skills", "skills", "mentorship_preferences", "work_experience"]) {
+  for (const table of ["users", "profiles", "alumni_registry", "verification_assistance_requests", "profile_embeddings", "profile_skills", "skills", "mentorship_preferences", "work_experience", "events", "event_registrations", "opportunities", "password_reset_tokens",
+    "connections", "conversations", "messages", "mentorship_requests", "notifications", "profile_photos", "session_recaps", "recap_reactions",
+    "mentor_search_events", "mentor_search_results", "mentorship_request_origins", "mentorship_feedback", "privacy_consents",
+    "mentor_availability", "mentorship_sessions", "email_preferences", "email_deliveries"]) {
     result[table] = JSON.stringify((await pool.query(`SELECT to_jsonb(t) AS row FROM public.${table} t ORDER BY to_jsonb(t)::text`)).rows);
   }
   return result;
@@ -144,11 +149,42 @@ try {
     await expect(auth.getByRole("main").getByRole("alert")).toContainText("Too many sign-in attempts");
     await auth.goto(`${base}/sign-in?error=account-exists`);
     await expect(auth.getByRole("main").getByRole("alert")).toContainText("already has a Lumina password account");
+    // Real reset email through Mailpit: request, open the link, set a new password, sign in with it.
     await auth.goto(`${base}/forgot-password`);
-    await expect(auth.getByRole("heading", { level: 2 })).toContainText("not available yet");
-    await expect(auth.locator("body")).not.toContainText(/email (has been|was) sent|check your inbox/i);
+    await auth.getByLabel("Email address").fill(passwordEmail.toUpperCase());
+    await auth.getByRole("button", { name: "Send reset link" }).click();
+    await expect(auth.locator('.auth-notice-card')).toContainText("If a Lumina password account uses that email");
+    const mailpit = process.env.MAILPIT_URL || "http://127.0.0.1:8025";
+    let mail;
+    for (let attempt = 0; attempt < 120 && !mail; attempt++) {
+      const found = await (await fetch(`${mailpit}/api/v1/search?query=${encodeURIComponent(`to:"${passwordEmail}"`)}`)).json();
+      if (found.messages?.length) mail = await (await fetch(`${mailpit}/api/v1/message/${found.messages[0].ID}`)).json();
+      else await delay(250);
+    }
+    assert.ok(mail, "Reset email delivered to Mailpit");
+    const link = mail.Text.match(/https?:\/\/\S+\/reset-password#token=[A-Za-z0-9_-]{43}/)?.[0];
+    assert.ok(link, "Reset email contains a fragment token link");
+    await fetch(`${mailpit}/api/v1/messages`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ IDs: [mail.ID] }) });
+    const localLink = link.replace(/^https?:\/\/[^/]+/, base);
+    await auth.goto(localLink);
+    await expect(auth).toHaveURL(/\/reset-password$/);
+    await auth.getByLabel("New password", { exact: true }).fill("a fresh new passphrase"); await auth.getByLabel("Confirm new password").fill("a fresh new passphrase");
+    await auth.getByRole("button", { name: "Save new password" }).click();
+    await expect(auth).toHaveURL(/\/sign-in\?reset=1$/);
+    await expect(auth.locator('.auth-notice')).toContainText("password has been updated");
+    await auth.getByLabel("Email address").fill(passwordEmail); await auth.getByLabel("Password", { exact: true }).fill(passphrase);
+    await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(auth.locator('.auth-form [role="alert"]')).toHaveText("Email or password is incorrect."); await expect(auth.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+    await auth.getByLabel("Email address").fill(passwordEmail); await auth.getByLabel("Password", { exact: true }).fill("a fresh new passphrase");
+    await auth.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(auth).toHaveURL(/\/verify$/);
+    await authContext.clearCookies();
+    await auth.goto(localLink);
+    await auth.getByLabel("New password", { exact: true }).fill("reusing the old link"); await auth.getByLabel("Confirm new password").fill("reusing the old link");
+    await auth.getByRole("button", { name: "Save new password" }).click();
+    await expect(auth.locator('.auth-form [role="alert"]')).toContainText("invalid, already used or expired");
     await authContext.close();
-    console.log("PASS email/password registration, duplicate rejection, generic failures, rate limiting, sign-in and honest reset page");
+    console.log("PASS email/password registration, duplicate rejection, generic failures, rate limiting, sign-in and emailed single-use password reset");
   }
 
   fixtureId = (await pool.query(`INSERT INTO public.users(email,google_subject,account_status)
@@ -163,7 +199,7 @@ try {
   await noOverflow(page,"desktop home"); await screenshot(page,"home-pending-desktop");
   for (const [width,height] of [[320,700],[375,812],[768,1024],[1024,768],[1440,900]]) {
     await page.setViewportSize({ width,height }); await page.goto(`${base}/verify`);
-    await expect(page.getByRole('textbox', { name: 'Synthetic staff number', exact: true })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'Staff number', exact: true })).toBeVisible();
     await noOverflow(page, `${width}px pending verification`); await screenshot(page, `verification-${width}`);
   }
   await page.setViewportSize({ width: 1440, height: 900 }); await page.goto(base);
@@ -173,11 +209,8 @@ try {
   await expect(page.getByRole("button",{ name: "Sign out", exact: true })).toBeVisible();
   await page.keyboard.press("Escape"); await expect(menu).toBeFocused();
   await menu.click(); await page.getByRole("heading",{ level: 1 }).click(); await expect(menu).toHaveAttribute("aria-expanded","false");
-  const preview = page.getByRole("button", { name: /^Explore event:/ }).first();
-  await preview.click();
-  await expect(page.getByRole("dialog").filter({ visible: true })).toContainText("Fictional demonstration content");
-  await page.keyboard.press("Escape"); await expect(preview).toBeFocused();
-  console.log("PASS pending state, keyboard account disclosure and accessible preview dialog");
+  await expect(page.locator("body")).toContainText("see upcoming gatherings");
+  console.log("PASS pending state, keyboard account disclosure and gated community listings");
 
   await page.getByRole("link",{ name: "Network", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Complete verification to explore alumni." })).toBeVisible();
@@ -185,12 +218,16 @@ try {
   await page.getByRole("link",{ name: "Mentorship", exact: true }).click();
   await expect(page.getByRole("heading",{ name: "Your alumni journey starts with verification." })).toBeVisible();
   await expect(page.getByRole("button",{ name: "Find mentors", exact: true })).toHaveCount(0);
-  await page.getByRole("link",{ name: "Events", exact: true }).click(); await page.getByRole("button",{ name: "Online", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(2);
-  await page.getByRole("link",{ name: "Opportunities", exact: true }).click(); await page.getByRole("button",{ name: "Volunteer", exact: true }).click(); await expect(page.getByRole("article")).toHaveCount(1);
-  console.log("PASS pending Network/mentorship gates, events and opportunities previews");
+  await page.getByRole("link",{ name: "Events", exact: true }).click(); await expect(page.getByRole("heading",{ name: "Complete verification to join community events." })).toBeVisible();
+  await page.getByRole("link",{ name: "Opportunities", exact: true }).click(); await expect(page.getByRole("heading",{ name: "Complete verification to explore opportunities." })).toBeVisible();
+  const sampleEvent = (await pool.query("SELECT id FROM public.events WHERE status='published' AND synthetic LIMIT 1")).rows[0];
+  if (sampleEvent) { await page.goto(`${base}/events/${sampleEvent.id}`); await expect(page.getByRole("button",{ name: "Reserve my place" })).toHaveCount(0); }
+  console.log("PASS pending Network, mentorship, events and opportunities gates");
 
   await page.getByRole("link",{ name: "Profile", exact: true }).click();
-  await expect(page.getByRole("heading",{ level: 1 })).toHaveText("Your story, in your words.");
+  await expect(page.getByRole("heading",{ name: /^(Create|Complete) your profile$/ })).toBeVisible();
+  await page.getByRole("link",{ name: /^(Start your profile|Complete profile)$/ }).click();
+  await expect(page.getByRole("heading",{ level: 1 })).toHaveText("Edit your profile");
   await page.getByRole("textbox",{ name: "Full name (required)", exact: true }).fill("Demo Browser User");
   await page.getByRole("textbox",{ name: "Headline", exact: true }).fill("A new professional chapter");
   await page.getByRole("button",{ name: "Save profile", exact: true }).click();
@@ -203,9 +240,9 @@ try {
   await page.reload(); await expect(page.getByText("Verified by Lumina",{ exact: true })).toBeVisible();
   await screenshot(page,"home-verified-desktop");
   if (process.env.LUMINA_TEST_SYNTHETIC_DIRECTORY === '1') {
-    const emails = Array.from({ length: 50 }, (_, index) => `alum-${String(index + 1).padStart(3,'0')}@synthetic.lumina.local`);
+    const emails = Array.from({ length: 200 }, (_, index) => `alum-${String(index + 1).padStart(3,'0')}@synthetic.lumina.local`);
     const seeded = (await pool.query("SELECT p.id FROM public.profiles p JOIN public.users u ON u.id=p.user_id WHERE u.email=ANY($1::text[]) AND u.password_hash='synthetic_not_for_login' AND u.google_subject IS NULL AND u.account_status='active' AND u.alumni_verified=true AND u.role='alumni' AND length(btrim(p.full_name))>0", [emails])).rows;
-    assert.equal(seeded.length, 50, 'All 50 established synthetic profiles must be discoverable');
+    assert.equal(seeded.length, 200, 'All 200 established synthetic profiles must be discoverable');
     const visible = new Set();
     await page.goto(`${base}/network`);
     while (true) {
@@ -218,7 +255,7 @@ try {
     for (const profile of seeded) assert.ok(visible.has(profile.id), 'Every seeded profile appears in real paginated Network');
     await page.goto(`${base}/network`); await expect(page.locator('.network-page')).toBeVisible();
     await screenshot(page, 'network-established-synthetic');
-    console.log('PASS all 50 exact seeded alumni appear in real paginated Network');
+    console.log('PASS all 200 exact seeded alumni appear in real paginated Network');
   }
   // Disposable PostgreSQL directory data. No production records or fixture previews are used.
   networkSkillId = (await pool.query("INSERT INTO public.skills(name) VALUES($1) RETURNING id", [`BrowserSkill-${subject}`])).rows[0].id;
@@ -251,14 +288,14 @@ try {
   await page.reload(); await expect(page.getByRole('searchbox')).toHaveValue('Browser Alumnus 00');
   await page.getByRole('link', { name: 'View profile: Browser Alumnus 00', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Browser Alumnus 00');
-  await expect(page.locator('.mentor-profile .alumni-avatar img')).toHaveAttribute('src', photoUrl);
+  await expect(page.locator('.li-hero .alumni-avatar img')).toHaveAttribute('src', photoUrl);
   await context.unroute(photoUrl);
   await context.route(photoUrl, route => route.abort());
-  await page.reload(); await expect(page.locator('.mentor-profile .alumni-avatar')).toHaveText('BA');
+  await page.reload(); await expect(page.locator('.li-hero .alumni-avatar')).toHaveText('BA');
   await pool.query('UPDATE public.users SET google_image_url=NULL WHERE id=$1', [networkUsers[0]]);
   await context.unroute(photoUrl);
 
-  await expect(page.getByRole('heading', { name: 'Work experience', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Experience', exact: true })).toBeVisible();
   await page.getByRole('link', { name: 'Back to Network', exact: true }).click();
   await expect(page).toHaveURL(filteredUrl);
   await page.getByRole('searchbox').fill('no-such-alumnus'); await page.getByRole('button', { name: 'Find alumni', exact: true }).click();
@@ -287,8 +324,9 @@ try {
   releaseSearch();
   await expect(page.getByRole("heading",{ name: "2 mentors to discover", exact: true })).toBeVisible();
   await expect(page.getByRole("article").first()).toContainText("Test Cloud Mentor");
-  await expect(page.getByText("0.730",{ exact: true })).toBeVisible();
-  await expect(page.getByText("Match relevance reflects",{ exact: false })).toContainText("not a probability");
+  await expect(page.getByRole("article").first()).toContainText("Strong match");
+  await expect(page.locator("body")).not.toContainText("0.730");
+  await expect(page.getByText("Strong, good and possible matches",{ exact: false })).toContainText("not a guarantee");
   await screenshot(page,"mentorship-results-desktop");
   mode = "empty"; await page.getByRole("button",{ name: "Find mentors", exact: true }).click();
   await expect(page.getByRole("heading",{ name: "No mentors matched this request yet.", exact: true })).toBeVisible();
@@ -347,6 +385,8 @@ try {
           await toggle.click(); await nav.getByRole('link', { name: 'Network', exact: true }).click(); await expect(nav).toBeHidden();
           await expect(page.locator('.network-page')).toBeVisible();
         } else await expect(nav).toBeVisible();
+        // The menu opens unfiltered Network; with 200 seeded alumni the fixture is not on page one.
+        await page.goto(`${base}${route}`); await expect(page.locator('.network-page')).toBeVisible();
         await page.getByRole('link', { name: 'View profile: Browser Alumnus 00', exact: true }).click();
         await expect(page.getByRole('heading', { level: 1 })).toHaveText('Browser Alumnus 00');
         await noOverflow(page, `${width}px full alumni profile`); await screenshot(page, `alumni-profile-${width}`);
@@ -358,11 +398,14 @@ try {
         assert.ok(accountBounds.x >= 0 && accountBounds.x + accountBounds.width <= width + 1);
         await page.keyboard.press('Escape'); await expect(account).toBeFocused();
       }
-      if (route === '/events') {
-        const preview = page.getByRole('button', { name: /^Explore event:/ }).first(); await preview.click();
-        const dialog = page.locator('dialog[open]'); await expect(dialog).toBeVisible();
-        const bounds = await dialog.boundingBox(); assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width + 1 && bounds.height <= height);
-        await screenshot(page, `dialog-${width}`); await page.keyboard.press('Escape'); await expect(preview).toBeFocused();
+      if (route === '/events' || route === '/opportunities') {
+        await screenshot(page, `${route.slice(1)}-${width}`);
+        const card = page.locator(route === '/events' ? '.live-event-card' : '.opportunity-card').first();
+        if (await card.count()) {
+          await card.getByRole('link', { name: route === '/events' ? /^View event:/ : /^View opportunity:/ }).click();
+          await expect(page.locator('.community-detail h1')).toBeVisible();
+          await noOverflow(page, `${width}px ${route} detail`); await screenshot(page, `${route.slice(1)}-detail-${width}`);
+        }
       }
       if (route === '/' || route.startsWith('/network') || route === '/profile') await screenshot(page, `${route === '/' ? 'home' : route.split('?')[0].slice(1)}-${width}`);
     }
@@ -385,6 +428,250 @@ try {
     }
   }
 
+  {
+    // Verified alumni reserve and cancel a place on a real event, and browse open opportunities.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const event = (await pool.query("SELECT id FROM public.events e WHERE status='published' AND starts_at > now() AND (capacity IS NULL OR capacity > (SELECT count(*) FROM public.event_registrations r WHERE r.event_id = e.id)) ORDER BY starts_at LIMIT 1")).rows[0];
+    assert.ok(event, "Seed sample events with scripts/seed_community.py --apply before browser tests");
+    await page.goto(`${base}/events`); await expect(page.locator('.live-event-card').first()).toBeVisible();
+    await page.getByRole("link",{ name: "Online", exact: true }).click(); await expect(page).toHaveURL(/format=online/);
+    for (const label of await page.locator('.live-event-card .card-meta span:last-child').allTextContents()) assert.equal(label, "Online");
+    await page.goto(`${base}/events/${event.id}`);
+    await page.getByRole("button",{ name: "Reserve my place" }).click();
+    await expect(page.locator('.rsvp-card [role="status"]')).toContainText("attending");
+    assert.equal(Number((await pool.query("SELECT count(*) FROM public.event_registrations WHERE event_id=$1 AND user_id=$2", [event.id, fixtureId])).rows[0].count), 1);
+    await screenshot(page, "event-registered-desktop");
+    await page.getByRole("button",{ name: "Cancel my registration" }).click();
+    await expect(page.locator('.rsvp-card [role="status"]')).toContainText("cancelled");
+    await page.getByRole("button",{ name: "Reserve my place" }).click();
+    await expect(page.getByRole("button",{ name: "Cancel my registration" })).toBeVisible();
+    await page.goto(base); await expect(page.locator('.live-event-card .availability')).toHaveCount(1);
+    await page.goto(`${base}/opportunities`);
+    await page.getByRole("link",{ name: "Advisory", exact: true }).click(); await expect(page).toHaveURL(/type=Advisory/);
+    for (const label of await page.locator('.opportunity-card .card-meta span:first-child').allTextContents()) assert.equal(label, "Advisory");
+    await page.goto(`${base}/opportunities`);
+    await page.getByLabel("Search opportunities").fill("cloud"); await page.getByRole("button",{ name: "Search", exact: true }).click();
+    await expect(page.locator('.opportunity-card').first()).toContainText(/cloud/i);
+    await page.goto(`${base}/opportunities`); await expect(page.locator('body')).not.toContainText("Ground Handling Supervisor");
+    console.log("PASS events RSVP/cancel, format filter, Home attendance, opportunity type filter, search and closed-listing hiding");
+  }
+
+  {
+    // Two real sessions: connect, accept, message both ways, edit a profile, offer and request mentorship.
+    const peerToken = await encode({ secret, salt: "authjs.session-token", maxAge: 600, token: { luminaUserId: networkUsers[1], name: "Browser Alumnus 01", email: `${subject}-1@example.test` } });
+    const peerContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+    await peerContext.addCookies([{ name: "authjs.session-token", value: peerToken, url: base, httpOnly: true, sameSite: "Lax" }]);
+    const peer = await peerContext.newPage();
+    peer.on("pageerror", error => failures.push(error.message));
+    const peerProfile = (await pool.query("SELECT id FROM public.profiles WHERE user_id=$1", [networkUsers[1]])).rows[0].id;
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${base}/alumni/${peerProfile}`);
+    await expect(page.getByRole("button", { name: "Message" })).toHaveCount(0);
+    await page.getByRole("button", { name: "Connect", exact: true }).click();
+    await expect(page.locator(".notice")).toContainText("Invitation sent");
+    await expect(page.getByRole("button", { name: "Invitation sent" })).toBeDisabled();
+
+    await peer.goto(base);
+    await expect(peer.getByRole("link", { name: /Notifications \(1 unread\)/ })).toBeVisible();
+    await peer.goto(`${base}/notifications`); await expect(peer.locator(".conversation-list")).toContainText("wants to connect with you");
+    await peer.goto(`${base}/network/connections`);
+    await peer.locator(".member-row").filter({ hasText: "Demo Browser User" }).getByRole("button", { name: "Accept" }).click();
+    await expect(peer.locator(".member-row").filter({ hasText: "Demo Browser User" }).getByRole("button", { name: "Message" })).toBeVisible();
+    await screenshot(peer, "my-network-desktop");
+    await peer.locator(".member-row").filter({ hasText: "Demo Browser User" }).getByRole("button", { name: "Message" }).click();
+    await expect(peer).toHaveURL(/\/messages\/[0-9a-f-]{36}$/);
+    await peer.getByLabel("Write a message").fill("Hello! Great to reconnect.");
+    await peer.getByRole("button", { name: "Send" }).click();
+    await expect(peer.locator(".message-thread .mine")).toContainText("Great to reconnect");
+
+    await page.goto(base);
+    await expect(page.getByRole("link", { name: /Messages \(1 unread\)/ })).toBeVisible();
+    await page.goto(`${base}/messages`);
+    await page.locator(".conversation-list a").filter({ hasText: "Browser Alumnus 01" }).click();
+    await expect(page.locator(".message-thread .theirs")).toContainText("Great to reconnect");
+    await page.getByLabel("Write a message").fill("Likewise! Let's catch up.");
+    await page.getByRole("button", { name: "Send" }).click();
+    await expect(page.locator(".message-thread .mine")).toContainText("Let's catch up");
+    await screenshot(page, "conversation-desktop");
+    await page.goto(base); await expect(page.getByRole("link", { name: "Messages", exact: true })).toBeVisible();
+
+    // Peer completes a LinkedIn-style profile: experience, skill, photo and mentorship settings.
+    await peer.goto(`${base}/profile/edit/experience`);
+    await peer.getByLabel("Title").fill("Platform Engineer"); await peer.getByLabel("Organization").fill("Example Cloud");
+    await peer.getByLabel("Start").fill("2022-02"); await peer.getByLabel("I currently work here").check();
+    await peer.getByRole("button", { name: "Save", exact: true }).click();
+    await expect(peer.locator(".notice")).toContainText("Experience saved");
+    await peer.goto(`${base}/profile/edit/skills`);
+    await peer.getByLabel("Add a skill").fill("Kubernetes"); await peer.getByRole("button", { name: "Add skill" }).click();
+    await expect(peer.locator(".li-skills")).toContainText("Kubernetes");
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=", "base64");
+    await peer.goto(`${base}/profile/edit/photo`);
+    await peer.getByLabel("Choose a photo").setInputFiles({ name: "me.png", mimeType: "image/png", buffer: png });
+    await expect(peer.locator(".photo-preview")).toBeVisible();
+    await peer.getByRole("button", { name: "Save photo" }).click();
+    await expect(peer.locator('[role="status"]').filter({ hasText: "Photo updated" })).toBeVisible();
+    await peer.goto(`${base}/profile/edit/mentorship`);
+    await peer.getByLabel("Include my profile in mentor matching").check();
+    await peer.getByLabel("I'm available to take on mentees now").check();
+    await peer.getByLabel("Topics I can help with").fill("Cloud platforms\nKubernetes in production");
+    await peer.getByRole("button", { name: "Save mentorship settings" }).click();
+    await expect(peer.locator('[role="status"]').filter({ hasText: "Mentorship settings saved" })).toBeVisible();
+    const queued = (await pool.query("SELECT reason FROM public.profile_change_outbox WHERE profile_id=$1 ORDER BY id", [peerProfile])).rows.map(row => row.reason);
+    assert.deepEqual(queued, ["experience", "skills", "mentorship"], "Each matching-relevant edit is queued once for Kafka re-indexing");
+    await peer.goto(`${base}/profile`);
+    for (const text of ["Platform Engineer", "Kubernetes", "Open to mentoring", "Cloud platforms"]) await expect(peer.locator(".li-main")).toContainText(text);
+    await expect(peer.locator(".li-hero .alumni-avatar img")).toHaveAttribute("src", /\/api\/profile-photo\/[0-9a-f-]{36}\?v=\d+$/);
+    await noOverflow(peer, "own LinkedIn-style profile"); await screenshot(peer, "own-profile-desktop");
+    await peer.setViewportSize({ width: 375, height: 812 }); await peer.reload(); await noOverflow(peer, "375px own profile"); await screenshot(peer, "own-profile-375");
+    await peer.setViewportSize({ width: 1440, height: 900 });
+
+    // Mentorship request -> accept -> conversation continues in Messages.
+    await page.goto(`${base}/alumni/${peerProfile}`);
+    await expect(page.locator(".li-hero")).toContainText("Open to mentoring");
+    await page.getByRole("link", { name: "Request mentorship" }).click();
+    await page.getByLabel("Your goal").fill("Move into platform engineering");
+    await page.getByLabel("Message", { exact: true }).fill("I'd love your advice on Kubernetes.");
+    await page.getByRole("button", { name: "Send request" }).click();
+    await expect(page).toHaveURL(/\/mentorship\/requests\?sent=1$/);
+    await expect(page.locator(".member-row")).toContainText("Awaiting reply");
+    await peer.goto(`${base}/mentorship/requests`);
+    await peer.locator(".member-row").filter({ hasText: "Move into platform engineering" }).getByRole("button", { name: "Accept" }).click();
+    await expect(peer).toHaveURL(/\/messages\/[0-9a-f-]{36}$/);
+    await expect(peer.locator(".message-thread")).toContainText("Mentorship request: Move into platform engineering");
+    await page.goto(`${base}/notifications`); await expect(page.locator(".conversation-list")).toContainText("accepted your mentorship request");
+
+    // Session recap: the mentee drafts it, the mentor approves it, then it is public with reactions.
+    await page.goto(`${base}/mentorship/requests`);
+    await page.locator(".member-row").filter({ hasText: "Move into platform engineering" }).getByRole("link", { name: "Share a recap" }).click();
+    await expect(page.getByLabel("Session with")).not.toHaveValue("");
+    await page.getByLabel("Topic").fill(recapTopic);
+    await page.getByLabel("Session date").fill(new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Nairobi" }));
+    await page.getByLabel("What you covered and took away").fill("Short");
+    await page.getByRole("button", { name: "Send for approval" }).click();
+    await expect(page.getByLabel("What you covered and took away")).toHaveJSProperty("validity.tooShort", true);
+    await page.getByLabel("What you covered and took away").fill("We planned a Kubernetes learning path and agreed on a first small project to review together.");
+    await page.getByRole("button", { name: "Send for approval" }).click();
+    await expect(page).toHaveURL(/\/mentorship\/requests\?recap=sent/);
+    await expect(page.locator("#recaps")).toContainText("Awaiting their approval");
+    await page.goto(`${base}/recaps`); await expect(page.locator(".recap-card").filter({ hasText: recapTopic })).toHaveCount(0);
+    await peer.goto(`${base}/mentorship/requests`);
+    await peer.locator(".recap-draft").filter({ hasText: recapTopic }).getByRole("button", { name: "Approve and publish" }).click();
+    await expect(peer).toHaveURL(/recap=published/);
+    await page.goto(`${base}/recaps`);
+    const recapCard = page.locator(".recap-card").filter({ hasText: recapTopic });
+    await expect(recapCard).toContainText("Browser Alumnus 01 mentored");
+    await recapCard.getByRole("button", { name: /Insightful/ }).click();
+    await expect(page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: /Insightful/ })).toHaveAttribute("aria-pressed", "true");
+    await page.goto(`${base}/alumni/${peerProfile}`); await expect(page.locator(".li-section").filter({ hasText: "Mentoring sessions" })).toContainText(recapTopic);
+    for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.goto(`${base}/recaps`); await noOverflow(page, `${width}px session recaps`); await screenshot(page, `recaps-${width}`); }
+    await peerContext.close();
+    console.log("PASS connect/accept, notifications, two-way messaging, profile editing with photo, mentorship settings, request, acceptance and co-signed session recap");
+  }
+
+  {
+    // Match rating, session scheduling with calendar invitations, privacy controls, data export and account deletion.
+    const sessionFor = async (userId, n) => {
+      const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+      await context.addCookies([{ name: "authjs.session-token", url: base, httpOnly: true, sameSite: "Lax",
+        value: await encode({ secret, salt: "authjs.session-token", maxAge: 600, token: { luminaUserId: userId, name: `Browser Alumnus ${n}`, email: `${subject}-${n}@example.test` } }) }]);
+      const tab = await context.newPage(); tab.on("pageerror", error => failures.push(error.message));
+      return { context, tab };
+    };
+    const { context: mentorContext, tab: mentor } = await sessionFor(networkUsers[1], "01");
+    const { context: outsiderContext, tab: outsider } = await sessionFor(networkUsers[2], "02");
+    const myProfile = (await pool.query("SELECT id FROM public.profiles WHERE user_id=$1", [fixtureId])).rows[0].id;
+    const mentorRow = () => page.locator(".member-row").filter({ hasText: "Move into platform engineering" });
+
+    await page.goto(`${base}/mentorship/requests`);
+    await mentorRow().getByText("Rate this match").click();
+    await mentorRow().getByLabel("4", { exact: true }).check();
+    await mentorRow().getByLabel("Yes", { exact: true }).check();
+    await mentorRow().getByRole("button", { name: "Save rating" }).click();
+    await expect(page.locator(".notice")).toContainText("Your rating helps Lumina");
+    await expect(mentorRow()).toContainText("You rated this match 4/5");
+
+    const slotDay = new Date(Date.now() + 3 * 3600000 + 3 * 86400000).toISOString().slice(0, 10);
+    await mentor.goto(`${base}/mentorship/availability`);
+    await mentor.getByLabel("Date").fill(slotDay);
+    await mentor.getByLabel("Start time (Nairobi)").fill("10:00");
+    await mentor.getByLabel("Length").selectOption("60");
+    await mentor.getByLabel("Meeting link or place (optional)").fill("https://meet.example.test/browser");
+    await mentor.getByRole("button", { name: "Publish slot" }).click();
+    await expect(mentor.getByRole("status")).toContainText("Slot published");
+    await mentor.reload(); await expect(mentor.locator(".session-card")).toContainText("Video call");
+    await noOverflow(mentor, "availability");
+
+    await page.goto(`${base}/mentorship/requests`);
+    await mentorRow().getByRole("link", { name: "Book a session" }).click();
+    await page.locator(".slot-choice").first().click();
+    await page.getByLabel(/What would you like to cover/).fill("Kubernetes study plan");
+    await page.getByRole("button", { name: "Book session" }).click();
+    await expect(page).toHaveURL(/\/mentorship\/sessions\?booked=1$/);
+    const sessionCard = page.locator(".session-card").first();
+    await expect(sessionCard).toContainText("Browser Alumnus 01");
+    await expect(sessionCard).toContainText("Kubernetes study plan");
+    await expect(sessionCard.getByRole("link", { name: "Join the call" })).toHaveAttribute("href", "https://meet.example.test/browser");
+    const icsHref = await sessionCard.getByRole("link", { name: "Add to calendar" }).getAttribute("href");
+    const ics = await page.request.get(`${base}${icsHref}`);
+    assert.equal(ics.status(), 200); assert.match(ics.headers()["content-type"], /text\/calendar/); assert.match(await ics.text(), /BEGIN:VEVENT/);
+    assert.equal((await mentor.request.get(`${base}${icsHref}`)).status(), 200);
+    assert.equal((await outsider.request.get(`${base}${icsHref}`)).status(), 404, "Only the two participants can download the invitation");
+    const mailpit = process.env.MAILPIT_URL || "http://127.0.0.1:8025";
+    let invitation;
+    for (let attempt = 0; attempt < 120 && !invitation; attempt++) {
+      const found = await (await fetch(`${mailpit}/api/v1/search?query=${encodeURIComponent(`to:"${subject}@example.test" subject:"Mentoring session with"`)}`)).json();
+      if (found.messages?.length) invitation = found.messages[0]; else await delay(250);
+    }
+    assert.ok(invitation, "Booking emails a calendar invitation");
+    await mentor.goto(`${base}/notifications`); await expect(mentor.locator(".conversation-list")).toContainText("booked a mentoring session");
+    await mentor.goto(`${base}/mentorship/availability`); await expect(mentor.locator(".session-card").first()).toContainText("Booked by");
+    await noOverflow(page, "sessions"); await screenshot(page, "sessions-1440");
+    await sessionCard.getByRole("button", { name: "Cancel session" }).click();
+    await expect(page).toHaveURL(/cancelled=1$/);
+    await expect(page.locator(".notice")).toContainText("Session cancelled");
+
+    await page.goto(`${base}/account/privacy`);
+    await page.getByLabel(/List me in the Network directory/).uncheck();
+    await page.getByLabel(/Only my connections/).check();
+    await page.getByRole("button", { name: "Save privacy choices" }).click();
+    await expect(page.locator(".notice")).toContainText("privacy choices are saved");
+    await expect(page.locator(".consent-history")).toContainText("Directory listing");
+    for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.reload(); await noOverflow(page, `${width}px privacy`); await screenshot(page, `privacy-${width}`); }
+    await outsider.goto(`${base}/alumni/${myProfile}`);
+    await expect(outsider.locator(".li-limited")).toContainText("Shared with connections");
+    await expect(outsider.getByRole("heading", { name: "Experience" })).toHaveCount(0);
+    await outsider.goto(`${base}/network?q=${encodeURIComponent("Demo Browser User")}`); await expect(outsider.locator(".alumni-card")).toHaveCount(0);
+    await mentor.goto(`${base}/alumni/${myProfile}`);
+    await expect(mentor.locator(".li-limited")).toHaveCount(0);
+    await expect(mentor.getByRole("heading", { name: "Experience" })).toBeVisible();
+    const exported = await page.request.get(`${base}/api/account/export`);
+    assert.equal(exported.status(), 200); assert.match(exported.headers()["content-disposition"], /attachment; filename="lumina-my-data-/);
+    const exportText = await exported.text();
+    const data = JSON.parse(exportText);
+    assert.equal(data.account.email, `${subject}@example.test`);
+    assert.ok(data.sessions.length === 1 && data.mentorship_feedback.length === 1 && data.consent_history.length >= 2);
+    assert.ok(!/password_hash|google_subject|argon2/.test(exportText), "Export never contains secrets");
+    await page.goto(`${base}/account/privacy`);
+    await page.getByLabel(/List me in the Network directory/).check();
+    await page.getByLabel(/All verified alumni/).check();
+    await page.getByRole("button", { name: "Save privacy choices" }).click();
+    await expect(page.locator(".notice")).toContainText("privacy choices are saved");
+
+    const leaver = (await pool.query("INSERT INTO public.users(email,google_subject,account_status,alumni_verified) VALUES($1,$2,'active',true) RETURNING id", [`${subject}-leaver@example.test`, `${subject}-leaver`])).rows[0].id;
+    networkUsers.push(leaver);
+    await pool.query("INSERT INTO public.profiles(user_id, full_name) VALUES($1, 'Browser Leaver')", [leaver]);
+    const { context: leaverContext, tab: leaving } = await sessionFor(leaver, "leaver");
+    await leaving.goto(`${base}/account/privacy`);
+    await leaving.getByLabel("Type DELETE to confirm").fill("delete");
+    await leaving.getByRole("button", { name: "Delete my account" }).click();
+    await expect(leaving.getByLabel("Type DELETE to confirm")).toHaveJSProperty("validity.patternMismatch", true);
+    await leaving.getByLabel("Type DELETE to confirm").fill("DELETE");
+    await leaving.getByRole("button", { name: "Delete my account" }).click();
+    await expect(leaving).toHaveURL(/\/\?account=deleted$/);
+    assert.equal(Number((await pool.query("SELECT count(*) FROM public.users WHERE id=$1", [leaver])).rows[0].count), 0);
+    await Promise.all([mentorContext.close(), outsiderContext.close(), leaverContext.close()]);
+    console.log("PASS match rating, session booking with calendar invitation and email, cancellation, privacy controls, limited profile, data export and account deletion");
+  }
 
   await pool.query("UPDATE public.users SET role='admin' WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
   await page.goto(`${base}/admin/verification`); await expect(page.getByRole("heading",{ name: "Verification assistance", exact: true })).toBeVisible();
@@ -398,11 +685,90 @@ try {
     }
     await page.goto(`${base}/admin/verification`);
   }
+  {
+    // Admin creates, publishes and archives an event; alumni visibility follows.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${base}/admin/events/new`);
+    await page.getByLabel("Title").fill(adminEventTitle);
+    await page.getByLabel("Category").selectOption("Workshop");
+    await page.getByLabel("Short summary").fill("A browser-created workshop.");
+    await page.getByLabel("Format").selectOption("online");
+    await page.getByLabel("Starts (East Africa Time)").fill("2031-02-01T10:00");
+    await page.getByLabel("Ends (East Africa Time)").fill("2031-02-01T09:00");
+    await page.getByLabel("Location or online platform").fill("Online");
+    await page.getByLabel("Description").fill("Details for the workshop.");
+    await page.getByRole("button",{ name: "Publish", exact: true }).click();
+    await expect(page.locator('.admin-form [role="alert"]')).toContainText("End must be after the start");
+    await expect(page.getByLabel("Title")).toHaveValue(adminEventTitle);
+    await expect(page.getByRole("button",{ name: "Publish", exact: true })).toBeEnabled();
+    await expect(page.getByLabel("Ends (East Africa Time)")).toHaveValue("2031-02-01T09:00");
+    await page.getByLabel("Ends (East Africa Time)").fill("2031-02-01T12:00");
+    await page.getByRole("button",{ name: "Publish", exact: true }).click();
+    await page.waitForURL(/\/admin\/events\?saved=/, { timeout: 10000 }).catch(async error => {
+      throw new Error(`Admin publish did not complete: ${await page.locator('.admin-form [role="alert"]').textContent()}`, { cause: error });
+    });
+    const item = page.locator('.admin-item').filter({ hasText: adminEventTitle });
+    await expect(item.getByText("Published", { exact: true })).toBeVisible();
+    await screenshot(page, "admin-events-desktop");
+    await page.goto(`${base}/events`); await expect(page.locator('.live-event-card').filter({ hasText: adminEventTitle })).toHaveCount(1);
+    await page.goto(`${base}/admin/events`); await item.getByRole("button",{ name: "Archive" }).click();
+    await expect(page.locator('.notice')).toContainText("Archived");
+    await page.goto(`${base}/events`); await expect(page.locator('.live-event-card').filter({ hasText: adminEventTitle })).toHaveCount(0);
+    await page.goto(`${base}/admin/opportunities/new`);
+    await page.getByLabel("Title").fill(adminEventTitle); await page.getByLabel("Organization").fill("Browser Org");
+    await page.getByLabel("Type").selectOption("Volunteer"); await page.getByLabel("Work mode").selectOption("remote");
+    await page.getByLabel("Location").fill("Remote"); await page.getByLabel("Short summary").fill("Volunteer summary");
+    await page.getByLabel("Description").fill("Volunteer details"); await page.getByLabel("How to apply").fill("Reply to the coordinator");
+    await page.getByRole("button",{ name: "Save draft", exact: true }).click();
+    await expect(page.locator('.admin-item').filter({ hasText: adminEventTitle }).getByText("Draft", { exact: true })).toBeVisible();
+    await page.goto(`${base}/opportunities?q=${encodeURIComponent(adminEventTitle)}`); await expect(page.locator('.opportunity-card')).toHaveCount(0);
+    await page.goto(`${base}/admin`); await expect(page.locator('.admin-stats .card')).toHaveCount(5); // exceptions, events, opportunities, system health, insight
+    console.log("PASS admin event/opportunity create, validation, publish, archive, draft and dashboard counts");
+    await page.goto(`${base}/admin/users?q=${encodeURIComponent("Browser Alumnus 03")}`);
+    const person = page.locator('.admin-item').filter({ hasText: "Browser Alumnus 03" });
+    await expect(person).toHaveCount(1);
+    await person.getByRole("button", { name: "Suspend account" }).click();
+    await expect(page.locator('.notice')).toContainText("Account suspended");
+    assert.equal((await pool.query("SELECT account_status FROM public.users WHERE id=$1", [networkUsers[3]])).rows[0].account_status, "suspended");
+    await page.goto(`${base}/network?q=${encodeURIComponent("Browser Alumnus 03")}`); await expect(page.locator('.alumni-card')).toHaveCount(0);
+    await page.goto(`${base}/admin/users?status=suspended`);
+    await page.locator('.admin-item').filter({ hasText: "Browser Alumnus 03" }).getByRole("button", { name: "Reinstate account" }).click();
+    await expect(page.locator('.notice')).toContainText("reinstated");
+    assert.equal((await pool.query("SELECT account_status FROM public.users WHERE id=$1", [networkUsers[3]])).rows[0].account_status, "active");
+    await page.goto(`${base}/admin/users?q=alum-001`); await expect(page.locator('.admin-item .badge').filter({ hasText: "Seeded" })).toHaveCount(1);
+    await expect(page.locator('.admin-item').filter({ hasText: "alum-001" }).getByRole("button")).toHaveCount(1);
+    for (const [width, height] of [[375, 812], [1440, 900]]) { await page.setViewportSize({ width, height }); await page.goto(`${base}/admin/users`); await noOverflow(page, `${width}px admin users`); await screenshot(page, `admin-users-${width}`); }
+    console.log("PASS admin user search, suspend (removes from Network), reinstate and sample labelling");
+    await page.goto(`${base}/admin/recaps`);
+    await page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: "Hide" }).click();
+    await expect(page.locator(".notice")).toContainText("Recap hidden");
+    await page.goto(`${base}/recaps`); await expect(page.locator(".recap-card").filter({ hasText: recapTopic })).toHaveCount(0);
+    await page.goto(`${base}/admin/recaps`);
+    await page.locator(".recap-card").filter({ hasText: recapTopic }).getByRole("button", { name: "Restore" }).click();
+    await expect(page.locator(".notice")).toContainText("Recap restored");
+    await noOverflow(page, "admin session recaps");
+    console.log("PASS admin hides and restores a session recap");
+    await page.goto(`${base}/admin/audit`);
+    await expect(page.locator(".table-card")).toContainText("Suspended an account");
+    await expect(page.locator(".table-card")).toContainText("Hid a session recap");
+    await page.getByLabel("Action").selectOption("account.delete"); await page.getByRole("button", { name: "Filter" }).click();
+    await expect(page.locator(".table-card")).toContainText("Deleted account");
+    for (const [route, heading] of [["/admin/analytics", "Community analytics"], ["/admin/matching", "Mentor match quality"], ["/admin/health", "System health"], ["/admin/audit", "Audit log"]]) {
+      for (const [width, height] of [[375, 812], [1440, 900]]) {
+        await page.setViewportSize({ width, height }); await page.goto(`${base}${route}`);
+        await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+        await noOverflow(page, `${width}px ${route}`); await screenshot(page, `${route.slice(1).replace("/", "-")}-${width}`);
+      }
+    }
+    await page.goto(`${base}/admin/health`); await expect(page.locator(".health-card").first()).toContainText("Database");
+    await page.goto(`${base}/admin/matching`); await expect(page.locator("body")).toContainText("Request rate from search");
+    console.log("PASS admin audit log, analytics, match quality and system health");
+  }
   await page.goto(`${base}/`); await page.getByRole("button",{ name: "Open account menu" }).click();
   await page.getByRole("button",{ name: "Sign out", exact: true }).click();
   await expect(page.getByRole("heading",{ level: 1 })).toContainText("Reconnect");
   assert.deepEqual(failures,[],"No browser runtime errors");
-  await writeFile(`${output}/browser-report.json`,JSON.stringify({ passed: true, establishedSyntheticProfilesChecked: process.env.LUMINA_TEST_SYNTHETIC_DIRECTORY === '1' ? 50 : 0, viewports: [[320,700],[375,812],[768,1024],[1024,768],[1440,900]], additionalWidths: [430,600,900,1280,1920], network: 'Real PostgreSQL search, department/industry/skill/location filters, 12-profile pagination, profile return state', screenshots, runtimeErrors: failures },null,2));
+  await writeFile(`${output}/browser-report.json`,JSON.stringify({ passed: true, establishedSyntheticProfilesChecked: process.env.LUMINA_TEST_SYNTHETIC_DIRECTORY === '1' ? 200 : 0, viewports: [[320,700],[375,812],[768,1024],[1024,768],[1440,900]], additionalWidths: [430,600,900,1280,1920], network: 'Real PostgreSQL search, department/industry/skill/location filters, 12-profile pagination, profile return state', screenshots, runtimeErrors: failures },null,2));
   console.log("PASS admin exceptions remain accessible only to admins; actual sign out returns to landing");
 } finally {
   await browser?.close();
@@ -412,6 +778,8 @@ try {
     if (networkSkillId) await pool.query("DELETE FROM public.skills WHERE id=$1", [networkSkillId]);
     if (fixtureId) await pool.query("DELETE FROM public.users WHERE id=$1 AND google_subject=$2",[fixtureId,subject]);
     await pool.query("DELETE FROM public.users WHERE email=$1 AND google_subject IS NULL", [passwordEmail]);
+    await pool.query("DELETE FROM public.events WHERE title=$1 AND NOT synthetic", [adminEventTitle]);
+    await pool.query("DELETE FROM public.opportunities WHERE title=$1 AND NOT synthetic", [adminEventTitle]);
     if (originalData) assert.deepEqual(await snapshot(), originalData, "All existing data must remain unchanged");
     console.log("PASS browser fixture removed; existing data preserved");
   } finally { await pool.end(); }

@@ -1,0 +1,27 @@
+comparison,subset,system,metric,queries,mean_500,mean_200,n_nonzero,p_value
+500 vs 200 corpus,original_22,Semantic,precision_at_5,22,0.9364,0.8273,7,0.0407
+500 vs 200 corpus,original_22,Semantic,normalised_recall_at_5,22,0.9364,0.8636,6,0.1682
+500 vs 200 corpus,original_22,Semantic,reciprocal_rank,22,1.0,0.8977,3,0.1088
+500 vs 200 corpus,original_22,Keyword (TF-IDF),precision_at_5,22,0.8364,0.7727,7,0.1268
+500 vs 200 corpus,original_22,Keyword (TF-IDF),normalised_recall_at_5,22,0.8364,0.7909,7,0.2041
+500 vs 200 corpus,original_22,Keyword (TF-IDF),reciprocal_rank,22,0.9015,0.8485,4,0.2568
+500 vs 200 corpus,original_22,Hybrid (BGE + BM25),precision_at_5,22,0.9091,0.8091,8,0.065
+500 vs 200 corpus,original_22,Hybrid (BGE + BM25),normalised_recall_at_5,22,0.9091,0.8432,8,0.2597
+500 vs 200 corpus,original_22,Hybrid (BGE + BM25),reciprocal_rank,22,0.947,0.8561,4,0.1441
+500 vs 200 corpus,common,Semantic,precision_at_5,33,0.8485,0.7212,12,0.0133
+500 vs 200 corpus,common,Semantic,normalised_recall_at_5,33,0.8485,0.751,12,0.0541
+500 vs 200 corpus,common,Semantic,reciprocal_rank,33,0.9253,0.8182,6,0.0458
+500 vs 200 corpus,common,Keyword (TF-IDF),precision_at_5,33,0.8667,0.7515,12,0.0117
+500 vs 200 corpus,common,Keyword (TF-IDF),normalised_recall_at_5,33,0.8667,0.7899,10,0.0525
+500 vs 200 corpus,common,Keyword (TF-IDF),reciprocal_rank,33,0.9192,0.8384,6,0.0845
+500 vs 200 corpus,common,Hybrid (BGE + BM25),precision_at_5,33,0.8788,0.7394,14,0.0099
+500 vs 200 corpus,common,Hybrid (BGE + BM25),normalised_recall_at_5,33,0.8788,0.7747,14,0.0827
+500 vs 200 corpus,common,Hybrid (BGE + BM25),reciprocal_rank,33,0.9343,0.8192,6,0.0458
+semantic vs keyword_baseline,all at 200,,f1_at_5,33,,0.5188,15,0.4603
+semantic vs keyword_baseline,all at 200,,reciprocal_rank,33,,0.8182,7,0.6715
+semantic vs hybrid,all at 200,,f1_at_5,33,,0.5188,8,0.2076
+semantic vs hybrid,all at 200,,reciprocal_rank,33,,0.8182,5,0.8923
+semantic vs keyword_baseline,all at 500,,f1_at_5,45,0.3971,,19,0.7022
+semantic vs keyword_baseline,all at 500,,reciprocal_rank,45,0.9274,,8,0.7784
+semantic vs hybrid,all at 500,,f1_at_5,45,0.3971,,13,0.2944
+semantic vs hybrid,all at 500,,reciprocal_rank,45,0.9274,,5,0.5879

@@ -92,18 +92,21 @@ class BGEEncoder:
         return self.model.encode(text, normalize_embeddings=True, show_progress_bar=False).tolist()
 
 
-def index_profiles(conn, encoder_factory=BGEEncoder):
+def index_profiles(conn, encoder_factory=BGEEncoder, profile_ids=None):
+    """Index every consenting profile, or only `profile_ids` when given (event-driven re-indexing)."""
     counts = Counter(indexed=0, skipped=0, removed=0, failed=0)
+    scope = "" if profile_ids is None else " AND e.profile_id = ANY(%(ids)s::uuid[])"
+    params = {} if profile_ids is None else {"ids": [str(i) for i in profile_ids]}
     # Removal commits before model loading, including when downloads/inference fail.
     with conn.transaction():
         removed = conn.execute("""
             DELETE FROM profile_embeddings e WHERE NOT EXISTS (
                 SELECT 1 FROM mentorship_preferences m
-                WHERE m.profile_id = e.profile_id AND m.consent_to_matching)
-        """)
+                WHERE m.profile_id = e.profile_id AND m.consent_to_matching)""" + scope, params)
         counts["removed"] += removed.rowcount
     ids = [row[0] for row in conn.execute(
-        "SELECT profile_id FROM mentorship_preferences WHERE consent_to_matching ORDER BY profile_id"
+        "SELECT profile_id FROM mentorship_preferences WHERE consent_to_matching"
+        + ("" if profile_ids is None else " AND profile_id = ANY(%(ids)s::uuid[])") + " ORDER BY profile_id", params
     ).fetchall()]
     encoder = None
     model_error = False
@@ -168,7 +171,6 @@ def index_profiles(conn, encoder_factory=BGEEncoder):
         result = conn.execute("""
             DELETE FROM profile_embeddings e WHERE NOT EXISTS (
                 SELECT 1 FROM mentorship_preferences m
-                WHERE m.profile_id = e.profile_id AND m.consent_to_matching)
-        """)
+                WHERE m.profile_id = e.profile_id AND m.consent_to_matching)""" + scope, params)
         counts["removed"] += result.rowcount
     return dict(counts)

@@ -31,5 +31,9 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+      - name: Run unit tests
+        # PostgreSQL-backed tests skip themselves unless LUMINA_TEST_DATABASE=1.
+        run: npx vitest run
+
       - name: Build application
         run: npm run build

@@ -1,0 +1,36 @@
+
+> lumina@0.1.0 test:mentorship:live
+> node tests/frontend/mentorship-live.mjs
+
+Warming the real BGE model and checking pgvector readiness…
+PASS real Google authorization redirect; external consent/exchange remains manual
+PASS Google-linked session → registry verification → saved profile → Lumina home
+PASS natural-language query → Next.js proxy → real BGE → pgvector → ranked mentors → full alumni profile
+[
+  {
+    "name": "Live Verified Mentor",
+    "matchRelevance": 0.6418936679490054,
+    "synthetic": true
+  },
+  {
+    "name": "Tabitha Mohamed",
+    "matchRelevance": 0.6418936679490054,
+    "synthetic": true
+  },
+  {
+    "name": "Grace Wanjiru",
+    "matchRelevance": 0.6204984640480963,
+    "synthetic": true
+  },
+  {
+    "name": "Winnie Mohamed",
+    "matchRelevance": 0.6095672845840454,
+    "synthetic": true
+  },
+  {
+    "name": "Umi Nyambura",
+    "matchRelevance": 0.6091287499146919,
+    "synthetic": true
+  }
+]
+PASS live demonstration fixtures removed; existing data preserved

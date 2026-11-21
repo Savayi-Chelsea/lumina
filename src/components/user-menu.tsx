@@ -31,7 +31,14 @@ export function UserMenu({ user }: { user: Session["user"] }) {
       <p className="menu-name">{user.name || "Lumina member"}</p>
       {user.email && <p className="menu-email">{user.email}</p>}
       <Link href="/account" onClick={() => setOpen(false)}>Account</Link>
+      <Link href="/account/privacy" onClick={() => setOpen(false)}>Privacy and data</Link>
       <Link href="/profile" onClick={() => setOpen(false)}>Your profile</Link>
+      <Link href="/messages" onClick={() => setOpen(false)}>Messages</Link>
+      <Link href="/notifications" onClick={() => setOpen(false)}>Notifications</Link>
+      <Link href="/network/connections" onClick={() => setOpen(false)}>My network</Link>
+      <Link href="/mentorship/requests" onClick={() => setOpen(false)}>Mentorship requests</Link>
+      <Link href="/mentorship/sessions" onClick={() => setOpen(false)}>Mentoring sessions</Link>
+      <Link href="/recaps" onClick={() => setOpen(false)}>Session recaps</Link>
       {user.role === "admin" && <Link href="/admin" onClick={() => setOpen(false)}>Administration</Link>}
       <SignOutButton />
     </div>}

@@ -1,0 +1,21 @@
+{
+  "evaluated_at": "2026-11-17T13:06:16Z",
+  "queries": 22,
+  "mentor_results_explained": 110,
+  "results_without_reasons": 0,
+  "reasons": 266,
+  "reasons_per_result": 2.42,
+  "grounded": 266,
+  "not_grounded": 0,
+  "overlap_based_reasons": 226,
+  "overlap_confirmed_by_independent_tokenizer": 226,
+  "fallback_reasons": 40,
+  "reasons_by_type": {
+    "current role overlap": 58,
+    "fallback: current role": 20,
+    "fallback: former role": 20,
+    "former KQ role overlap": 32,
+    "mentorship topic overlap": 78,
+    "skill overlap": 58
+  }
+}

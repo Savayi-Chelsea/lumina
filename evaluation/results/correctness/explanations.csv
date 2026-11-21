@@ -1,0 +1,267 @@
+query_id,set,rank,mentor,reason,claim_type,cited_attribute,grounded,word_overlap
+cloud,domain,1,alum-174,Skilled in AWS,skill overlap,AWS,true,true
+cloud,domain,1,alum-174,Mentors on Cloud engineering and DevOps,mentorship topic overlap,Cloud engineering; DevOps,true,true
+cloud,domain,1,alum-174,Works as DevOps Engineer at Nairobi Digital Services (Technology),current role overlap,DevOps Engineer at Nairobi Digital Services,true,true
+cloud,domain,2,alum-078,Mentors on Cloud engineering and DevOps,mentorship topic overlap,Cloud engineering; DevOps,true,true
+cloud,domain,2,alum-078,Works as DevOps Engineer at Nairobi Digital Services (Technology),current role overlap,DevOps Engineer at Nairobi Digital Services,true,true
+cloud,domain,3,alum-102,Mentors on Cloud engineering and DevOps,mentorship topic overlap,Cloud engineering; DevOps,true,true
+cloud,domain,3,alum-102,Works as Cloud Engineer at Kijani Cloud Services (Technology),current role overlap,Cloud Engineer at Kijani Cloud Services,true,true
+cloud,domain,3,alum-102,Former Cloud Engineer in ICT / Digital at Kenya Airways,former KQ role overlap,Cloud Engineer in ICT / Digital,true,true
+cloud,domain,4,alum-162,"Skilled in AWS, Data Engineering",skill overlap,AWS; Data Engineering,true,true
+cloud,domain,4,alum-162,Mentors on Cloud engineering and DevOps,mentorship topic overlap,Cloud engineering; DevOps,true,true
+cloud,domain,4,alum-162,Works as Cloud Engineer at CloudWorks Africa (Technology),current role overlap,Cloud Engineer at CloudWorks Africa,true,true
+cloud,domain,5,alum-126,Skilled in AWS,skill overlap,AWS,true,true
+cloud,domain,5,alum-126,Mentors on Cloud engineering and DevOps,mentorship topic overlap,Cloud engineering; DevOps,true,true
+pilot,domain,1,alum-147,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+pilot,domain,1,alum-147,Works as Captain at Regional Air Services (Aviation),current role overlap,Captain at Regional Air Services,true,true
+pilot,domain,1,alum-147,Former Flight Operations Officer in Flight Operations at Kenya Airways,former KQ role overlap,Flight Operations Officer in Flight Operations,true,true
+pilot,domain,2,alum-171,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+pilot,domain,2,alum-171,Former First Officer in Flight Operations at Kenya Airways,former KQ role overlap,First Officer in Flight Operations,true,true
+pilot,domain,3,alum-045,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+pilot,domain,3,alum-045,Works as First Officer at CloudWorks Africa (Logistics),current role overlap,First Officer at CloudWorks Africa,true,true
+pilot,domain,3,alum-045,Former First Officer in Flight Operations at Kenya Airways,former KQ role overlap,First Officer in Flight Operations,true,true
+pilot,domain,4,alum-050,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+pilot,domain,4,alum-050,Works as Captain at Nairobi Digital Services (Consulting),current role overlap,Captain at Nairobi Digital Services,true,true
+pilot,domain,4,alum-050,Former Captain in Flight Operations at Kenya Airways,former KQ role overlap,Captain in Flight Operations,true,true
+pilot,domain,5,alum-032,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+pilot,domain,5,alum-032,Works as Captain at Global Aviation Services (Telecommunications),current role overlap,Captain at Global Aviation Services,true,true
+pilot,domain,5,alum-032,Former Flight Operations Officer in Flight Operations at Kenya Airways,former KQ role overlap,Flight Operations Officer in Flight Operations,true,true
+finance,domain,1,alum-005,"Skilled in Budgeting, Financial Analysis, Financial Reporting",skill overlap,Budgeting; Financial Analysis; Financial Reporting,true,true
+finance,domain,1,alum-005,Mentors on Finance careers and Financial analysis,mentorship topic overlap,Finance careers; Financial analysis,true,true
+finance,domain,1,alum-005,Former Financial Analyst in Finance at Kenya Airways,former KQ role overlap,Financial Analyst in Finance,true,true
+finance,domain,2,alum-022,"Skilled in Budgeting, Financial Reporting",skill overlap,Budgeting; Financial Reporting,true,true
+finance,domain,2,alum-022,Mentors on Finance careers and Financial analysis,mentorship topic overlap,Finance careers; Financial analysis,true,true
+finance,domain,2,alum-022,Former Accountant in Finance at Kenya Airways,former KQ role overlap,Accountant in Finance,true,true
+finance,domain,3,alum-187,"Skilled in Financial Reporting, Forecasting",skill overlap,Financial Reporting; Forecasting,true,true
+finance,domain,3,alum-187,Mentors on Finance careers and Financial analysis,mentorship topic overlap,Finance careers; Financial analysis,true,true
+finance,domain,3,alum-187,Former Financial Analyst in Finance at Kenya Airways,former KQ role overlap,Financial Analyst in Finance,true,true
+finance,domain,4,alum-079,"Skilled in Budgeting, Financial Reporting",skill overlap,Budgeting; Financial Reporting,true,true
+finance,domain,4,alum-079,Mentors on Finance careers and Financial analysis,mentorship topic overlap,Finance careers; Financial analysis,true,true
+finance,domain,4,alum-079,Former Financial Analyst in Finance at Kenya Airways,former KQ role overlap,Financial Analyst in Finance,true,true
+finance,domain,5,alum-139,"Skilled in Budgeting, Financial Analysis, Financial Reporting",skill overlap,Budgeting; Financial Analysis; Financial Reporting,true,true
+finance,domain,5,alum-139,Mentors on Finance careers and Financial analysis,mentorship topic overlap,Finance careers; Financial analysis,true,true
+finance,domain,5,alum-139,Former Financial Analyst in Finance at Kenya Airways,former KQ role overlap,Financial Analyst in Finance,true,true
+cabin-hospitality,domain,1,alum-064,Mentors on Cabin crew careers and Customer experience,mentorship topic overlap,Cabin crew careers; Customer experience,true,true
+cabin-hospitality,domain,1,alum-064,Works as Guest Experience Manager at Coastline Resorts (Hospitality),current role overlap,Guest Experience Manager at Coastline Resorts,true,true
+cabin-hospitality,domain,1,alum-064,Former Purser in Cabin Services at Kenya Airways,former KQ role overlap,Purser in Cabin Services,true,true
+cabin-hospitality,domain,2,alum-088,Mentors on Cabin crew careers and Customer experience,mentorship topic overlap,Cabin crew careers; Customer experience,true,true
+cabin-hospitality,domain,2,alum-088,Works as Guest Experience Manager at Safari Hospitality Group (Hospitality),current role overlap,Guest Experience Manager at Safari Hospitality Group,true,true
+cabin-hospitality,domain,2,alum-088,Former Purser in Cabin Services at Kenya Airways,former KQ role overlap,Purser in Cabin Services,true,true
+cabin-hospitality,domain,3,alum-112,Mentors on Cabin crew careers and Customer experience,mentorship topic overlap,Cabin crew careers; Customer experience,true,true
+cabin-hospitality,domain,3,alum-112,Works as Guest Experience Manager at Safari Hospitality Group (Hospitality),current role overlap,Guest Experience Manager at Safari Hospitality Group,true,true
+cabin-hospitality,domain,3,alum-112,Former Cabin Crew Supervisor in Cabin Services at Kenya Airways,former KQ role overlap,Cabin Crew Supervisor in Cabin Services,true,true
+cabin-hospitality,domain,4,alum-136,Mentors on Cabin crew careers and Customer experience,mentorship topic overlap,Cabin crew careers; Customer experience,true,true
+cabin-hospitality,domain,4,alum-136,Works as Cabin Crew Trainer at Horizon Flight Academy (Education),current role overlap,Cabin Crew Trainer at Horizon Flight Academy,true,true
+cabin-hospitality,domain,4,alum-136,Former Cabin Crew Supervisor in Cabin Services at Kenya Airways,former KQ role overlap,Cabin Crew Supervisor in Cabin Services,true,true
+cabin-hospitality,domain,5,alum-016,Skilled in Crew Coordination,skill overlap,Crew Coordination,true,true
+cabin-hospitality,domain,5,alum-016,Mentors on Cabin crew careers and Customer experience,mentorship topic overlap,Cabin crew careers; Customer experience,true,true
+cabin-hospitality,domain,5,alum-016,Former Flight Attendant in Cabin Services at Kenya Airways,former KQ role overlap,Flight Attendant in Cabin Services,true,true
+cargo,domain,1,alum-190,"Skilled in Cargo Handling, Freight Forwarding, Supply Chain",skill overlap,Cargo Handling; Freight Forwarding; Supply Chain,true,true
+cargo,domain,1,alum-190,Mentors on Cargo careers and Logistics,mentorship topic overlap,Cargo careers; Logistics,true,true
+cargo,domain,1,alum-190,Works as Supply Chain Analyst at Tamu Industrial (Food and beverage),current role overlap,Supply Chain Analyst at Tamu Industrial,true,true
+cargo,domain,2,alum-094,"Skilled in Cargo Handling, Freight Forwarding, Supply Chain",skill overlap,Cargo Handling; Freight Forwarding; Supply Chain,true,true
+cargo,domain,2,alum-094,Mentors on Cargo careers and Logistics,mentorship topic overlap,Cargo careers; Logistics,true,true
+cargo,domain,2,alum-094,Works as Supply Chain Analyst at Tamu Foods (Food and beverage),current role overlap,Supply Chain Analyst at Tamu Foods,true,true
+cargo,domain,3,alum-070,"Skilled in Freight Forwarding, Logistics, Warehouse Management",skill overlap,Freight Forwarding; Logistics; Warehouse Management,true,true
+cargo,domain,3,alum-070,Mentors on Cargo careers and Logistics,mentorship topic overlap,Cargo careers; Logistics,true,true
+cargo,domain,3,alum-070,Works as Logistics Manager at East Africa Logistics (Logistics),current role overlap,Logistics Manager at East Africa Logistics,true,true
+cargo,domain,4,alum-142,"Skilled in Cargo Handling, Logistics, Supply Chain",skill overlap,Cargo Handling; Logistics; Supply Chain,true,true
+cargo,domain,4,alum-142,Mentors on Cargo careers and Logistics,mentorship topic overlap,Cargo careers; Logistics,true,true
+cargo,domain,4,alum-142,Works as Logistics Manager at East Africa Logistics (Logistics),current role overlap,Logistics Manager at East Africa Logistics,true,true
+cargo,domain,5,alum-166,"Skilled in Cargo Handling, Logistics, Supply Chain",skill overlap,Cargo Handling; Logistics; Supply Chain,true,true
+cargo,domain,5,alum-166,Mentors on Cargo careers and Logistics,mentorship topic overlap,Cargo careers; Logistics,true,true
+cargo,domain,5,alum-166,Works as Supply Chain Analyst at Tamu Foods (Food and beverage),current role overlap,Supply Chain Analyst at Tamu Foods,true,true
+maintenance,domain,1,alum-137,"Skilled in Maintenance Planning, Reliability Engineering, Technical Inspection",skill overlap,Maintenance Planning; Reliability Engineering; Technical Inspection,true,true
+maintenance,domain,1,alum-137,Mentors on Aviation engineering and Maintenance leadership,mentorship topic overlap,Aviation engineering; Maintenance leadership,true,true
+maintenance,domain,1,alum-137,Works as Licensed Aircraft Engineer at Rift Valley Aviation (Aviation),current role overlap,Licensed Aircraft Engineer at Rift Valley Aviation,true,true
+maintenance,domain,2,alum-023,"Skilled in Aircraft Maintenance, Technical Inspection",skill overlap,Aircraft Maintenance; Technical Inspection,true,true
+maintenance,domain,2,alum-023,Mentors on Aviation engineering and Maintenance leadership,mentorship topic overlap,Aviation engineering; Maintenance leadership,true,true
+maintenance,domain,2,alum-023,Former Maintenance Planner in Engineering & Maintenance at Kenya Airways,former KQ role overlap,Maintenance Planner in Engineering & Maintenance,true,true
+maintenance,domain,3,alum-077,"Skilled in Aircraft Maintenance, Maintenance Planning, Reliability Engineering",skill overlap,Aircraft Maintenance; Maintenance Planning; Reliability Engineering,true,true
+maintenance,domain,3,alum-077,Mentors on Aviation engineering and Maintenance leadership,mentorship topic overlap,Aviation engineering; Maintenance leadership,true,true
+maintenance,domain,3,alum-077,Works as Maintenance Manager at East Africa Engineering Works (Manufacturing),current role overlap,Maintenance Manager at East Africa Engineering Works,true,true
+maintenance,domain,4,alum-185,"Skilled in Aircraft Maintenance, Technical Inspection",skill overlap,Aircraft Maintenance; Technical Inspection,true,true
+maintenance,domain,4,alum-185,Mentors on Aviation engineering and Maintenance leadership,mentorship topic overlap,Aviation engineering; Maintenance leadership,true,true
+maintenance,domain,4,alum-185,Works as Licensed Aircraft Engineer at Rift Valley Aviation (Aviation),current role overlap,Licensed Aircraft Engineer at Rift Valley Aviation,true,true
+maintenance,domain,5,alum-101,"Skilled in Aircraft Maintenance, Maintenance Planning, Reliability Engineering",skill overlap,Aircraft Maintenance; Maintenance Planning; Reliability Engineering,true,true
+maintenance,domain,5,alum-101,Mentors on Aviation engineering and Maintenance leadership,mentorship topic overlap,Aviation engineering; Maintenance leadership,true,true
+maintenance,domain,5,alum-101,Works as Engineering Consultant at Independent Consultant (Consulting),current role overlap,Engineering Consultant at Independent Consultant,true,true
+hr,domain,1,alum-188,Skilled in Performance Management,skill overlap,Performance Management,true,true
+hr,domain,1,alum-188,Mentors on Recruitment and People management,mentorship topic overlap,Recruitment; People management,true,true
+hr,domain,1,alum-188,Former Talent Acquisition Specialist in Human Resources at Kenya Airways,former KQ role overlap,Talent Acquisition Specialist in Human Resources,true,true
+hr,domain,2,alum-044,Skilled in Performance Management,skill overlap,Performance Management,true,true
+hr,domain,2,alum-044,Mentors on Recruitment and People management,mentorship topic overlap,Recruitment; People management,true,true
+hr,domain,2,alum-044,Former Talent Acquisition Specialist in Human Resources at Kenya Airways,former KQ role overlap,Talent Acquisition Specialist in Human Resources,true,true
+hr,domain,3,alum-152,"Skilled in Recruitment, Talent Management",skill overlap,Recruitment; Talent Management,true,true
+hr,domain,3,alum-152,Mentors on Recruitment and People management,mentorship topic overlap,Recruitment; People management,true,true
+hr,domain,3,alum-152,Former Talent Acquisition Specialist in Human Resources at Kenya Airways,former KQ role overlap,Talent Acquisition Specialist in Human Resources,true,true
+hr,domain,4,alum-092,"Skilled in Recruitment, Talent Management",skill overlap,Recruitment; Talent Management,true,true
+hr,domain,4,alum-092,Mentors on Recruitment and People management,mentorship topic overlap,Recruitment; People management,true,true
+hr,domain,4,alum-092,Works as Talent Acquisition Lead at Mkopo Fintech (Finance),current role overlap,Talent Acquisition Lead at Mkopo Fintech,true,true
+hr,domain,5,alum-030,"Skilled in Performance Management, Recruitment",skill overlap,Performance Management; Recruitment,true,true
+hr,domain,5,alum-030,Mentors on Recruitment and People management,mentorship topic overlap,Recruitment; People management,true,true
+hr,domain,5,alum-030,Former Talent Acquisition Specialist in Human Resources at Kenya Airways,former KQ role overlap,Talent Acquisition Specialist in Human Resources,true,true
+safety,domain,1,alum-097,"Skilled in Compliance, Risk Assessment",skill overlap,Compliance; Risk Assessment,true,true
+safety,domain,1,alum-097,Mentors on Aviation safety and Compliance careers,mentorship topic overlap,Aviation safety; Compliance careers,true,true
+safety,domain,1,alum-097,Works as Compliance Manager at Harambee Bank (Finance),current role overlap,Compliance Manager at Harambee Bank,true,true
+safety,domain,2,alum-133,"Skilled in Auditing, Compliance, Risk Assessment",skill overlap,Auditing; Compliance; Risk Assessment,true,true
+safety,domain,2,alum-133,Mentors on Aviation safety and Compliance careers,mentorship topic overlap,Aviation safety; Compliance careers,true,true
+safety,domain,2,alum-133,Works as Compliance Manager at Mkopo Fintech (Finance),current role overlap,Compliance Manager at Mkopo Fintech,true,true
+safety,domain,3,alum-109,"Skilled in Compliance, Risk Assessment, Safety Management",skill overlap,Compliance; Risk Assessment; Safety Management,true,true
+safety,domain,3,alum-109,Mentors on Aviation safety and Compliance careers,mentorship topic overlap,Aviation safety; Compliance careers,true,true
+safety,domain,3,alum-109,Works as Safety Manager at Global Aviation Services (Aviation),current role overlap,Safety Manager at Global Aviation Services,true,true
+safety,domain,4,alum-121,"Skilled in Auditing, Safety Management",skill overlap,Auditing; Safety Management,true,true
+safety,domain,4,alum-121,Mentors on Aviation safety and Compliance careers,mentorship topic overlap,Aviation safety; Compliance careers,true,true
+safety,domain,4,alum-121,Works as Safety Manager at Rift Valley Aviation (Aviation),current role overlap,Safety Manager at Rift Valley Aviation,true,true
+safety,domain,5,alum-061,"Skilled in Auditing, Risk Assessment, Safety Management",skill overlap,Auditing; Risk Assessment; Safety Management,true,true
+safety,domain,5,alum-061,Mentors on Aviation safety and Compliance careers,mentorship topic overlap,Aviation safety; Compliance careers,true,true
+safety,domain,5,alum-061,Former Compliance Analyst in Safety & Quality at Kenya Airways,former KQ role overlap,Compliance Analyst in Safety & Quality,true,true
+ground,domain,1,alum-117,Skilled in Operations Coordination,skill overlap,Operations Coordination,true,true
+ground,domain,1,alum-117,Mentors on Airport operations and Ground handling,mentorship topic overlap,Airport operations; Ground handling,true,true
+ground,domain,1,alum-117,Works as Operations Lead at East Africa Logistics (Logistics),current role overlap,Operations Lead at East Africa Logistics,true,true
+ground,domain,2,alum-105,"Skilled in Ground Handling, Operations Coordination, Team Supervision",skill overlap,Ground Handling; Operations Coordination; Team Supervision,true,true
+ground,domain,2,alum-105,Mentors on Airport operations and Ground handling,mentorship topic overlap,Airport operations; Ground handling,true,true
+ground,domain,2,alum-105,Works as Airport Operations Manager at Jambo Ground Services (Aviation),current role overlap,Airport Operations Manager at Jambo Ground Services,true,true
+ground,domain,3,alum-007,"Skilled in Ground Handling, Operations Coordination",skill overlap,Ground Handling; Operations Coordination,true,true
+ground,domain,3,alum-007,Mentors on Airport operations and Ground handling,mentorship topic overlap,Airport operations; Ground handling,true,true
+ground,domain,3,alum-007,Former Ramp Supervisor in Ground Operations at Kenya Airways,former KQ role overlap,Ramp Supervisor in Ground Operations,true,true
+ground,domain,4,alum-093,"Skilled in Ground Handling, Operations Coordination",skill overlap,Ground Handling; Operations Coordination,true,true
+ground,domain,4,alum-093,Mentors on Airport operations and Ground handling,mentorship topic overlap,Airport operations; Ground handling,true,true
+ground,domain,4,alum-093,Works as Airport Operations Manager at Global Aviation Services (Aviation),current role overlap,Airport Operations Manager at Global Aviation Services,true,true
+ground,domain,5,alum-069,"Skilled in Ground Handling, Operations Coordination",skill overlap,Ground Handling; Operations Coordination,true,true
+ground,domain,5,alum-069,Mentors on Airport operations and Ground handling,mentorship topic overlap,Airport operations; Ground handling,true,true
+ground,domain,5,alum-069,Former Ground Operations Officer in Ground Operations at Kenya Airways,former KQ role overlap,Ground Operations Officer in Ground Operations,true,true
+commercial,domain,1,alum-120,"Skilled in Market Analysis, Partnership Management, Sales",skill overlap,Market Analysis; Partnership Management; Sales,true,true
+commercial,domain,1,alum-120,Mentors on Sales and Marketing,mentorship topic overlap,Sales; Marketing,true,true
+commercial,domain,1,alum-120,Works as Revenue Manager at Coastline Resorts (Hospitality),current role overlap,Revenue Manager at Coastline Resorts,true,true
+commercial,domain,2,alum-192,"Skilled in Digital Marketing, Partnership Management, Revenue Management",skill overlap,Digital Marketing; Partnership Management; Revenue Management,true,true
+commercial,domain,2,alum-192,Mentors on Sales and Marketing,mentorship topic overlap,Sales; Marketing,true,true
+commercial,domain,2,alum-192,Former Marketing Officer in Commercial at Kenya Airways,former KQ role overlap,Marketing Officer in Commercial,true,true
+commercial,domain,3,alum-060,"Skilled in Market Analysis, Marketing, Partnership Management",skill overlap,Market Analysis; Marketing; Partnership Management,true,true
+commercial,domain,3,alum-060,Mentors on Sales and Marketing,mentorship topic overlap,Sales; Marketing,true,true
+commercial,domain,3,alum-060,Works as Marketing Manager at Safiri Telecom (Telecommunications),current role overlap,Marketing Manager at Safiri Telecom,true,true
+commercial,domain,4,alum-168,"Skilled in Marketing, Partnership Management, Revenue Management",skill overlap,Marketing; Partnership Management; Revenue Management,true,true
+commercial,domain,4,alum-168,Mentors on Sales and Marketing,mentorship topic overlap,Sales; Marketing,true,true
+commercial,domain,4,alum-168,Former Marketing Officer in Commercial at Kenya Airways,former KQ role overlap,Marketing Officer in Commercial,true,true
+commercial,domain,5,alum-108,"Skilled in Market Analysis, Partnership Management, Revenue Management",skill overlap,Market Analysis; Partnership Management; Revenue Management,true,true
+commercial,domain,5,alum-108,Mentors on Sales and Marketing,mentorship topic overlap,Sales; Marketing,true,true
+commercial,domain,5,alum-108,Works as Revenue Manager at Coastline Resorts (Hospitality),current role overlap,Revenue Manager at Coastline Resorts,true,true
+procurement,domain,1,alum-194,"Skilled in Contract Management, Negotiation, Procurement",skill overlap,Contract Management; Negotiation; Procurement,true,true
+procurement,domain,1,alum-194,Mentors on Procurement,mentorship topic overlap,Procurement,true,true
+procurement,domain,1,alum-194,Works as Contracts Manager at Tamu Industrial (Energy),current role overlap,Contracts Manager at Tamu Industrial,true,true
+procurement,domain,2,alum-086,"Skilled in Contract Management, Procurement",skill overlap,Contract Management; Procurement,true,true
+procurement,domain,2,alum-086,Mentors on Procurement,mentorship topic overlap,Procurement,true,true
+procurement,domain,2,alum-086,Works as Contracts Manager at Tamu Industrial (Energy),current role overlap,Contracts Manager at Tamu Industrial,true,true
+procurement,domain,3,alum-098,"Skilled in Contract Management, Negotiation, Procurement",skill overlap,Contract Management; Negotiation; Procurement,true,true
+procurement,domain,3,alum-098,Mentors on Procurement,mentorship topic overlap,Procurement,true,true
+procurement,domain,3,alum-098,Works as Procurement Manager at East Africa Logistics (Logistics),current role overlap,Procurement Manager at East Africa Logistics,true,true
+procurement,domain,4,alum-004,"Skilled in Contract Management, Negotiation, Procurement",skill overlap,Contract Management; Negotiation; Procurement,true,true
+procurement,domain,4,alum-004,Mentors on Procurement,mentorship topic overlap,Procurement,true,true
+procurement,domain,5,alum-008,"Skilled in Contract Management, Negotiation",skill overlap,Contract Management; Negotiation,true,true
+procurement,domain,5,alum-008,Mentors on Procurement,mentorship topic overlap,Procurement,true,true
+procurement,domain,5,alum-008,Works as Procurement Officer at Aero Systems Ltd (Consulting),current role overlap,Procurement Officer at Aero Systems Ltd,true,true
+service-quality,domain,1,alum-131,"Skilled in Complaint Handling, Customer Service, Service Quality",skill overlap,Complaint Handling; Customer Service; Service Quality,true,true
+service-quality,domain,1,alum-131,Mentors on Customer experience and Service careers,mentorship topic overlap,Customer experience; Service careers,true,true
+service-quality,domain,1,alum-131,Works as Customer Experience Manager at Safiri Telecom (Telecommunications),current role overlap,Customer Experience Manager at Safiri Telecom,true,true
+service-quality,domain,2,alum-006,"Skilled in Customer Service, Service Quality",skill overlap,Customer Service; Service Quality,true,true
+service-quality,domain,2,alum-006,Mentors on Customer experience and Service careers,mentorship topic overlap,Customer experience; Service careers,true,true
+service-quality,domain,2,alum-006,Works as Service Quality Analyst at Global Aviation Services (Aviation),current role overlap,Service Quality Analyst at Global Aviation Services,true,true
+service-quality,domain,3,alum-059,Skilled in Service Quality,skill overlap,Service Quality,true,true
+service-quality,domain,3,alum-059,Mentors on Customer experience and Service careers,mentorship topic overlap,Customer experience; Service careers,true,true
+service-quality,domain,3,alum-059,Works as Service Design Lead at Nairobi Digital Services (Technology),current role overlap,Service Design Lead at Nairobi Digital Services,true,true
+service-quality,domain,4,alum-083,"Skilled in Complaint Handling, Customer Service, Service Design",skill overlap,Complaint Handling; Customer Service; Service Design,true,true
+service-quality,domain,4,alum-083,Mentors on Customer experience and Service careers,mentorship topic overlap,Customer experience; Service careers,true,true
+service-quality,domain,4,alum-083,Works as Service Design Lead at Mkopo Fintech (Technology),current role overlap,Service Design Lead at Mkopo Fintech,true,true
+service-quality,domain,5,alum-035,Skilled in Customer Service,skill overlap,Customer Service,true,true
+service-quality,domain,5,alum-035,Mentors on Customer experience and Service careers,mentorship topic overlap,Customer experience; Service careers,true,true
+service-quality,domain,5,alum-035,Works as Customer Service Agent at Nairobi Digital Services (Technology),current role overlap,Customer Service Agent at Nairobi Digital Services,true,true
+t-instructor,transition,1,alum-159,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+t-instructor,transition,2,alum-171,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+t-instructor,transition,3,alum-087,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+t-instructor,transition,4,alum-147,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+t-instructor,transition,5,alum-050,Mentors on Pilot career development,mentorship topic overlap,Pilot career development,true,true
+t-banking,transition,1,alum-175,Mentors on Moving from aviation finance into banking,mentorship topic overlap,Moving from aviation finance into banking,true,true
+t-banking,transition,2,alum-187,Mentors on Moving from aviation finance into banking,mentorship topic overlap,Moving from aviation finance into banking,true,true
+t-banking,transition,3,alum-127,Mentors on Moving from aviation finance into banking,mentorship topic overlap,Moving from aviation finance into banking,true,true
+t-banking,transition,4,alum-159,Mentors on Aviation operations and Leadership in aviation,mentorship topic overlap,Aviation operations; Leadership in aviation,true,true
+t-banking,transition,4,alum-159,Works as Flight Operations Manager at Global Aviation Services (Aviation),current role overlap,Flight Operations Manager at Global Aviation Services,true,true
+t-banking,transition,5,alum-192,Now Business Development Manager at Meridian Logistics,fallback: current role,Business Development Manager at Meridian Logistics,true,n/a (fallback states facts only)
+t-banking,transition,5,alum-192,Previously Marketing Officer in Commercial,fallback: former role,Marketing Officer in Commercial,true,n/a (fallback states facts only)
+t-hospitality,transition,1,alum-064,Now Guest Experience Manager at Coastline Resorts,fallback: current role,Guest Experience Manager at Coastline Resorts,true,n/a (fallback states facts only)
+t-hospitality,transition,1,alum-064,Previously Purser in Cabin Services,fallback: former role,Purser in Cabin Services,true,n/a (fallback states facts only)
+t-hospitality,transition,2,alum-088,Now Guest Experience Manager at Safari Hospitality Group,fallback: current role,Guest Experience Manager at Safari Hospitality Group,true,n/a (fallback states facts only)
+t-hospitality,transition,2,alum-088,Previously Purser in Cabin Services,fallback: former role,Purser in Cabin Services,true,n/a (fallback states facts only)
+t-hospitality,transition,3,alum-120,Now Revenue Manager at Coastline Resorts,fallback: current role,Revenue Manager at Coastline Resorts,true,n/a (fallback states facts only)
+t-hospitality,transition,3,alum-120,Previously Sales Executive in Commercial,fallback: former role,Sales Executive in Commercial,true,n/a (fallback states facts only)
+t-hospitality,transition,4,alum-107,Now Guest Relations Manager at Safari Hospitality Group,fallback: current role,Guest Relations Manager at Safari Hospitality Group,true,n/a (fallback states facts only)
+t-hospitality,transition,4,alum-107,Previously Service Quality Analyst in Customer Experience,fallback: former role,Service Quality Analyst in Customer Experience,true,n/a (fallback states facts only)
+t-hospitality,transition,5,alum-112,Now Guest Experience Manager at Safari Hospitality Group,fallback: current role,Guest Experience Manager at Safari Hospitality Group,true,n/a (fallback states facts only)
+t-hospitality,transition,5,alum-112,Previously Cabin Crew Supervisor in Cabin Services,fallback: former role,Cabin Crew Supervisor in Cabin Services,true,n/a (fallback states facts only)
+t-security,transition,1,alum-198,Now Cybersecurity Analyst at Mkopo Fintech,fallback: current role,Cybersecurity Analyst at Mkopo Fintech,true,n/a (fallback states facts only)
+t-security,transition,1,alum-198,Previously Software Engineer in ICT / Digital,fallback: former role,Software Engineer in ICT / Digital,true,n/a (fallback states facts only)
+t-security,transition,2,alum-078,Former Systems Administrator in ICT / Digital at Kenya Airways,former KQ role overlap,Systems Administrator in ICT / Digital,true,true
+t-security,transition,3,alum-014,Works as Systems Administrator at SkyTech Solutions (Aviation),current role overlap,Systems Administrator at SkyTech Solutions,true,true
+t-security,transition,3,alum-014,Former Systems Administrator in ICT / Digital at Kenya Airways,former KQ role overlap,Systems Administrator in ICT / Digital,true,true
+t-security,transition,4,alum-174,Former Systems Administrator in ICT / Digital at Kenya Airways,former KQ role overlap,Systems Administrator in ICT / Digital,true,true
+t-security,transition,5,alum-186,Now IT Manager at East Africa Logistics,fallback: current role,IT Manager at East Africa Logistics,true,n/a (fallback states facts only)
+t-security,transition,5,alum-186,Previously Network Engineer in ICT / Digital,fallback: former role,Network Engineer in ICT / Digital,true,n/a (fallback states facts only)
+t-coaching,transition,1,alum-152,Skilled in Coaching,skill overlap,Coaching,true,true
+t-coaching,transition,1,alum-152,Mentors on People management,mentorship topic overlap,People management,true,true
+t-coaching,transition,1,alum-152,Works as Leadership Coach at Independent Consultant (Consulting),current role overlap,Leadership Coach at Independent Consultant,true,true
+t-coaching,transition,2,alum-176,Skilled in Coaching,skill overlap,Coaching,true,true
+t-coaching,transition,2,alum-176,Mentors on People management,mentorship topic overlap,People management,true,true
+t-coaching,transition,2,alum-176,Works as Leadership Coach at Baobab Advisory (Consulting),current role overlap,Leadership Coach at Baobab Advisory,true,true
+t-coaching,transition,3,alum-104,Skilled in Coaching,skill overlap,Coaching,true,true
+t-coaching,transition,3,alum-104,Mentors on People management,mentorship topic overlap,People management,true,true
+t-coaching,transition,4,alum-136,Skilled in Training Delivery,skill overlap,Training Delivery,true,true
+t-coaching,transition,4,alum-136,Works as Cabin Crew Trainer at Horizon Flight Academy (Education),current role overlap,Cabin Crew Trainer at Horizon Flight Academy,true,true
+t-coaching,transition,5,alum-188,"Skilled in Coaching, Training",skill overlap,Coaching; Training,true,true
+t-coaching,transition,5,alum-188,Mentors on People management,mentorship topic overlap,People management,true,true
+t-consulting,transition,1,alum-075,Works as Aviation Safety Consultant at AeroAssure Advisory (Consulting),current role overlap,Aviation Safety Consultant at AeroAssure Advisory,true,true
+t-consulting,transition,2,alum-123,Works as Aviation Safety Consultant at AeroAssure Advisory (Consulting),current role overlap,Aviation Safety Consultant at AeroAssure Advisory,true,true
+t-consulting,transition,3,alum-099,Works as Aviation Safety Consultant at AeroAssure Advisory (Consulting),current role overlap,Aviation Safety Consultant at AeroAssure Advisory,true,true
+t-consulting,transition,4,alum-101,Works as Engineering Consultant at Independent Consultant (Consulting),current role overlap,Engineering Consultant at Independent Consultant,true,true
+t-consulting,transition,5,alum-079,Now Audit Associate at Baobab Advisory,fallback: current role,Audit Associate at Baobab Advisory,true,n/a (fallback states facts only)
+t-consulting,transition,5,alum-079,Previously Financial Analyst in Finance,fallback: former role,Financial Analyst in Finance,true,n/a (fallback states facts only)
+t-telecom,transition,1,alum-060,Now Marketing Manager at Safiri Telecom,fallback: current role,Marketing Manager at Safiri Telecom,true,n/a (fallback states facts only)
+t-telecom,transition,1,alum-060,Previously Revenue Analyst in Commercial,fallback: former role,Revenue Analyst in Commercial,true,n/a (fallback states facts only)
+t-telecom,transition,2,alum-017,Skilled in Networking,skill overlap,Networking,true,true
+t-telecom,transition,2,alum-017,Works as Network Engineer at CloudWorks Africa (Aviation),current role overlap,Network Engineer at CloudWorks Africa,true,true
+t-telecom,transition,3,alum-004,Now Legal Officer at CloudWorks Africa,fallback: current role,Legal Officer at CloudWorks Africa,true,n/a (fallback states facts only)
+t-telecom,transition,3,alum-004,Previously Legal Officer in Corporate Services,fallback: former role,Legal Officer in Corporate Services,true,n/a (fallback states facts only)
+t-telecom,transition,4,alum-031,Now Marketing Officer at East Africa Logistics,fallback: current role,Marketing Officer at East Africa Logistics,true,n/a (fallback states facts only)
+t-telecom,transition,4,alum-031,Previously Revenue Analyst in Commercial,fallback: former role,Revenue Analyst in Commercial,true,n/a (fallback states facts only)
+t-telecom,transition,5,alum-194,Now Contracts Manager at Tamu Industrial,fallback: current role,Contracts Manager at Tamu Industrial,true,n/a (fallback states facts only)
+t-telecom,transition,5,alum-194,Previously Legal Officer in Corporate Services,fallback: former role,Legal Officer in Corporate Services,true,n/a (fallback states facts only)
+t-data,transition,1,alum-078,Now DevOps Engineer at Nairobi Digital Services,fallback: current role,DevOps Engineer at Nairobi Digital Services,true,n/a (fallback states facts only)
+t-data,transition,1,alum-078,Previously Systems Administrator in ICT / Digital,fallback: former role,Systems Administrator in ICT / Digital,true,n/a (fallback states facts only)
+t-data,transition,2,alum-174,Now DevOps Engineer at Nairobi Digital Services,fallback: current role,DevOps Engineer at Nairobi Digital Services,true,n/a (fallback states facts only)
+t-data,transition,2,alum-174,Previously Systems Administrator in ICT / Digital,fallback: former role,Systems Administrator in ICT / Digital,true,n/a (fallback states facts only)
+t-data,transition,3,alum-017,Now Network Engineer at CloudWorks Africa,fallback: current role,Network Engineer at CloudWorks Africa,true,n/a (fallback states facts only)
+t-data,transition,3,alum-017,Previously Systems Administrator in ICT / Digital,fallback: former role,Systems Administrator in ICT / Digital,true,n/a (fallback states facts only)
+t-data,transition,4,alum-186,Now IT Manager at East Africa Logistics,fallback: current role,IT Manager at East Africa Logistics,true,n/a (fallback states facts only)
+t-data,transition,4,alum-186,Previously Network Engineer in ICT / Digital,fallback: former role,Network Engineer in ICT / Digital,true,n/a (fallback states facts only)
+t-data,transition,5,alum-198,Now Cybersecurity Analyst at Mkopo Fintech,fallback: current role,Cybersecurity Analyst at Mkopo Fintech,true,n/a (fallback states facts only)
+t-data,transition,5,alum-198,Previously Software Engineer in ICT / Digital,fallback: former role,Software Engineer in ICT / Digital,true,n/a (fallback states facts only)
+t-manufacturing,transition,1,alum-085,Mentors on Quality assurance,mentorship topic overlap,Quality assurance,true,true
+t-manufacturing,transition,1,alum-085,Works as Quality Assurance Lead at East Africa Engineering Works (Manufacturing),current role overlap,Quality Assurance Lead at East Africa Engineering Works,true,true
+t-manufacturing,transition,1,alum-085,Former Quality Assurance Officer in Safety & Quality at Kenya Airways,former KQ role overlap,Quality Assurance Officer in Safety & Quality,true,true
+t-manufacturing,transition,2,alum-077,"Skilled in Aircraft Maintenance, Maintenance Planning",skill overlap,Aircraft Maintenance; Maintenance Planning,true,true
+t-manufacturing,transition,2,alum-077,Mentors on Maintenance leadership,mentorship topic overlap,Maintenance leadership,true,true
+t-manufacturing,transition,2,alum-077,Works as Maintenance Manager at East Africa Engineering Works (Manufacturing),current role overlap,Maintenance Manager at East Africa Engineering Works,true,true
+t-manufacturing,transition,3,alum-065,Skilled in Maintenance Planning,skill overlap,Maintenance Planning,true,true
+t-manufacturing,transition,3,alum-065,Mentors on Maintenance leadership,mentorship topic overlap,Maintenance leadership,true,true
+t-manufacturing,transition,3,alum-065,Works as Maintenance Manager at East Africa Engineering Works (Manufacturing),current role overlap,Maintenance Manager at East Africa Engineering Works,true,true
+t-manufacturing,transition,4,alum-169,Skilled in Quality Assurance,skill overlap,Quality Assurance,true,true
+t-manufacturing,transition,4,alum-169,Mentors on Quality assurance,mentorship topic overlap,Quality assurance,true,true
+t-manufacturing,transition,4,alum-169,Former Quality Assurance Officer in Safety & Quality at Kenya Airways,former KQ role overlap,Quality Assurance Officer in Safety & Quality,true,true
+t-manufacturing,transition,5,alum-061,Mentors on Quality assurance,mentorship topic overlap,Quality assurance,true,true
+t-manufacturing,transition,5,alum-061,Works as Quality Assurance Lead at Tamu Industrial (Manufacturing),current role overlap,Quality Assurance Lead at Tamu Industrial,true,true
+t-manufacturing,transition,5,alum-061,Former Compliance Analyst in Safety & Quality at Kenya Airways,former KQ role overlap,Compliance Analyst in Safety & Quality,true,true
+t-energy,transition,1,alum-098,Now Procurement Manager at East Africa Logistics,fallback: current role,Procurement Manager at East Africa Logistics,true,n/a (fallback states facts only)
+t-energy,transition,1,alum-098,Previously Procurement Officer in Corporate Services,fallback: former role,Procurement Officer in Corporate Services,true,n/a (fallback states facts only)
+t-energy,transition,2,alum-086,Works as Contracts Manager at Tamu Industrial (Energy),current role overlap,Contracts Manager at Tamu Industrial,true,true
+t-energy,transition,3,alum-145,Works as Health and Safety Advisor at Tamu Industrial (Energy),current role overlap,Health and Safety Advisor at Tamu Industrial,true,true
+t-energy,transition,4,alum-181,Works as Health and Safety Advisor at Tamu Industrial (Energy),current role overlap,Health and Safety Advisor at Tamu Industrial,true,true
+t-energy,transition,5,alum-027,Now Sales Executive at Global Aviation Services,fallback: current role,Sales Executive at Global Aviation Services,true,n/a (fallback states facts only)
+t-energy,transition,5,alum-027,Previously Marketing Officer in Commercial,fallback: former role,Marketing Officer in Commercial,true,n/a (fallback states facts only)
