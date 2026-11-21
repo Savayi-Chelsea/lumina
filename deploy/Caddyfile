@@ -1,0 +1,6 @@
+# Public entry point. Caddy obtains and renews the HTTPS certificate for
+# SITE_ADDRESS automatically (Let's Encrypt) and forwards to the web app.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:3000
+}

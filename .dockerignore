@@ -1,0 +1,21 @@
+# Keep secrets, local state and bulky build output out of Docker images.
+.env
+.env.*
+!.env.example
+.demo-accounts.json
+deploy/.env
+.git
+.github
+.next
+node_modules
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.logs
+artifacts
+evaluation/*
+!evaluation/results
+docs
+tests
+tsconfig.tsbuildinfo

@@ -50,3 +50,4 @@ next-env.d.ts
 
 # local demo sign-in accounts (scripts/demo-accounts.mjs); contains passwords
 /.demo-accounts.json
+!deploy/.env.production.example

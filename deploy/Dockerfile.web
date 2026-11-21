@@ -1,0 +1,25 @@
+# Lumina web app (Next.js 16) for production: `next build` then `next start`.
+# Build context is the repository root (see deploy/compose.prod.yml).
+FROM node:24-bookworm-slim AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build && npm prune --omit=dev
+
+FROM node:24-bookworm-slim
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
+COPY --from=build /app/package.json /app/next.config.ts ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+# Kept so `npm run demo:accounts` can be run inside the container if needed.
+COPY --from=build /app/scripts ./scripts
+COPY --from=build /app/src ./src
+# The admin matching page reads its evaluation results at runtime.
+COPY --from=build /app/evaluation/results ./evaluation/results
+USER node
+# Host networking: listen on loopback only; Caddy is the only public entry point.
+CMD ["npx", "next", "start", "--hostname", "127.0.0.1", "--port", "3000"]

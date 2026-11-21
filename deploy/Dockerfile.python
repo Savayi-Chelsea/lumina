@@ -1,0 +1,15 @@
+# One image for the Python side of Lumina: the matching API (FastAPI + BGE
+# embeddings), the Kafka re-indexing worker and the email worker. Each compose
+# service picks its own command. Build context is the repository root.
+FROM python:3.14-slim-bookworm
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 HF_HOME=/hf-cache
+COPY requirements.txt ./
+# CPU-only PyTorch (the default wheel bundles CUDA, several GB we cannot use).
+RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+COPY services ./services
+COPY scripts ./scripts
+COPY database ./database
+RUN useradd --create-home --uid 1000 lumina && mkdir -p /hf-cache && chown lumina /hf-cache
+USER lumina
+CMD ["python", "-m", "uvicorn", "services.matching.app.main:app", "--host", "127.0.0.1", "--port", "8000"]
