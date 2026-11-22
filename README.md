@@ -1024,6 +1024,21 @@ deterministic and safe to rerun (it previews without `--apply`):
 Real members' photos, covers and relationships are never changed, except the ones a
 `--member` option explicitly adds.
 
+#### 500 alumni instead of 200
+
+The site can hold the same 500 profiles as the evaluation's scale-up (the 200 demo
+alumni plus ALUM-201 to ALUM-500 from `evaluation/datasets/alumni_500`). Additive and
+safe to rerun; existing people and relationships are not changed:
+
+```bash
+.venv/bin/python scripts/extend_demo_alumni.py --apply      # 300 profiles, skills, history, ~4,600 connections
+.venv/bin/python scripts/index_profile_embeddings.py        # embeddings for mentor search
+.venv/bin/python scripts/generate_avatars.py --apply        # portraits and covers
+```
+
+The Chapter 4 200-profile results were measured on a 200-profile database; reproduce
+them on a fresh setup (which seeds 200), not on an extended one.
+
 ### Session recaps
 
 After an accepted mentorship, either person can share a recap (topic, date and
