@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/icon";
 import { requireSession } from "@/lib/session";
 import { ownProfileView } from "@/lib/alumni-directory";
 import { connectionCount, suggestions } from "@/lib/social";
@@ -24,12 +25,12 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
   const notice = <>
     {verified && <p className="card notice" role="status">Your alumni account is verified. Complete your profile so colleagues can find you.</p>}
     {saved && <p className="card notice" role="status">Profile saved.</p>}
-    {!raw?.profile_completed && <section className="card li-complete"><div><h2>Complete your profile</h2><p className="muted">Add your former KQ role, department and service years to finish setting up. {progress.completed} of {progress.total} details added.</p></div><Link className="button" href="/profile/edit">Complete profile</Link></section>}
+    {!raw?.profile_completed && <section className="card li-complete"><div><h2>Complete your profile</h2><p className="muted">Add your former KQ role, department and service years to finish setting up. {progress.completed} of {progress.total} details added.</p></div><div className="actions"><Link className="button" href="/profile/edit">Complete profile</Link><Link className="button secondary" href="/profile/edit/cv">Fill in from CV</Link></div></section>}
   </>;
   return <ProfileView own profile={view} connections={connections} notice={notice}
     recaps={community ? <RecapSection recaps={recaps} returnTo="/profile" own /> : undefined}
     sidebar={<>
-      <section className="card li-people"><h2>Profile strength</h2><progress value={progress.completed} max={progress.total} aria-label="Profile details completed" /><p className="small muted">{progress.percentage}% complete</p></section>
+      <section className="card li-people"><h2>Profile strength</h2><progress value={progress.completed} max={progress.total} aria-label="Profile details completed" /><p className="small muted">{progress.percentage}% complete</p>{progress.percentage < 100 && <Link className="text-link" href="/profile/edit/cv">Save time: fill in from your CV<Icon name="arrow" /></Link>}</section>
       <PeopleList title="People you may know" people={people.map(person => ({ id: person.profile_id, full_name: person.full_name, headline: person.headline, image: person.image }))} />
     </>} />;
 }

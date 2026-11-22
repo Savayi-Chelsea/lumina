@@ -1,0 +1,35 @@
+GRACE MUTHONI
+Cloud Engineer | AWS Certified Solutions Architect – Associate
+Nairobi, Kenya
+grace.muthoni@example.com | +254 712 345 678 | linkedin.com/in/grace-muthoni-example
+
+PROFESSIONAL SUMMARY
+Cloud engineer with eleven years in IT, five of them at Kenya Airways supporting airport and crew systems.
+I design and automate AWS infrastructure with Terraform and help teams move workloads to the cloud.
+
+WORK EXPERIENCE
+Cloud Engineer
+CloudWorks Africa
+Jan 2023 – Present
+• Run AWS landing zones for 12 clients using Terraform and GitHub Actions
+• Cut monthly cloud spend by 18% through rightsizing and savings plans
+Systems Administrator
+Kenya Airways
+March 2018 – December 2022
+Nairobi, Kenya
+• Administered 140 Linux and Windows Server hosts for airport and crew systems
+• Led the migration of the crew rostering system to a hybrid cloud
+IT Support Officer
+Safaricom PLC
+06/2014 - 02/2018
+• First-line support for 400 staff; Active Directory and Microsoft 365 administration
+
+EDUCATION
+BSc Computer Science, University of Nairobi, 2010 - 2014
+
+SKILLS
+AWS, Terraform, Linux Administration, Kubernetes, Python, Networking, ITIL
+Docker; CI/CD; Incident Response
+
+REFEREES
+Available on request
