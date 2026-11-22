@@ -6,6 +6,8 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/auth", () => ({ auth: mocks.auth }));
 vi.mock("@/lib/auth-environment", () => ({ isAuthConfigured: mocks.configured }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+// Outside a real request Next's connection() throws; here it only needs to resolve.
+vi.mock("next/server", () => ({ connection: async () => {} }));
 afterEach(() => vi.resetAllMocks());
 
 describe("server session guard", () => {
