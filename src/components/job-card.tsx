@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Icon } from "@/components/icon";
 import type { ExternalJob } from "@/lib/job-feed";
 import { salaryLabel } from "@/lib/job-format";
@@ -51,13 +50,4 @@ export function JobCard({ job, compact = false }: { job: ExternalJob; compact?: 
       </div>
     </div>
   </article>;
-}
-
-export function OpportunityTabs({ active, jobCount }: { active: "community" | "jobs"; jobCount?: number }) {
-  return <nav className="opportunity-tabs" aria-label="Opportunity listings">
-    <Link href="/opportunities" aria-current={active === "community" ? "page" : undefined}>From the community</Link>
-    <Link href="/opportunities/jobs" aria-current={active === "jobs" ? "page" : undefined}>
-      Jobs in Kenya{typeof jobCount === "number" && jobCount > 0 ? <span className="tab-count">{jobCount}</span> : null}
-    </Link>
-  </nav>;
 }

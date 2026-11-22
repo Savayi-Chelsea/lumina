@@ -1,6 +1,6 @@
 import Link from "next/link";
-import type { CommunityEvent, Opportunity } from "@/lib/community";
-import { EVENT_FORMATS, WORK_MODES, eventDay, eventWhen, formatDate } from "@/lib/community-input";
+import type { CommunityEvent } from "@/lib/community";
+import { EVENT_FORMATS, eventDay, eventWhen } from "@/lib/community-input";
 import { Icon, type IconName } from "./icon";
 
 const categoryIcon: Record<string, IconName> = { Reunion: "people", "Career conversation": "compass", "Mentorship circle": "spark", Workshop: "briefcase", Networking: "globe", "Community service": "people" };
@@ -28,24 +28,6 @@ export function EventCard({ event, index = 0 }: { event: CommunityEvent; index?:
           : <span className="small muted">{event.registration_count} attending{left !== null ? ` · ${left} places left` : ""}</span>}
       </div>
       <Link className="text-link" href={`/events/${event.id}`} aria-label={`View event: ${event.title}`}>View event<Icon name="arrow" /></Link>
-    </div>
-  </article>;
-}
-
-export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
-  return <article className="opportunity-card">
-    <span className="opportunity-icon"><Icon name="briefcase" width={25} height={25} /></span>
-    <div>
-      <div className="card-meta"><span>{opportunity.opportunity_type}</span><span>{WORK_MODES[opportunity.work_mode]}</span></div>
-      <h3><Link href={`/opportunities/${opportunity.id}`}>{opportunity.title}</Link></h3>
-      <p>{opportunity.organization}</p>
-      <p className="location">{opportunity.location}</p>
-      <p className="opportunity-summary">{opportunity.summary}</p>
-      <div className="event-card-footer">
-        {opportunity.applied && <span className="availability"><Icon name="check" width={12} height={12} />Applied</span>}
-        <span className="small muted">{opportunity.closes_on ? `Closes ${formatDate(opportunity.closes_on)}` : "Open until filled"}</span>
-      </div>
-      <Link className="text-link" href={`/opportunities/${opportunity.id}`} aria-label={`View opportunity: ${opportunity.title}`}>View details<Icon name="arrow" /></Link>
     </div>
   </article>;
 }

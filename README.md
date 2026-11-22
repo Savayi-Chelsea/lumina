@@ -23,7 +23,9 @@ Current functionality includes:
 - FastAPI matching service with semantic mentor search
 - Email/password and Google sign-in sharing one Lumina session model
 - Emailed, single-use password reset (local Mailpit inbox)
-- Events with RSVP, capacity, "who's going" and Add to calendar (Google, Outlook.com, .ics), and an Opportunities board with Apply through Lumina, both admin-managed
+- Admin-managed events with RSVP, capacity, "who's going" and Add to calendar (Google, Outlook.com, .ics)
+- Opportunities: a daily feed of real jobs in Kenya (JobWebKenya on-site, Himalayas remote)
+- Fill in your profile from a CV (PDF or Word), read in the browser and reviewed before saving
 - Admin user management (suspend and reinstate)
 - 200 synthetic alumni with work histories
 - Reproducible matching evaluation (P@5, R@5, F1@5, MRR) against a keyword baseline
@@ -826,21 +828,19 @@ tables. Without `--apply` it previews. Both are idempotent and also included in
 
 ### Opportunities
 
-- `/opportunities` lists published listings that have not passed their closing
-  date, with a type filter (Job, Contract, Advisory, Volunteer, Internship) and search.
-- `/opportunities/[id]` shows the description and plain-text "How to apply", then
-  **Apply through Lumina**: an optional note (up to 1,000 characters) sent with the
-  member's name, email and Lumina profile. Members see "You applied on …" and can
-  withdraw while the listing is open. Cards show "Applied" on listings they applied to.
-  No external links are stored or rendered (migration 011, `opportunity_applications`).
-- Admins see the applicant count on `/admin/opportunities` and each applicant's
-  name, email, current role, note and profile link on the listing's edit page.
-  `seed_community.py --apply` adds a few synthetic applicants to each open sample listing.
+- **Opportunities** shows the Kenya job feed only (`/opportunities` redirects to
+  `/opportunities/jobs`, keeping any search). Home's "What could come next?" shows four
+  jobs, picked for the member's former department when possible.
+- Admin-posted community listings ("From the community") were retired on 2026-11-22:
+  their member and admin pages were removed. The `opportunities` and
+  `opportunity_applications` tables and the library code in `src/lib/community.ts`
+  (with its tests) remain, so the feature can be restored.
 
 ### Administration
 
-- `/admin/events` and `/admin/opportunities`: create, edit, publish, unpublish,
-  archive and restore; event pages list attendees. Drafts and archived listings
+- `/admin/events`: create, edit, publish, unpublish, archive and restore; event pages
+  list attendees. `/admin/jobs` (**Jobs feed**) shows each job source's status and has
+  **Refresh now**; `/admin/opportunities` redirects there. Drafts and archived listings
   are hidden from alumni. Validation errors keep everything the admin typed.
 - `/admin/users`: search by name or email, filter by status, and suspend or
   reinstate alumni accounts. Suspension takes effect on the person's next request,
@@ -933,6 +933,24 @@ editors under `/profile/edit`:
 | `/profile/edit/skills` | Add (up to 30, reusing existing skill names case-insensitively) and remove skills. A searchable dropdown lists 740+ skills across all fields A to Z (`src/lib/skill-catalog.ts`, plus skills already on two or more profiles); typing filters it, with names that start with the text first. Members can still add their own |
 | `/profile/edit/mentorship` | Matching consent, availability and up to 10 topics |
 | `/profile/edit/photo` | Upload a photo (cropped and resized to 400 × 400 JPEG in the browser), or remove it |
+| `/profile/edit/cv` | **Fill in from CV**: suggests headline, current role, location, About, roles with dates, skills and the Kenya Airways chapter from a PDF or Word CV; the member ticks and edits what to keep |
+
+#### Fill in from your CV
+
+- The CV is read **in the member's browser** (PDF.js via `unpdf` for PDF, `mammoth` for
+  .docx, both loaded only on that page). The file is never uploaded or stored; only the
+  details the member ticks are sent, as JSON, and validated with the same rules as the
+  individual editors (`parseCvImport` in `src/lib/profile-editor.ts`).
+- `src/lib/cv-parser.ts` is rule-based and deterministic, with no AI service, so no CV
+  content leaves the device. It recognises section headings, a date range per role
+  (`Jan 2020 – Present`, `03/2019 - 12/2021`, `2015 to 2018`), one-line headers
+  (`Title | Company | dates`, `Title at Company`) and LinkedIn's **Save to PDF** export,
+  and matches skills against the 743-skill catalog.
+- Fields already filled start unticked and show what they would replace; roles already on
+  the profile are flagged; skills respect the 30-skill limit. Saving runs in one
+  transaction and queues the profile for re-indexing (`cv_import` in the outbox).
+- Scanned (image-only) PDFs have no text to read; members are asked for a PDF exported from
+  Word, Google Docs or LinkedIn. Sample CVs for demos and tests are in `tests/fixtures/cv/`.
 
 Photos are checked by file signature (JPEG, PNG or WebP only, at most 512 KB) and stored in
 `profile_photos`. They are served by `/api/profile-photo/[id]` only to signed-in members who may
@@ -1096,12 +1114,14 @@ their account (password re-entry for password accounts; typing DELETE). Every ch
 stored in `privacy_consents` with the date and policy version. Deletion removes everything
 that belongs to the member and releases their staff-registry record so they can rejoin.
 
-### Administration: analytics, health and audit
+### Administration: insights, health and audit
+
+`/admin/analytics` and `/admin/matching` redirect to the two Insights tabs.
 
 | Page | Shows |
 | --- | --- |
-| `/admin/analytics` | Members, connections, mentorships, acceptance rate, median reply time, recaps and sessions; monthly charts and department participation (aggregates only) |
-| `/admin/matching` | Live match quality and the offline evaluation |
+| `/admin/insights` (**Insights › Community**) | Members, connections, mentorships, acceptance rate, median reply time, recaps and sessions; monthly charts and department participation (aggregates only) |
+| `/admin/insights?view=matching` (**Insights › Match quality**) | Live match quality and the offline evaluation |
 | `/admin/health` | Database, matching service, search index coverage, Kafka and re-indexing backlog, SMTP, each with a plain-language fix |
 | `/admin/audit` | Every administrative action and account deletion. The table is append-only: a database trigger rejects edits and deletes |
 

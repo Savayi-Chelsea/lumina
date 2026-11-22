@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { submitAssistance, submitVerification } from "@/app/(alumni)/verify/actions";
 
-export function VerificationForm() {
+export function VerificationForm({ departments = [] }: { departments?: string[] }) {
   const [state, action, pending] = useActionState(submitVerification, { message: "" });
   const [values, setValues] = useState({ staff_number: "", surname: "", department: "", start_year: "", end_year: "" });
   const fields = [
@@ -12,9 +12,16 @@ export function VerificationForm() {
   ] as const;
   return <form action={action} className="card">
     <h2>Check your former-KQ details</h2>
-    <p id="verification-help">All fields are required. Enter your details as they appear in your service records. Staff numbers look like SYN-ALUM-001. Case and extra spaces are accepted; department, surname and service years must otherwise match.</p>
+    <p id="verification-help">All fields are required. Enter your details as they appear in your service records. Staff numbers look like SYN-ALUM-001. Case and extra spaces are accepted; surname and service years must otherwise match.</p>
     <div className="grid">{fields.map(([name, label]) => {
       const year = name.endsWith("year");
+      if (name === "department" && departments.length) return <div className="field" key={name}>
+        <label htmlFor={name}>{label}</label>
+        <select id={name} name={name} required aria-describedby="verification-help" value={values.department} onChange={event => setValues({ ...values, department: event.target.value })}>
+          <option value="" disabled>Choose your department</option>
+          {departments.map(department => <option key={department} value={department}>{department}</option>)}
+        </select>
+      </div>;
       return <div className="field" key={name}>
         <label htmlFor={name}>{label}</label>
         <input id={name} name={name} type={year ? "number" : "text"} required

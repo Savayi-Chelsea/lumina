@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireSession } from "@/lib/session";
 import {
-  ProfileInputError, addSkill, deleteExperience, ownProfileId, parseExperience, parseMentorshipSettings, parseSkill,
+  ProfileInputError, addSkill, deleteExperience, importFromCv, ownProfileId, parseCvImport, parseExperience, parseMentorshipSettings, parseSkill,
   removePhoto, removeSkill, saveExperience, saveMentorshipSettings, savePhoto, PHOTO_MAX_BYTES,
 } from "@/lib/profile-editor";
 
@@ -77,4 +77,23 @@ export async function removePhotoAction() {
   await removePhoto(id).catch(() => undefined);
   refresh();
   redirect("/profile/edit/photo");
+}
+
+export type CvImportState = EditState & { roles?: number; skills?: number; fields?: number };
+
+/** Saves the details a member confirmed after reading their CV in the browser. */
+export async function importCvAction(_previous: CvImportState, data: FormData): Promise<CvImportState> {
+  const id = await profileId();
+  let result;
+  try { result = await importFromCv(id, parseCvImport(data.get("payload"))); }
+  catch (error) { return failure(error, "Your details could not be saved. Please try again."); }
+  refresh(); revalidatePath("/profile/edit/experience"); revalidatePath("/profile/edit/skills");
+  const parts = [
+    result.fields ? `${result.fields} profile ${result.fields === 1 ? "field" : "fields"}` : null,
+    result.roles ? `${result.roles} ${result.roles === 1 ? "role" : "roles"}` : null,
+    result.skills ? `${result.skills} ${result.skills === 1 ? "skill" : "skills"}` : null,
+  ].filter(Boolean);
+  const limit = result.overLimit ? ` ${result.overLimit} ${result.overLimit === 1 ? "skill was" : "skills were"} left out because profiles list up to 30.` : "";
+  return { ok: true, fields: result.fields, roles: result.roles, skills: result.skills,
+    message: parts.length ? `Saved ${parts.join(", ")} to your profile.${limit}` : `Nothing new to add: those details are already on your profile.${limit}` };
 }

@@ -180,6 +180,113 @@ export async function saveMentorshipSettings(profileId: string, settings: Mentor
   });
 }
 
+// ---------- Import from a CV ----------
+
+/**
+ * What a member confirmed on the "Fill in from your CV" review screen. The CV
+ * itself is read in the browser and never sent; only these confirmed values are.
+ */
+export type CvImport = {
+  fields: Partial<Record<"headline" | "biography" | "current_job_title" | "current_organization" | "industry" | "location" | "former_kq_role" | "former_kq_department", string>>;
+  kq_start_year: number | null; kq_end_year: number | null;
+  experience: { job_title: string; organization: string; start_date: string; end_date: string | null; is_current: boolean; description: string | null }[];
+  skills: string[];
+};
+const CV_FIELD_LIMITS = { headline: 200, biography: 5000, current_job_title: 150, current_organization: 200, industry: 150, location: 150, former_kq_role: 150, former_kq_department: 150 } as const;
+const CONTROL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/;
+const plain = (value: unknown, label: string, max: number) => {
+  if (typeof value !== "string") throw new ProfileInputError(`${label} is missing.`);
+  const cleaned = value.normalize("NFC").replace(/\r\n?/g, "\n").trim();
+  if (cleaned.length > max) throw new ProfileInputError(`${label} must be ${max} characters or fewer.`);
+  if (CONTROL.test(cleaned)) throw new ProfileInputError(`${label} contains unsupported characters.`);
+  return cleaned;
+};
+
+/** Validates the review screen's JSON with the same rules as the individual editors. */
+export function parseCvImport(raw: unknown, today = new Date()): CvImport {
+  if (typeof raw !== "string" || raw.length > 100_000) throw new ProfileInputError("The CV details could not be read. Please try again.");
+  let data: Record<string, unknown>;
+  try { data = JSON.parse(raw); } catch { throw new ProfileInputError("The CV details could not be read. Please try again."); }
+  if (!data || typeof data !== "object") throw new ProfileInputError("The CV details could not be read. Please try again.");
+  const thisMonth = today.toISOString().slice(0, 7);
+  const fields: CvImport["fields"] = {};
+  const given = (data.fields && typeof data.fields === "object" ? data.fields : {}) as Record<string, unknown>;
+  for (const [key, max] of Object.entries(CV_FIELD_LIMITS) as [keyof typeof CV_FIELD_LIMITS, number][]) {
+    if (given[key] === undefined) continue;
+    const value = plain(given[key], key.replaceAll("_", " "), max);
+    if (value) fields[key] = value;
+  }
+  const year = (value: unknown, label: string) => {
+    if (value === undefined || value === null || value === "") return null;
+    const n = Number(value);
+    if (!Number.isInteger(n) || n < 1977 || n > today.getFullYear()) throw new ProfileInputError(`${label} must be between 1977 and the current year.`);
+    return n;
+  };
+  const kq_start_year = year(data.kq_start_year, "KQ start year"), kq_end_year = year(data.kq_end_year, "KQ end year");
+  if (kq_start_year && kq_end_year && kq_end_year < kq_start_year) throw new ProfileInputError("KQ end year must be on or after start year.");
+  const entries = Array.isArray(data.experience) ? data.experience : [];
+  if (entries.length > 15) throw new ProfileInputError("Import at most 15 roles at a time.");
+  const experience = entries.map((item, index) => {
+    const entry = (item && typeof item === "object" ? item : {}) as Record<string, unknown>;
+    const label = `Role ${index + 1}`;
+    const job_title = plain(entry.job_title, `${label} title`, 150), organization = plain(entry.organization, `${label} organization`, 200);
+    if (!job_title || !organization) throw new ProfileInputError(`${label} needs a title and an organization.`);
+    const month = (value: unknown, what: string) => {
+      if (typeof value !== "string" || !MONTH.test(value) || Number(value.slice(0, 4)) < 1960 || value > thisMonth) throw new ProfileInputError(`${label} ${what} must be a month no later than this month.`);
+      return `${value}-01`;
+    };
+    const is_current = entry.is_current === true;
+    const start_date = month(entry.start, "start");
+    const end_date = is_current ? null : month(entry.end, "end");
+    if (end_date && end_date < start_date) throw new ProfileInputError(`${label} must end on or after its start.`);
+    return { job_title, organization, start_date, end_date, is_current, description: plain(entry.description ?? "", `${label} description`, 2000) || null };
+  });
+  const names = Array.isArray(data.skills) ? data.skills : [];
+  if (names.length > SKILL_LIMIT) throw new ProfileInputError(`Choose at most ${SKILL_LIMIT} skills.`);
+  const skills = sortSkills(names.map((name, index) => {
+    const value = plain(name, `Skill ${index + 1}`, 100).replace(/\s+/g, " ");
+    if (value.length < 2) throw new ProfileInputError("Each skill must be at least 2 characters.");
+    return value;
+  }));
+  return { fields, kq_start_year, kq_end_year, experience, skills };
+}
+
+/** Saves confirmed CV details in one transaction; existing roles and skills are not duplicated. */
+export async function importFromCv(profileId: string, input: CvImport) {
+  return withTransaction(async conn => {
+    const updates: [string, string | number][] = Object.entries(input.fields);
+    if (input.kq_start_year) updates.push(["kq_start_year", input.kq_start_year]);
+    if (input.kq_end_year) updates.push(["kq_end_year", input.kq_end_year]);
+    if (updates.length) {
+      await conn.query(`UPDATE profiles SET ${updates.map(([key], i) => `${key} = $${i + 2}`).join(", ")}, updated_at = CURRENT_TIMESTAMP WHERE id = $1`,
+        [profileId, ...updates.map(([, value]) => value)]);
+      // Same completeness rule as the profile form.
+      await conn.query(`UPDATE profiles SET profile_completed = (full_name IS NOT NULL AND former_kq_role IS NOT NULL AND former_kq_department IS NOT NULL
+        AND kq_start_year IS NOT NULL AND kq_end_year IS NOT NULL) WHERE id = $1`, [profileId]);
+    }
+    let roles = 0;
+    for (const entry of input.experience) {
+      const added = await conn.query(`INSERT INTO work_experience (profile_id, organization, job_title, start_date, end_date, is_current, description)
+        SELECT $1::uuid, $2::text, $3::text, $4::date, $5::date, $6::boolean, $7::text WHERE NOT EXISTS (SELECT 1 FROM work_experience
+          WHERE profile_id = $1::uuid AND lower(organization) = lower($2::text) AND lower(job_title) = lower($3::text) AND start_date IS NOT DISTINCT FROM $4::date)`,
+        [profileId, entry.organization, entry.job_title, entry.start_date, entry.end_date, entry.is_current, entry.description]);
+      roles += added.rowCount ?? 0;
+    }
+    let skills = 0, overLimit = 0;
+    let count = Number((await conn.query<{ n: number }>("SELECT count(*)::int AS n FROM profile_skills WHERE profile_id = $1", [profileId])).rows[0].n);
+    for (const name of input.skills) {
+      const existing = (await conn.query<{ id: string }>("SELECT id FROM skills WHERE lower(name) = lower($1) ORDER BY name LIMIT 1", [name])).rows[0];
+      if (existing && (await conn.query("SELECT 1 FROM profile_skills WHERE profile_id = $1 AND skill_id = $2", [profileId, existing.id])).rowCount) continue;
+      if (count >= SKILL_LIMIT) { overLimit++; continue; }
+      const skillId = existing?.id || (await conn.query<{ id: string }>("INSERT INTO skills (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id", [name])).rows[0].id;
+      await conn.query("INSERT INTO profile_skills (profile_id, skill_id) VALUES ($1, $2) ON CONFLICT DO NOTHING", [profileId, skillId]);
+      skills++; count++;
+    }
+    if (updates.length || roles || skills) await enqueueProfileChange(conn, profileId, "cv_import");
+    return { fields: updates.length, roles, skills, overLimit };
+  });
+}
+
 // ---------- Photo ----------
 
 /** Checks the file signature, not just the declared type. */

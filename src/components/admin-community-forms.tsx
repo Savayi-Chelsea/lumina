@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { startTransition, useActionState, type FormEvent } from "react";
-import { manageEvent, manageOpportunity, type ManageState } from "@/app/admin/community-actions";
-import { EVENT_CATEGORIES, EVENT_FORMATS, OPPORTUNITY_TYPES, WORK_MODES } from "@/lib/community-input";
+import { manageEvent, type ManageState } from "@/app/admin/community-actions";
+import { EVENT_CATEGORIES, EVENT_FORMATS } from "@/lib/community-input";
 
 type Values = Record<string, string | number | null | undefined>;
 type FieldProps = { name: string; label: string; values: Values; max?: number; required?: boolean; hint?: string };
@@ -60,27 +60,5 @@ export function EventForm({ initial = {}, published = false }: { initial?: Value
       <Area name="description" label="Description" values={values} max={5000} />
     </div>
     <Actions pending={pending} back="/admin/events" published={published} />
-  </form>;
-}
-
-export function OpportunityForm({ initial = {}, published = false }: { initial?: Values; published?: boolean }) {
-  const [state, action, pending] = useActionState<ManageState, FormData>(manageOpportunity, { message: "" });
-  const values = initial;
-  return <form onSubmit={submitWith(action)} className="card admin-form">
-    {initial.id && <input type="hidden" name="id" value={String(initial.id)} />}
-    <p className="auth-feedback" role="alert" hidden={!state.message}>{state.message}</p>
-    <div className="grid">
-      <Text name="title" label="Title" values={values} max={150} />
-      <Text name="organization" label="Organization" values={values} max={200} />
-      <Select name="opportunity_type" label="Type" values={values} options={OPPORTUNITY_TYPES.map(item => [item, item] as const)} />
-      <Select name="work_mode" label="Work mode" values={values} options={Object.entries(WORK_MODES)} />
-      <Text name="location" label="Location" values={values} max={150} />
-      <Text name="industry" label="Industry" values={values} max={150} required={false} />
-      <Text name="summary" label="Short summary" values={values} max={300} hint="Shown on listing cards. Up to 300 characters." />
-      <Text name="closes_on" label="Closing date" type="date" values={values} required={false} hint="Leave blank if open until filled. Listings disappear after this date." />
-      <Area name="description" label="Description" values={values} max={5000} />
-      <Area name="how_to_apply" label="How to apply (shown above the Apply through Lumina button)" values={values} max={1000} />
-    </div>
-    <Actions pending={pending} back="/admin/opportunities" published={published} />
   </form>;
 }

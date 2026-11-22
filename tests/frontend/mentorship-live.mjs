@@ -85,7 +85,8 @@ try {
   await context.addCookies([{ name: "authjs.session-token",value: token,url: base,httpOnly: true,sameSite: "Lax" }]);
   assert.equal((await context.request.post(`${base}/api/mentorship/search`,{ data: { query } })).status(),403);
   await page.goto(`${base}/onboarding`); await expect(page).toHaveURL(/\/verify$/);
-  for (const [label,value] of [["Staff number",staffNumber],["Surname","DemoAlumni"],["Former KQ department","ICT / Digital"],["KQ start year","2005"],["KQ end year","2015"]]) await page.getByLabel(label,{ exact: true }).fill(value);
+  for (const [label,value] of [["Staff number",staffNumber],["Surname","DemoAlumni"],["KQ start year","2005"],["KQ end year","2015"]]) await page.getByLabel(label,{ exact: true }).fill(value);
+  await page.getByLabel("Former KQ department",{ exact: true }).selectOption("ICT / Digital");
   await page.screenshot({ path: `${output}/01-verification.png`,fullPage: true });
   await page.getByRole("button",{ name: "Verify alumni details",exact: true }).click();
   await expect(page).toHaveURL(/\/profile\?verified=1$/);
@@ -93,7 +94,8 @@ try {
   assert.deepEqual(account,{ account_status: "active",alumni_verified: true });
   assert.equal((await pool.query("SELECT claimed_by_user_id FROM public.alumni_registry WHERE id=$1",[registryId])).rows[0].claimed_by_user_id,userId);
   await page.goto(`${base}/profile/edit`);
-  for (const [label,value] of [["Full name (required)","Mentorship Demo User"],["Headline","IT support professional exploring cloud engineering"],["Former KQ role","IT Support"],["Former KQ department","ICT / Digital"],["KQ start year","2005"],["KQ end year","2015"]]) await page.getByLabel(label,{ exact: true }).fill(value);
+  for (const [label,value] of [["Full name (required)","Mentorship Demo User"],["Headline","IT support professional exploring cloud engineering"],["Former KQ role","IT Support"],["KQ start year","2005"],["KQ end year","2015"]]) await page.getByLabel(label,{ exact: true }).fill(value);
+  await page.getByLabel("Former KQ department",{ exact: true }).selectOption("ICT / Digital");
   await page.getByRole("button",{ name: "Save profile",exact: true }).click(); await expect(page.getByText(/^Profile saved\./)).toBeVisible();
   await page.getByRole("link",{ name: "Home",exact: true }).click(); await expect(page.getByText("Verified by Lumina",{ exact: true })).toBeVisible();
   console.log("PASS Google-linked session → registry verification → saved profile → Lumina home");
