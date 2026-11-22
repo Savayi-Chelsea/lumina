@@ -11,8 +11,12 @@ alumni, so the site and the 500-profile evaluation describe the same people.
 Like the first 200, they are fictional, non-login fixtures
 (alum-NNN@synthetic.lumina.local).
 
-Additive and safe to rerun: people who already exist are skipped and never
-changed; existing members, real accounts and their relationships are not
+Each new person also gets their alumni registry record (SYN-ALUM-201 to
+SYN-ALUM-500), derived exactly as scripts/generate_alumni_registry.py derives the
+first 200, so the registry used for sign-up verification covers all 500.
+
+Additive and safe to rerun: people and registry records that already exist are
+skipped and never changed (a conflicting registry record stops the run); existing members, real accounts and their relationships are not
 modified. Each new person gets accepted connections (median about 14, mostly
 within their former department, then industry and city) with other seeded
 alumni; an existing person receives at most MAX_NEW_FOR_EXISTING of them.
@@ -32,6 +36,8 @@ import psycopg
 from psycopg.conninfo import conninfo_to_dict
 
 from local_database import ROOT, is_evaluation_database, local_dsn
+from generate_alumni_registry import registry_rows
+from import_alumni_registry import import_rows
 from seed_connections import pick_target
 from synthetic_identity import FIXTURE_PASSWORD
 
@@ -143,14 +149,17 @@ def run(apply):
             with conn.transaction():
                 new_ids = [uid for uid in (insert_person(conn, row, history[row["synthetic_id"]]) for row in rows) if uid]
                 connections = connect_new_people(conn, new_ids, rng) if new_ids else 0
+                registry = import_rows(conn, [row for row in registry_rows(DATASET / "synthetic_alumni_500.csv")
+                                              if int(row["synthetic_staff_number"].split("-")[-1]) >= FIRST_NEW])
+                records = conn.execute("SELECT count(*) FROM alumni_registry").fetchone()[0]
                 total = conn.execute("SELECT count(*) FROM users WHERE email LIKE '%%@synthetic.lumina.local'").fetchone()[0]
                 if not apply:
                     raise Preview
         except Preview:
             pass
     print(f"{'Added' if apply else 'Preview (nothing written): would add'} {len(new_ids)} alumni "
-          f"({len(rows) - len(new_ids)} already present) and {connections} connections to {database}; "
-          f"{'now' if apply else 'would then have'} {total} seeded alumni")
+          f"({len(rows) - len(new_ids)} already present), {connections} connections and {registry} registry records to {database}; "
+          f"{'now' if apply else 'would then have'} {total} seeded alumni and {records} registry records")
     if apply and new_ids:
         print("Next: scripts/index_profile_embeddings.py (mentor search) and scripts/generate_avatars.py --apply (portraits)")
 

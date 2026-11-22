@@ -89,5 +89,16 @@ class ImportDatabaseTests(unittest.TestCase):
             conn.rollback()
 
 
+class ExtendedRegistryTests(unittest.TestCase):
+    def test_the_500_profile_registry_keeps_the_first_200_records_unchanged(self):
+        extended = registry_rows(ROOT / "evaluation/datasets/alumni_500/synthetic_alumni_500.csv")
+        with (ROOT / "data/synthetic_alumni_registry.csv").open(newline="", encoding="utf-8") as stream:
+            original = list(csv.DictReader(stream))
+        self.assertEqual(len(extended), 500)
+        self.assertEqual([{key: str(value) for key, value in row.items()} for row in extended[:200]], original)
+        self.assertEqual([row["synthetic_staff_number"] for row in extended[200:]][:2], ["SYN-ALUM-201", "SYN-ALUM-202"])
+        self.assertEqual(len({row["synthetic_staff_number"] for row in extended}), 500)
+
+
 if __name__ == "__main__":
     unittest.main()
