@@ -438,6 +438,24 @@ p, h1, h2, h3, dd, li, .badge, .availability { overflow-wrap: anywhere; }
 .application-form textarea { min-height: 7rem; }
 .application-note { margin: 0; padding: var(--space-2) var(--space-3); border-left: 3px solid var(--border); color: var(--muted); font-size: .88rem; white-space: pre-wrap; overflow-wrap: anywhere; }
 .admin-applicant { display: flex; flex-direction: column; gap: .2rem; }
+.cv-choose { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6); }
+.cv-privacy { display: flex; align-items: flex-start; gap: .45rem; color: var(--muted); font-size: .88rem; margin: 0; }
+.cv-privacy svg { flex-shrink: 0; margin-top: .2rem; color: var(--brand); }
+.cv-review { display: flex; flex-direction: column; gap: var(--space-6); }
+.cv-section { border: 1px solid var(--border); display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.cv-section legend { float: left; width: 100%; padding: 0; font-family: var(--font-display); font-size: 1.15rem; }
+.cv-section legend + * { clear: both; }
+.cv-item { display: flex; flex-direction: column; gap: .4rem; }
+.cv-item input:not([type="checkbox"]), .cv-item textarea { width: 100%; }
+.cv-role { border-top: 1px solid var(--border); padding-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.cv-role:first-of-type { border-top: 0; padding-top: 0; }
+.cv-role .confirmation span { display: inline-flex; flex-wrap: wrap; gap: .4rem; align-items: center; overflow-wrap: anywhere; }
+.cv-skills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.cv-skills .chip { cursor: pointer; gap: .35rem; min-height: 36px; }
+.cv-skills .chip:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
+.cv-actions { position: sticky; bottom: 0; z-index: 5; background: var(--background); border-top: 1px solid var(--border); padding: var(--space-3) 0; }
+.cv-done { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+.cv-done svg { color: var(--brand); }
 .community-detail-main { display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; }
 .event-goers h2 { margin-bottom: var(--space-3); }
 .goer-avatars { display: flex; flex-wrap: wrap; list-style: none; margin: 0 0 var(--space-3); padding: 0; }
@@ -734,10 +752,10 @@ button.danger:hover { background: #6f1515; border-color: #6f1515; }
 @media (max-width: 480px) { .bar-chart li { grid-template-columns: 1fr 2.5rem; } .bar-chart .bar-track { grid-column: 1 / -1; grid-row: 2; } .chart-x-odd { display: none; } }
 
 /* Kenya job feed (Opportunities > Jobs in Kenya) */
-.opportunity-tabs { display: flex; flex-wrap: wrap; gap: var(--space-6); border-bottom: 1px solid var(--border); margin-bottom: var(--space-8); }
-.opportunity-tabs a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding-bottom: .6rem; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted); font-weight: 600; font-size: .9rem; text-decoration: none; }
-.opportunity-tabs a:hover { color: var(--brand); }
-.opportunity-tabs a[aria-current="page"] { color: var(--burgundy); border-bottom-color: var(--brand); }
+.page-tabs { display: flex; flex-wrap: wrap; gap: var(--space-6); border-bottom: 1px solid var(--border); margin-bottom: var(--space-8); }
+.page-tabs a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding-bottom: .6rem; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted); font-weight: 600; font-size: .9rem; text-decoration: none; }
+.page-tabs a:hover { color: var(--brand); }
+.page-tabs a[aria-current="page"] { color: var(--burgundy); border-bottom-color: var(--brand); }
 .tab-count { font-size: .68rem; font-weight: 650; padding: .1rem .5rem; border-radius: 30px; background: var(--tint); color: var(--brand); }
 .job-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 .job-card { display: flex; align-items: flex-start; gap: var(--space-4); padding: var(--space-6); border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius); min-width: 0; }
@@ -761,7 +779,7 @@ button.danger:hover { background: #6f1515; border-color: #6f1515; }
 .job-attribution a { color: var(--brand); }
 .pagination { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-8); }
 @media (max-width: 820px) { .job-grid { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 600px) { .job-card { padding: var(--space-4); gap: var(--space-3); } .job-logo { width: 40px; height: 40px; } .opportunity-tabs { gap: var(--space-4); } .opportunity-tabs a { font-size: .8rem; } }
+@media (max-width: 600px) { .job-card { padding: var(--space-4); gap: var(--space-3); } .job-logo { width: 40px; height: 40px; } .page-tabs { gap: var(--space-4); } .page-tabs a { font-size: .8rem; } }
 .home-jobs { margin-top: var(--space-6); }
 .home-jobs-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
 .home-jobs-heading h3 { font-size: 1rem; }

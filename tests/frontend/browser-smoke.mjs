@@ -219,7 +219,7 @@ try {
   await expect(page.getByRole("heading",{ name: "Your alumni journey starts with verification." })).toBeVisible();
   await expect(page.getByRole("button",{ name: "Find mentors", exact: true })).toHaveCount(0);
   await page.getByRole("link",{ name: "Events", exact: true }).click(); await expect(page.getByRole("heading",{ name: "Complete verification to join community events." })).toBeVisible();
-  await page.getByRole("link",{ name: "Opportunities", exact: true }).click(); await expect(page.getByRole("heading",{ name: "Complete verification to explore opportunities." })).toBeVisible();
+  await page.getByRole("link",{ name: "Opportunities", exact: true }).click(); await expect(page.getByRole("heading",{ name: "Complete verification to explore jobs." })).toBeVisible();
   const sampleEvent = (await pool.query("SELECT id FROM public.events WHERE status='published' AND synthetic LIMIT 1")).rows[0];
   if (sampleEvent) { await page.goto(`${base}/events/${sampleEvent.id}`); await expect(page.getByRole("button",{ name: "Reserve my place" })).toHaveCount(0); }
   console.log("PASS pending Network, mentorship, events and opportunities gates");
@@ -446,14 +446,11 @@ try {
     await page.getByRole("button",{ name: "Reserve my place" }).click();
     await expect(page.getByRole("button",{ name: "Cancel my registration" })).toBeVisible();
     await page.goto(base); await expect(page.locator('.live-event-card .availability')).toHaveCount(1);
-    await page.goto(`${base}/opportunities`);
-    await page.getByRole("link",{ name: "Advisory", exact: true }).click(); await expect(page).toHaveURL(/type=Advisory/);
-    for (const label of await page.locator('.opportunity-card .card-meta span:first-child').allTextContents()) assert.equal(label, "Advisory");
-    await page.goto(`${base}/opportunities`);
-    await page.getByLabel("Search opportunities").fill("cloud"); await page.getByRole("button",{ name: "Search", exact: true }).click();
-    await expect(page.locator('.opportunity-card').first()).toContainText(/cloud/i);
-    await page.goto(`${base}/opportunities`); await expect(page.locator('body')).not.toContainText("Ground Handling Supervisor");
-    console.log("PASS events RSVP/cancel, format filter, Home attendance, opportunity type filter, search and closed-listing hiding");
+    // Opportunities shows the Kenya job feed only; community listings are not listed to members.
+    await page.goto(`${base}/opportunities?q=cloud`); await expect(page).toHaveURL(/\/opportunities\/jobs\?q=cloud$/);
+    await expect(page.getByRole("heading",{ name: "Jobs open to you in Kenya." })).toBeVisible();
+    await expect(page.locator('.opportunity-tabs')).toHaveCount(0); await expect(page.locator('.opportunity-card')).toHaveCount(0);
+    console.log("PASS events RSVP/cancel, format filter, Home attendance, Opportunities opens Jobs in Kenya");
   }
 
   {
@@ -680,7 +677,7 @@ try {
     const adminMenu = page.getByRole('button', { name: 'Admin menu', exact: true });
     if (width <= 1100) { await adminMenu.click(); await expect(page.getByRole('navigation', { name: 'Administration', exact: true })).toBeVisible(); await page.keyboard.press('Escape'); await expect(adminMenu).toBeFocused(); }
     await screenshot(page, `admin-${width}`);
-    for (const route of ['/admin','/admin/users','/admin/events','/admin/opportunities']) {
+    for (const route of ['/admin','/admin/users','/admin/events','/admin/jobs','/admin/insights']) {
       await page.goto(`${base}${route}`); await expect(page.locator('.workspace h1')).toBeVisible(); await noOverflow(page, `${width}px ${route}`);
     }
     await page.goto(`${base}/admin/verification`);
@@ -714,16 +711,11 @@ try {
     await page.goto(`${base}/admin/events`); await item.getByRole("button",{ name: "Archive" }).click();
     await expect(page.locator('.notice')).toContainText("Archived");
     await page.goto(`${base}/events`); await expect(page.locator('.live-event-card').filter({ hasText: adminEventTitle })).toHaveCount(0);
-    await page.goto(`${base}/admin/opportunities/new`);
-    await page.getByLabel("Title").fill(adminEventTitle); await page.getByLabel("Organization").fill("Browser Org");
-    await page.getByLabel("Type").selectOption("Volunteer"); await page.getByLabel("Work mode").selectOption("remote");
-    await page.getByLabel("Location").fill("Remote"); await page.getByLabel("Short summary").fill("Volunteer summary");
-    await page.getByLabel("Description").fill("Volunteer details"); await page.getByLabel("How to apply").fill("Reply to the coordinator");
-    await page.getByRole("button",{ name: "Save draft", exact: true }).click();
-    await expect(page.locator('.admin-item').filter({ hasText: adminEventTitle }).getByText("Draft", { exact: true })).toBeVisible();
-    await page.goto(`${base}/opportunities?q=${encodeURIComponent(adminEventTitle)}`); await expect(page.locator('.opportunity-card')).toHaveCount(0);
-    await page.goto(`${base}/admin`); await expect(page.locator('.admin-stats .card')).toHaveCount(5); // exceptions, events, opportunities, system health, insight
-    console.log("PASS admin event/opportunity create, validation, publish, archive, draft and dashboard counts");
+    // Community listings are retired: the admin Opportunities page is now the jobs feed.
+    await page.goto(`${base}/admin/opportunities`); await expect(page).toHaveURL(/\/admin\/jobs$/);
+    await expect(page.getByRole("heading",{ level: 1, name: "Jobs feed" })).toBeVisible();
+    await page.goto(`${base}/admin`); await expect(page.locator('.admin-stats .card')).toHaveCount(5); // exceptions, events, jobs feed, system health, insight
+    console.log("PASS admin event create, validation, publish, archive, jobs feed and dashboard counts");
     await page.goto(`${base}/admin/users?q=${encodeURIComponent("Browser Alumnus 03")}`);
     const person = page.locator('.admin-item').filter({ hasText: "Browser Alumnus 03" });
     await expect(person).toHaveCount(1);
@@ -753,16 +745,19 @@ try {
     await expect(page.locator(".table-card")).toContainText("Hid a session recap");
     await page.getByLabel("Action").selectOption("account.delete"); await page.getByRole("button", { name: "Filter" }).click();
     await expect(page.locator(".table-card")).toContainText("Deleted account");
-    for (const [route, heading] of [["/admin/analytics", "Community analytics"], ["/admin/matching", "Mentor match quality"], ["/admin/health", "System health"], ["/admin/audit", "Audit log"]]) {
+    await page.goto(`${base}/admin/analytics`); await expect(page).toHaveURL(/\/admin\/insights$/);
+    await page.goto(`${base}/admin/matching`); await expect(page).toHaveURL(/\/admin\/insights\?view=matching$/);
+    for (const [route, heading] of [["/admin/insights", "Insights"], ["/admin/insights?view=matching", "Insights"], ["/admin/health", "System health"], ["/admin/audit", "Audit log"]]) {
       for (const [width, height] of [[375, 812], [1440, 900]]) {
         await page.setViewportSize({ width, height }); await page.goto(`${base}${route}`);
         await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
-        await noOverflow(page, `${width}px ${route}`); await screenshot(page, `${route.slice(1).replace("/", "-")}-${width}`);
+        await noOverflow(page, `${width}px ${route}`); await screenshot(page, `${route.slice(1).replace("/", "-").replace("?view=", "-")}-${width}`);
       }
     }
     await page.goto(`${base}/admin/health`); await expect(page.locator(".health-card").first()).toContainText("Database");
-    await page.goto(`${base}/admin/matching`); await expect(page.locator("body")).toContainText("Request rate from search");
-    console.log("PASS admin audit log, analytics, match quality and system health");
+    await page.goto(`${base}/admin/insights`); await expect(page.locator("body")).toContainText("Verified members");
+    await page.getByRole("link", { name: "Match quality", exact: true }).click(); await expect(page.locator("body")).toContainText("Request rate from search");
+    console.log("PASS admin audit log, insights (community and match quality) and system health");
   }
   await page.goto(`${base}/`); await page.getByRole("button",{ name: "Open account menu" }).click();
   await page.getByRole("button",{ name: "Sign out", exact: true }).click();

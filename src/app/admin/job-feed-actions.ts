@@ -29,5 +29,5 @@ export async function refreshJobsNow() {
     }
     await recordAudit(database(), session.user.id, "jobs.refresh", "job_feed", null, { outcome, runs }).catch(() => {});
   });
-  redirect("/admin/opportunities?jobs=started");
+  redirect("/admin/jobs?jobs=started");
 }
