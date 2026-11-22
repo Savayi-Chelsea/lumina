@@ -6,7 +6,7 @@ import { jobFeedStatus, JOBS_PER_PAGE, listExternalJobs, parseJobFilters, schedu
 import { JOB_TOPICS, topicsForDepartment } from "@/lib/job-sources";
 
 const SOURCE_SITES: Partial<Record<string, string>> = { himalayas: "https://himalayas.app", jobwebkenya: "https://jobwebkenya.com" };
-import { JobCard, OpportunityTabs } from "@/components/job-card";
+import { JobCard } from "@/components/job-card";
 import { DiscoveryGate } from "@/components/discovery-gate";
 import { Icon } from "@/components/icon";
 
@@ -46,7 +46,6 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
       <h1>Jobs open to you in Kenya.</h1>
       <p>Real openings from job boards, matched to the careers Kenya Airways alumni move into. Applications go straight to the original listing.</p>
     </section>
-    <OpportunityTabs active="jobs" jobCount={status.active} />
     <form action="/opportunities/jobs" method="get" className="opportunity-search" role="search">
       {filters.topic && <input type="hidden" name="topic" value={filters.topic} />}
       {filters.mode && <input type="hidden" name="mode" value={filters.mode} />}
