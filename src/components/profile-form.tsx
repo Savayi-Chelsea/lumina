@@ -12,7 +12,7 @@ const groups = [
   { id: "kq", title: "Your Kenya Airways chapter", fields: [["former_kq_role", "Former KQ role", 150], ["former_kq_department", "Former KQ department", 150], ["kq_start_year", "KQ start year", 4], ["kq_end_year", "KQ end year", 4]] },
 ] as const;
 
-export function ProfileForm({ profile, name }: { profile: Profile | null; name?: string | null }) {
+export function ProfileForm({ profile, name, departments = [] }: { profile: Profile | null; name?: string | null; departments?: string[] }) {
   const [state, action, pending] = useActionState(updateProfile, { message: "", ok: false });
   return <form action={action} className="card profile-edit-form">
     <p className="muted">Full name is required. Add your former KQ role, department and service years to complete your profile. Service years must be between 1977 and the current year.</p>
@@ -20,7 +20,11 @@ export function ProfileForm({ profile, name }: { profile: Profile | null; name?:
       const value = profile?.[field as keyof Profile] ?? (field === "full_name" ? name : "") ?? "";
       return <div className={`field${field === "biography" ? " field-wide" : ""}`} key={field}>
         <label htmlFor={field}>{label}{field === "full_name" ? " (required)" : ""}</label>
-        {field === "biography" ? <textarea id={field} name={field} maxLength={max} defaultValue={String(value)} placeholder="Your journey, what you work on now and what you'd like to help with." />
+        {field === "former_kq_department" && departments.length ? <select id={field} name={field} defaultValue={String(value)}>
+            <option value="">Choose your department</option>
+            {[...departments, ...(value && !departments.includes(String(value)) ? [String(value)] : [])].map(department => <option key={department} value={department}>{department}</option>)}
+          </select>
+          : field === "biography" ? <textarea id={field} name={field} maxLength={max} defaultValue={String(value)} placeholder="Your journey, what you work on now and what you'd like to help with." />
           : <input id={field} name={field} type={field.includes("year") ? "number" : "text"} min={field.includes("year") ? 1977 : undefined} max={field.includes("year") ? new Date().getFullYear() : undefined} maxLength={max} required={field === "full_name"} defaultValue={String(value)} />}
       </div>;
     })}</div></fieldset>)}

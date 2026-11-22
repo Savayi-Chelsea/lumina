@@ -24,7 +24,7 @@ const month = (value: string | null) => value ? new Date(`${value}-01T00:00:00Z`
  * "Fill in from your CV": the file is read in this browser and never uploaded.
  * Members review every suggestion; only what they tick is sent and saved.
  */
-export function CvImport({ current, existingRoles, existingSkills, skillLimit }: { current: CvCurrent; existingRoles: string[]; existingSkills: string[]; skillLimit: number }) {
+export function CvImport({ current, existingRoles, existingSkills, skillLimit, departments = [] }: { current: CvCurrent; existingRoles: string[]; existingSkills: string[]; skillLimit: number; departments?: string[] }) {
   const [stage, setStage] = useState<"choose" | "reading" | "review">("choose");
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
@@ -118,7 +118,12 @@ export function CvImport({ current, existingRoles, existingSkills, skillLimit }:
           <label className="confirmation"><input type="checkbox" checked={kq.include} onChange={event => setKq({ ...kq, include: event.target.checked })} /> Add my Kenya Airways chapter</label>
           <div className="grid">
             <div className="field"><label htmlFor="cv-kq-role">Former KQ role</label><input id="cv-kq-role" value={kq.role} maxLength={150} disabled={!kq.include} onChange={event => setKq({ ...kq, role: event.target.value })} /></div>
-            <div className="field"><label htmlFor="cv-kq-dept">Former KQ department</label><input id="cv-kq-dept" value={kq.department} maxLength={150} disabled={!kq.include} onChange={event => setKq({ ...kq, department: event.target.value })} /></div>
+            <div className="field"><label htmlFor="cv-kq-dept">Former KQ department</label>{departments.length
+              ? <select id="cv-kq-dept" value={kq.department} disabled={!kq.include} onChange={event => setKq({ ...kq, department: event.target.value })}>
+                  <option value="">Choose your department</option>
+                  {[...departments, ...(kq.department && !departments.includes(kq.department) ? [kq.department] : [])].map(department => <option key={department} value={department}>{department}</option>)}
+                </select>
+              : <input id="cv-kq-dept" value={kq.department} maxLength={150} disabled={!kq.include} onChange={event => setKq({ ...kq, department: event.target.value })} />}</div>
             <div className="field"><label htmlFor="cv-kq-start">KQ start year</label><input id="cv-kq-start" inputMode="numeric" pattern="\d{4}" value={kq.start} disabled={!kq.include} onChange={event => setKq({ ...kq, start: event.target.value.replace(/\D/g, "").slice(0, 4) })} /></div>
             <div className="field"><label htmlFor="cv-kq-end">KQ end year</label><input id="cv-kq-end" inputMode="numeric" pattern="\d{4}" value={kq.end} disabled={!kq.include} onChange={event => setKq({ ...kq, end: event.target.value.replace(/\D/g, "").slice(0, 4) })} /></div>
           </div>

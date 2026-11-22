@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({ requireSession: vi.fn(), assistance: vi.fn(), 
 vi.mock("@/lib/session", () => ({ requireSession: mocks.requireSession }));
 vi.mock("@/lib/verification", () => ({ getAssistanceStatus: mocks.assistance, pendingRequests: mocks.requests }));
 vi.mock("@/lib/profiles", () => ({ getProfile: mocks.profile }));
+vi.mock("@/lib/departments", () => ({ kqDepartments: async () => ["Cabin Services", "ICT / Digital"] }));
 vi.mock("@/app/(alumni)/verify/actions", () => ({ submitVerification: vi.fn(), submitAssistance: vi.fn() }));
 vi.mock("@/app/admin/verification/actions", () => ({ reviewVerification: vi.fn() }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
@@ -20,6 +21,7 @@ describe("registry frontend", () => {
     const html = renderToStaticMarkup(await VerifyPage());
     for (const label of ["Staff number", "Surname", "Former KQ department", "KQ start year", "KQ end year", "Why we verify", "Request assistance"]) expect(html).toContain(label);
     for (const text of ["Synthetic", "Fictional", "prototype", "fixture"]) expect(html).not.toContain(text);
+    expect(html).toContain('<select id="department" name="department" required=""'); expect(html).toContain('<option value="ICT / Digital">ICT / Digital</option>');
     expect(html).not.toContain("Wafula");
     mocks.requireSession.mockRejectedValue(new Error("signin")); await expect(VerifyPage()).rejects.toThrow("signin");
   });

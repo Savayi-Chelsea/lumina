@@ -265,7 +265,7 @@ progress::-webkit-progress-bar { background: var(--border); }progress::-webkit-p
 
 /* Directory and application-wide responsive refinement. */
 select { font: inherit; width: 100%; min-width: 0; min-height: 48px; padding: .7rem 2rem .7rem .7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--foreground); }
-input, textarea { min-width: 0; font-size: 1rem; }
+input, textarea, select { min-width: 0; font-size: 1rem; }
 fieldset, .field, .card, .grid > *, .workspace > *, .mentor-profile-hero > div, .self-profile > div { min-width: 0; }
 p, h1, h2, h3, dd, li, .badge, .availability { overflow-wrap: anywhere; }
 .navigation-disclosure { margin-inline: auto; position: relative; }
