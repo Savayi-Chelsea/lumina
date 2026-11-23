@@ -6,9 +6,11 @@ The platform is designed primarily for former Kenya Airways staff and supports p
 
 ## Current Development Status
 
-Sprint I established the development environment, database, synthetic data pipeline, and automation required for implementation.
-
-Sprint II is implementing the core mentorship-matching workflow.
+Lumina is live at **https://56-228-133-218.sslip.io**, deployed on a single AWS
+EC2 server (see [Deployment on AWS](#deployment-on-aws)). Sprint I established the
+development environment, database, synthetic data pipeline and automation; Sprint II
+delivered the mentorship-matching workflow, the community features and the Chapter 4
+evaluation.
 
 Current functionality includes:
 
@@ -27,7 +29,7 @@ Current functionality includes:
 - Opportunities: a daily feed of real jobs in Kenya (JobWebKenya on-site, Himalayas remote)
 - Fill in your profile from a CV (PDF or Word), read in the browser and reviewed before saving
 - Admin user management (suspend and reinstate)
-- 200 synthetic alumni with work histories
+- 500 synthetic alumni with work histories (setup seeds 200; `scripts/extend_demo_alumni.py` adds the other 300), and a 500-record verification registry
 - Reproducible matching evaluation (P@5, R@5, F1@5, MRR) against a keyword baseline
 - LinkedIn-style profiles: banner, photo upload, About, Experience timeline, Kenya Airways chapter, Skills and Mentorship
 - Connections, 1:1 messaging, mentorship requests and in-app notifications
@@ -37,7 +39,11 @@ Current functionality includes:
 - Consent-aware embedding storage in PostgreSQL
 - Repeatable indexing and validation tests
 - GitHub Actions CI
-- Kenya job feed: real, daily-refreshed job listings open to applicants in Kenya, with "For you" recommendations by former department (Opportunities > Jobs in Kenya)
+- "For you" job recommendations by former Kenya Airways department
+- Sign-up verification against the alumni registry, with the department chosen from the registry's list
+- Searchable A–Z skills dropdown (743 skills) and plain-language match strength (Strong, Good or Possible match)
+- Admin: verification exceptions, users, events, jobs feed, session recaps, insights, system health and an append-only audit log
+- Production deployment on AWS: Docker Compose, Caddy HTTPS, deploys over AWS Systems Manager
 - One-command setup for Linux, macOS and GitHub Codespaces (`.devcontainer/`, `scripts/setup.sh`, `scripts/start.sh`)
 
 ## Technology Stack
@@ -269,7 +275,7 @@ Usability testing is prepared (protocol, tasks, SUS questionnaire, scorer) in
 - GitHub Actions
 - Docker
 - Docker Compose
-- AWS planned for deployment
+- AWS (EC2, Systems Manager, Parameter Store) for the live deployment
 
 The project uses:
 
@@ -287,44 +293,80 @@ for active implementation and testing.
 
 Changes are tested before being merged into `main`.
 
+## Deployment on AWS
+
+The live site, **https://56-228-133-218.sslip.io**, runs on one EC2 server in
+eu-north-1 (Stockholm): an m7i-flex.large with Ubuntu 24.04 and a 30 GB encrypted disk,
+behind Elastic IP 56.228.133.218. sslip.io turns that IP into a hostname, so no domain is
+needed. The security group allows only ports 80 and 443, with no SSH; administration goes
+through AWS Systems Manager. Every resource is tagged `Project=lumina`. Running cost is
+about $2.65 a day, or about $6 a month while stopped.
+
+`deploy/compose.prod.yml` runs eight containers with host networking:
+
+| Container | Role |
+| --- | --- |
+| `caddy` | The only public entry point; obtains and renews the HTTPS certificate (Let's Encrypt) |
+| `web` | Next.js app on port 3000 (`deploy/Dockerfile.web`) |
+| `matching` | FastAPI mentor search with the BGE model on port 8000 (`deploy/Dockerfile.python`) |
+| `events` | Kafka worker that re-indexes changed profiles |
+| `email` | Reminder and digest worker, sending to Mailpit |
+| `postgres` | PostgreSQL 17 with pgvector, data in a named volume |
+| `kafka` | Profile-change events from the transactional outbox |
+| `mailpit` | Captures email on the server's loopback interface only |
+
+**Secrets.** `deploy/.env` is generated on the server (chmod 600) and never committed;
+`deploy/.env.production.example` is the template. The Google sign-in client ID and secret
+are SecureString parameters in Parameter Store (`/lumina/AUTH_GOOGLE_ID`,
+`/lumina/AUTH_GOOGLE_SECRET`). The Google consent screen is in Testing, so only Google
+accounts on its test-user list can sign in with Google.
+
+**Deploying a change.** The server tracks `development` in `/opt/lumina` and pulls from
+GitHub, so push first:
+
+```bash
+aws login --remote --region eu-north-1 --profile lumina   # session lasts about 12 hours
+bash scripts/deploy-aws.sh development                      # 3-4 minutes; only changed containers restart
+```
+
+Expect a minute or two of downtime, and about one more minute before mentor search
+answers while the model reloads. Merge `development` into `main` once it checks out.
+
+**One-off scripts on the server** (no rebuild or downtime): pull, then run the script in
+the existing Python image with the repository mounted, through Systems Manager.
+
+```bash
+cd /opt/lumina && git pull
+cd deploy && docker compose -f compose.prod.yml run --rm --no-deps -v /opt/lumina:/app events python scripts/<script>.py
+```
+
+**Backups.** Database dumps on the server live in `/opt/lumina-backups/` (root only). To
+take one:
+
+```bash
+cd /opt/lumina/deploy && . ./.env
+docker compose -f compose.prod.yml exec -T postgres pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc > /opt/lumina-backups/<name>.dump
+```
+
+Restoring (`pg_restore --clean --if-exists`) has not been rehearsed; try it on a local
+copy first. Reading the server's email needs a Systems Manager port-forward to port 8025.
+
 ## Project Structure
 
 ```text
 lumina/
-├── data/
-│   └── synthetic_alumni.csv
-│
-├── database/
-│   ├── init.sql
-│   └── schema.sql
-│
-├── public/
-│
-├── scripts/
-│   ├── generate_synthetic_data.py
-│   ├── seed_database.py
-│   ├── index_profile_embeddings.py
-│   └── setup.ps1
-│
-├── services/
-│   └── matching/
-│       ├── app/
-│       │   ├── main.py
-│       │   ├── indexing.py
-│       │   ├── config.py
-│       │   └── search.py
-│       │
-│       └── tests/
-│           ├── test_indexing.py
-│           ├── test_indexing_database.py
-│           ├── test_search.py
-│           └── test_search_database.py
-│
-├── src/
-├── .github/
-├── .env.example
-├── .gitignore
-├── docker-compose.yml
+├── .devcontainer/          Codespaces configuration
+├── .github/workflows/      CI: npm ci, lint, tests, production build
+├── data/                   200 synthetic alumni and their registry records
+├── database/               schema.sql and numbered migrations (001 to 011)
+├── deploy/                 production Dockerfiles, compose file, Caddyfile
+├── evaluation/             Chapter 4 report, datasets (incl. 500 profiles), results, figures
+├── public/                 logo, cover art
+├── scripts/                setup, start, seeding, evaluation, AWS deploy, admin tools
+├── services/matching/      FastAPI matching service, Kafka worker and their tests
+├── src/                    Next.js app: app/ (pages, actions, API), components/, lib/
+├── tests/                  web, registry, synthetic-data and browser tests; CV fixtures
+├── docker-compose.yml      local PostgreSQL, Kafka and Mailpit
 ├── package.json
 ├── requirements.txt
 └── README.md
@@ -658,7 +700,9 @@ email control only and never sets `alumni_verified`.
 A first Google sign-in creates a pending, unverified Lumina account with a
 name-only draft profile from the Google display name, the same starting point as
 email registration. The member then verifies against the alumni registry
-(`/verify`) and completes their profile. An existing account with the same email
+(`/verify`: staff number `SYN-ALUM-001` to `SYN-ALUM-500`, surname, department chosen from
+the registry's list, and service years must all match one unclaimed record) and completes
+their profile. An existing account with the same email
 is never linked or overwritten.
 
 Google's configuration requirements are documented in the
@@ -1142,13 +1186,13 @@ is sent twice, and a failed send is retried on the next pass.
 ## Kenya job feed
 
 **Opportunities › Jobs in Kenya** (`/opportunities/jobs`) shows real job
-listings next to the community's own opportunities, LinkedIn-style. Each card
+listings, LinkedIn-style; `/opportunities` opens it directly. Each card
 shows the logo, role, company, location or remote eligibility, type and salary
 when given, when it was posted, and the source. **Apply** opens the original
 listing in a new tab. Filters cover 13 career areas, remote or on-site, and free-text
 search. **For you** ranks first the areas people from the member's former Kenya
 Airways department most often move into (`DEPARTMENT_TOPICS` in
-`src/lib/job-sources.ts`). Home shows two listings below the community opportunities.
+`src/lib/job-sources.ts`). Home's "What could come next?" shows four listings.
 
 | Source | Key | What it adds |
 | --- | --- | --- |
