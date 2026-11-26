@@ -690,8 +690,12 @@ button.reaction.is-active { background: var(--tint); border-color: var(--brand);
 .privacy-form legend { font-weight: 600; margin-bottom: .3rem; }
 .consent-history { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
 .danger-zone { display: grid; gap: .75rem; max-width: 520px; }
-button.danger { background: #8f1d1d; border-color: #8f1d1d; color: #fff; }
-button.danger:hover { background: #6f1515; border-color: #6f1515; }
+button.danger, a.button.danger { background: #8f1d1d; border-color: #8f1d1d; color: #fff; }
+button.danger:hover, a.button.danger:hover { background: #6f1515; border-color: #6f1515; }
+.delete-profile { margin-top: var(--space-8); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+.delete-profile h2 { margin: 0; }
+.delete-profile p { margin: 0; max-width: 640px; }
+#delete-account { scroll-margin-top: 96px; }
 .li-limited { display: grid; gap: .5rem; }
 
 /* Mentoring sessions */
