@@ -16,5 +16,10 @@ export default async function EditProfilePage() {
     <p className="eyebrow">Your professional story</p><h1>Edit your profile</h1>
     <EditNav current="/profile/edit" />
     <ProfileForm profile={profile} name={session.user.name} departments={departments} />
+    {session.user.role !== "admin" && <section className="card delete-profile" aria-labelledby="delete-profile-heading">
+      <h2 id="delete-profile-heading">Delete your profile</h2>
+      <p>Deleting your profile deletes your Lumina account with it: your connections, messages, mentorships, recaps and sessions go too, and it can&apos;t be undone. You can download your data first.</p>
+      <Link className="button danger" href="/account/privacy#delete-account">Delete profile and account</Link>
+    </section>}
   </>;
 }

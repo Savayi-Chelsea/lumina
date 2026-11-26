@@ -51,7 +51,7 @@ export default async function PrivacyPage({ searchParams }: { searchParams: Prom
       {history.length ? <ul className="consent-history">{history.map((entry, index) => <li key={index}><strong>{consentLabels[entry.kind] || entry.kind}</strong>: {entry.value} <span className="small muted">· {formatDate(entry.created_at)} · policy {entry.policy_version}</span></li>)}</ul>
         : <p className="muted">No changes recorded yet. Current policy version: {PRIVACY_POLICY_VERSION}.</p>}
     </section>
-    <section className="card li-section"><h2>Delete your account</h2>
+    <section className="card li-section" id="delete-account"><h2>Delete your account</h2>
       {session.user.role === "admin" ? <p className="muted">Administrator accounts can&apos;t be deleted here. Ask another administrator to change your role first.</p>
         : <DeleteAccountForm needsPassword={Boolean(account?.has_password)} />}
     </section>
